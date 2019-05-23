@@ -1,0 +1,79 @@
+//---------------------------------------------------------------------------------
+// Imports Section (React Libs)
+//---------------------------------------------------------------------------------
+import React                        from 'react';
+import { BrowserRouter as Router }  from 'react-router-dom';
+import { Route }                    from 'react-router-dom';
+import { Switch }                   from 'react-router-dom';
+import { ApolloProvider }           from 'react-apollo';
+import ApolloClient                 from 'apollo-boost';
+//---------------------------------------------------------------------------------
+// Imports Section (App Components)
+//---------------------------------------------------------------------------------
+import { Header }           from '../Shared/header/header';
+import { Customers }        from '../../views/Customers/customers';
+import { CreateCustomer }   from '../../views/Customers/new-customer';
+import { EditCustomer }     from '../../views/Customers/edit-customer';
+//---------------------------------------------------------------------------------
+// Imports Section (Component Interfaces)
+//---------------------------------------------------------------------------------
+import { IAppProps }        from '../../interfaces/react-components/app.interfaces';
+import { IAppState }        from '../../interfaces/react-components/app.interfaces';
+
+//---------------------------------------------------------------------------------
+// Component Class
+//---------------------------------------------------------------------------------
+export class App extends React.Component<IAppProps, IAppState>
+{
+    //-------------------------------------------------------------------------
+    // Private Fields Section
+    //-------------------------------------------------------------------------
+    private apolloClient        : ApolloClient<{}>;
+    
+    //-------------------------------------------------------------------------
+    // Constructor Method Section
+    //-------------------------------------------------------------------------
+    constructor(props: IAppProps)
+    {
+        // Call Parent Constructor
+        super(props);
+                
+        // Configure State
+        this.state = {
+            
+        }
+        
+        // Configure Apollo Client
+        this.apolloClient = new ApolloClient({
+            uri: "http://localhost:4000/graphql",
+            onError: ({ networkError, graphQLErrors }) =>
+            {
+                console.log('graphQLErrors:', graphQLErrors);
+                console.log('networkError', networkError);
+            }
+        });
+    }
+
+    //-------------------------------------------------------------------------
+    // Render Method Section
+    //-------------------------------------------------------------------------
+    public render() : JSX.Element
+    {
+        return (
+            <ApolloProvider client={this.apolloClient}>
+                <Router>
+                    <React.Fragment>
+                        <Header createButtonCaption="Nuevo Cliente" />
+                        <div className="container">
+                            <Switch>
+                                <Route exact path="/" render={(props) => <Customers {...props} limit={5} />}/>
+                                <Route exact path="/customer/create"     component={CreateCustomer}/>
+                                <Route exact path="/customer/edit/:id"   component={EditCustomer}/>
+                            </Switch>
+                        </div>
+                    </React.Fragment>
+                </Router>
+            </ApolloProvider>
+        );
+    }    
+}
