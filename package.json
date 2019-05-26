@@ -12,9 +12,12 @@
         "react-dom": "16.8.6",
         "react-router-dom": "^5.0.0",
         "react-scripts": "3.0.1",
+        "sweetalert2": "^8.11.6",
+        "sweetalert2-react-content": "^1.1.0",
         "typescript": "3.4.5"
     },
     "scripts": {
+        "react:serve": "react-scripts start",
         "start": "react-scripts start",
         "build": "react-scripts build",
         "test": "react-scripts test",

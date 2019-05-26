@@ -2,14 +2,14 @@
 // Imports Section (React Libs)
 //---------------------------------------------------------------------------------
 import React                    from 'react'
-import { QueryCustomers }       from '../../services/operations/queries/customers.query';
+import { QueryCustomers }       from '../../services/operations/queries/customers.query'
 import { Q_GET_CUSTOMERS }      from '../../services/operations/queries/customers.query'
 import { Link }                 from 'react-router-dom';
 //---------------------------------------------------------------------------------
 // Imports Section (Component Interfaces)
 //---------------------------------------------------------------------------------
-import { ICustomersProps }      from '../../interfaces/react-components/customers.interfaces';
-import { ICustomersState }      from '../../interfaces/react-components/customers.interfaces';
+import { ICustomersProps }      from '../../interfaces/react-components/customers.interfaces'
+import { ICustomersState }      from '../../interfaces/react-components/customers.interfaces'
 
 
 //---------------------------------------------------------------------------------
@@ -49,7 +49,7 @@ export class Customers extends React.Component<ICustomersProps, ICustomersState>
                     {
                         return `Error: ${error.message}` 
                     }
-                    if (data && data.customers)
+                    if (data)
                     {
                         return (
                             <React.Fragment>
@@ -88,4 +88,3 @@ export class Customers extends React.Component<ICustomersProps, ICustomersState>
         );
     }
 }
-

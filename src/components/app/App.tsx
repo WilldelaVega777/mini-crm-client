@@ -18,7 +18,7 @@ import { EditCustomer }     from '../../views/Customers/edit-customer';
 // Imports Section (Component Interfaces)
 //---------------------------------------------------------------------------------
 import { IAppProps }        from '../../interfaces/react-components/app.interfaces';
-import { IAppState }        from '../../interfaces/react-components/app.interfaces';
+import { IAppState }        from '../../interfaces/react-components/app.interfaces'; 
 
 //---------------------------------------------------------------------------------
 // Component Class
@@ -66,9 +66,22 @@ export class App extends React.Component<IAppProps, IAppState>
                         <Header createButtonCaption="Nuevo Cliente" />
                         <div className="container">
                             <Switch>
-                                <Route exact path="/" render={(props) => <Customers {...props} limit={5} />}/>
-                                <Route exact path="/customer/create"     component={CreateCustomer}/>
-                                <Route exact path="/customer/edit/:id"   component={EditCustomer}/>
+                                <Route  exact 
+                                        path="/" 
+                                        render={(props) => 
+                                            <Customers {...props} limit={5} />
+                                        }
+                                />
+                                <Route  exact 
+                                        path="/customer/create"
+                                        render={(props) =>
+                                            <CreateCustomer {...props} shouldNavigateBack={true} />
+                                        }
+                                />
+                                <Route  exact 
+                                        path="/customer/edit/:id"   
+                                        component={EditCustomer}
+                                /> 
                             </Switch>
                         </div>
                     </React.Fragment>
