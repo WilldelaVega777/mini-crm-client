@@ -1,4 +1,9 @@
 //---------------------------------------------------------------------
+// Imports Interfaces Section:
+//---------------------------------------------------------------------
+import { EnvironmentService }       from '../services/app-services/environment-service'
+
+//---------------------------------------------------------------------
 // Exported Interfaces Section:
 //---------------------------------------------------------------------
 export interface ValidationDescriptor
@@ -52,9 +57,21 @@ export class ValidationHelper
     //-----------------------------------------------------------------
     // Public Methods Section
     //-----------------------------------------------------------------
-    public setValidators(vs: ValidationDescriptor[])
+    public async setValidators(schema: string)
     {
-        this.validators = vs;
+        try
+        {
+            const response = await fetch(
+                EnvironmentService.getInstance().getApiUrlFor(schema)
+            )
+            const data = await response.json()
+            this.validators = (data as ValidationDescriptor[])
+        }
+        catch (e)
+        {
+            const error = e.message
+            throw new Error(error)
+        }
     }
     //-----------------------------------------------------------------
     public runValidations(data: any): ValidationError[]  

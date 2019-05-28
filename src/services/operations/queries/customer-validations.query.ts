@@ -1,10 +1,9 @@
 //---------------------------------------------------------------------------------
 // Imports Section (React/Apollo Libs)
 //---------------------------------------------------------------------------------
-import { gql }                              from 'apollo-boost';
+import { gql }                              from 'apollo-boost'
 import { Query }                            from 'react-apollo'
-
-import { getCustomerValidations }            from '../../typeDefs/operations/getCustomerValidations'
+import { getCustomerValidations }           from '../../typeDefs/operations/getCustomerValidations'
 
 //---------------------------------------------------------------------------------
 // GQL Query: Customers

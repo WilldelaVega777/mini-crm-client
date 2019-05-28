@@ -34,7 +34,7 @@ import Swal                             from 'sweetalert2';
 //---------------------------------------------------------------------------------
 export class CreateCustomer extends 
                     React.Component<ICreateCustomersProps, ICreateCustomersState>
-{
+{    
     //-------------------------------------------------------------------------
     // Private Fields Section
     //-------------------------------------------------------------------------
@@ -64,6 +64,14 @@ export class CreateCustomer extends
     }
 
     //-------------------------------------------------------------------------
+    // Lifecycle Eventhandler Methods
+    //-------------------------------------------------------------------------
+    componentWillMount()
+    {
+        this.validators.setValidators('Customer')
+    }    
+    
+    //-------------------------------------------------------------------------
     // Render Method Section
     //-------------------------------------------------------------------------
     public render(): JSX.Element
@@ -71,63 +79,91 @@ export class CreateCustomer extends
         // Return Form
         return (
             <React.Fragment>
-                
                 {/* PAGE TITLE  */}
                 <h2 className="text-center mb-3">Agregar Nuevo Cliente</h2>
                 
-                {/* LOAD VALIDATIONS INTO STATE  */}
-                <QueryCustomerValidations
-                    query={Q_GET_CUSTOMER_VALIDATIONS}
-                >
-                    {({ loading: loadingValidations, error: errorValidations, data: dataValidations }) =>
-                    {
-                        if (loadingValidations)
-                        {
-                            return "Cargando..."
-                        }
-                        if (errorValidations)
-                        {
-                            return `Error: ${errorValidations.message}`
-                        }
-                        if (dataValidations)
-                        {
-                            const validators: ValidationDescriptor[] = []
-                            dataValidations.getCustomerValidations.forEach((validator) => {
-                                validators.push(validator as ValidationDescriptor)
-                            })
-                            this.validators.setValidators(validators)
-                        }
-
-                        /* DATA ENTRY FORM  */
-                        return (
-                            <div className="row justify-content-center">
-                                
-                                <MutationCreateCustomer 
-                                    mutation={M_CREATE_CUSTOMER}
-                                    onCompleted={() => this.props.history.push('/')}
-                                >
-                                    {(createCustomer: any) => (
-                                        
-                                        <form name="frmNewCustomer"
-                                                className="col-md-8 m-3"
-                                                onSubmit={e => this.frmNewCustomer_submit(e, createCustomer)}
-                                        >
-                                            
-                                            { this.formFields(this.props, this.state, this.validators) }
-    
-                                        </form>
-                                        
-                                    )}
-                                </MutationCreateCustomer>
-                            </div>
-                        )
-                    }}
-                
-                </QueryCustomerValidations>
+                {this.loadValidations(this.props, this.state)}
 
             </React.Fragment>
         );
     }
+    
+    
+    //-------------------------------------------------------------------------
+    // Private Methods Section
+    //-------------------------------------------------------------------------
+    private loadValidations(
+        props: ICreateCustomersProps,
+        state: ICreateCustomersState
+    ): JSX.Element
+    {
+        return (
+            <QueryCustomerValidations
+                query={Q_GET_CUSTOMER_VALIDATIONS}
+            >
+                {({ loading: loadingValidations, error: errorValidations, data: dataValidations }) =>
+                {
+                    if (loadingValidations)
+                    {
+                        return "Cargando..."
+                    }
+                    if (errorValidations)
+                    {
+                        return `Error: ${errorValidations.message}`
+                    }
+                    if (dataValidations)
+                    {
+                        const validators: ValidationDescriptor[] = []
+                        dataValidations.getCustomerValidations.forEach((validator) =>
+                        {
+                            validators.push(validator as ValidationDescriptor)
+                        })
+                        //this.validators.setValidators(validators)
+                    }
+
+                    /* DATA ENTRY FORM  */
+                    return (
+                        <React.Fragment>
+                            {this.renderForm(this.props, this.state, this.validators)}
+                        </React.Fragment>
+                    )
+                }}
+            </QueryCustomerValidations>
+        )    
+    }    
+    
+    //-------------------------------------------------------------------------
+    private renderForm(
+        props: ICreateCustomersProps,
+        state: ICreateCustomersState,
+        validators: ValidationHelper
+    ): JSX.Element 
+    {
+        return (
+            <div className="row justify-content-center">
+
+                <MutationCreateCustomer
+                    mutation={M_CREATE_CUSTOMER}
+                    onCompleted={() => this.props.history.push('/')}
+                >
+                    {(createCustomer: any) =>
+                    {
+                        return (
+                            <form name="frmNewCustomer"
+                                className="col-md-8 m-3"
+                                onSubmit={e => this.frmNewCustomer_submit(e, createCustomer)}
+                            >
+
+                                {this.ctrl_form_layout(props, state, validators)}
+
+                            </form>
+                        )
+                    }}
+                </MutationCreateCustomer>
+            </div>
+        )
+    }
+        
     
     //-------------------------------------------------------------------------
     // Eventhandler Methods Section
@@ -136,14 +172,14 @@ export class CreateCustomer extends
     {
         e.preventDefault()
         e.persist()
-        
+
         // Validation Analysis        
-        if ( (e.target as HTMLFormElement).checkValidity() )
-        {               
+        if ((e.target as HTMLFormElement).checkValidity())
+        {
             const input = {
                 ...this.state.newCustomer
             }
-            
+
             Swal.fire(
                 'Crear Nuevo Cliente',
                 'El Nuevo Cliente ha sido guardado con éxito.',
@@ -160,48 +196,28 @@ export class CreateCustomer extends
                 Swal.fire(
                     'Crear Nuevo Cliente',
                     `Error: ${error.message}`,
-                    'error' 
+                    'error'
                 )
                 console.error(error)
             }
 
             await (e.target as HTMLFormElement).reset()
         }
-    }
-    
-
-    //-------------------------------------------------------------------------
-    // Private Methods Section
-    //-------------------------------------------------------------------------
-    private renderValidationsAlert(renderAlert: boolean, submitted: boolean): JSX.Element
-    {
-        const retVal = (renderAlert && submitted) ? (
-            <p className = "alert alert-danger p-3 text-center" >
-                Todos los Campos son Necesarios
-            </p >   
-        ) : ''
-        
-        return (
-            <React.Fragment>
-                {retVal}
-            </React.Fragment>
-        )
-    }
-
+    }    
     
     //-------------------------------------------------------------------------
     // Private ComponentFragments Section (Controls)
     //-------------------------------------------------------------------------
     // First Name:
     //-------------------------------------------------------------------------
-    private firstNameControl(
+    private ctrl_firstname(
         props       : ICreateCustomersProps, 
         state       : ICreateCustomersState, 
         validators  : ValidationHelper
     ): JSX.Element
     { 
         return (
-            <div className="form-group col-md-6">
+            <React.Fragment>
                 <label>Nombre</label>
                 <input
                     type="text"
@@ -222,20 +238,20 @@ export class CreateCustomer extends
                         })
                     }}
                 />
-            </div>
+            </React.Fragment>
         )
     }
     //-------------------------------------------------------------------------
     // Last Name:
     //-------------------------------------------------------------------------
-    private lastnameControl(
+    private ctrl_lastname(
         props       : ICreateCustomersProps,
         state       : ICreateCustomersState,
         validators  : ValidationHelper
     ): JSX.Element
     {
         return (
-            <div className="form-group col-md-6">
+            <React.Fragment>
                 <label>Apellido</label>
                 <input
                     type="text"
@@ -256,20 +272,20 @@ export class CreateCustomer extends
                         });
                     }}
                 />
-            </div>
+            </React.Fragment>
         )
     }
     //-------------------------------------------------------------------------
     // Company:
     //-------------------------------------------------------------------------
-    private companyControl(
+    private ctrl_company(
         props       : ICreateCustomersProps,
         state       : ICreateCustomersState,
     validators      : ValidationHelper
     ) : JSX.Element
     {
         return (
-            <div className="form-group col-md-6">
+            <React.Fragment>
                 <label>Empresa</label>
                 <input
                     type="text"
@@ -290,20 +306,20 @@ export class CreateCustomer extends
                         });
                     }}
                 />
-            </div>
+            </React.Fragment>
         )
     }
     //-------------------------------------------------------------------------
     // Email:
     //-------------------------------------------------------------------------
-    private emailControl(
+    private ctrl_email(
         props       : ICreateCustomersProps,
         state       : ICreateCustomersState,
         validators  : ValidationHelper
     ): JSX.Element
     {
         return (
-            <div className="form-group col-md-6">
+            <React.Fragment>
                 <label>Email</label>
                 <input
                     type="email"
@@ -311,7 +327,7 @@ export class CreateCustomer extends
                     className="form-control"
                     placeholder="Email"
                     required={validators.getRequired('email')}
-                    minLength={validators.getMinLength('email')}
+                    minLength={validators.getMinLength('email')} 
                     maxLength={validators.getMaxLength('email')}
                     pattern={validators.getRegex('email')}
                     onChange={e =>
@@ -324,20 +340,20 @@ export class CreateCustomer extends
                         });
                     }}
                 />
-            </div>
+            </React.Fragment>
         )
     }
     //-------------------------------------------------------------------------
     // Age:
     //-------------------------------------------------------------------------
-    private ageControl(
+    private ctrl_age(
         props       : ICreateCustomersProps,
         state       : ICreateCustomersState,
         validators  : ValidationHelper
     ): JSX.Element
     {
         return (
-            <div className="form-group col-md-6">
+            <React.Fragment>
                 <label>Edad</label>
                 <input
                     type="number"
@@ -357,20 +373,21 @@ export class CreateCustomer extends
                         });
                     }}
                 />
-            </div>
+            </React.Fragment>
         )
     }
     //-------------------------------------------------------------------------
     // CustomerType:
     //-------------------------------------------------------------------------
-    private customerTypeControl(
+    private ctrl_type
+    (
         props       : ICreateCustomersProps,
         state       : ICreateCustomersState,
         validators  : ValidationHelper
     ): JSX.Element
     {
         return (
-            <div className="form-group col-md-6">
+            <React.Fragment>
                 <label>Tipo Cliente</label>
                 <select className="form-control"
                     required={validators.getRequired('type')}
@@ -388,13 +405,13 @@ export class CreateCustomer extends
                     <option value="PREMIUM">PREMIUM</option>
                     <option value="BASIC">BASICO</option>
                 </select>
-            </div>
+            </React.Fragment>
         )
     }
     //-------------------------------------------------------------------------
     // Submit Button:
     //-------------------------------------------------------------------------
-    private submitButtonControl: JSX.Element =
+    private ctrl_submit: JSX.Element =
     (
         <button
             type="submit"
@@ -407,24 +424,43 @@ export class CreateCustomer extends
     //-------------------------------------------------------------------------
     // Private ComponentFragments Section: (Form Layout)
     //-------------------------------------------------------------------------
-    private formFields(props: ICreateCustomersProps, state: ICreateCustomersState, validators: ValidationHelper): JSX.Element
+    private ctrl_form_layout(
+        props: ICreateCustomersProps, 
+        state: ICreateCustomersState, 
+        validators: ValidationHelper
+    )
+    : JSX.Element
     {
         return (
             <React.Fragment>
+                
                 <div className="form-row">
-                    {this.firstNameControl(this.props, this.state, this.validators)}
-                    {this.lastnameControl(this.props, this.state, this.validators)}
+                    <div className="form-group col-md-6">   
+                        {this.ctrl_firstname(this.props, this.state, this.validators)}
+                    </div>
+                    <div className="form-group col-md-6">
+                        {this.ctrl_lastname(this.props, this.state, this.validators)}
+                    </div>
                 </div>
                 <div className="form-row">
-                    {this.companyControl(this.props, this.state, this.validators)}
-                    {this.emailControl(this.props, this.state, this.validators)}
+                    <div className="form-group col-md-6">
+                        {this.ctrl_company(this.props, this.state, this.validators)}
+                    </div>
+                    <div className="form-group col-md-6">                        
+                        {this.ctrl_email(this.props, this.state, this.validators)}
+                    </div>
                 </div>
                 <div className="form-row">
-                    {this.ageControl(this.props, this.state, this.validators)}
-                    {this.customerTypeControl(this.props, this.state, this.validators)}
+                    <div className="form-group col-md-6">
+                        {this.ctrl_age(this.props, this.state, this.validators)}
+                    </div>
+                    <div className="form-group col-md-6">
+                        {this.ctrl_type(this.props, this.state, this.validators)}
+                    </div>
                 </div>
                 
-                {this.submitButtonControl}
+                {this.ctrl_submit}
+                
             </React.Fragment>                
         )
     }
