@@ -6,9 +6,6 @@ import { SyntheticEvent }               from 'react'
 //---------------------------------------------------------------------------------
 // Imports Section (Apollo Types/Interfaces)
 //---------------------------------------------------------------------------------
-import { QueryCustomerValidations }     from '../../services/operations/queries/customer-validations.query'
-import { Q_GET_CUSTOMER_VALIDATIONS }   from '../../services/operations/queries/customer-validations.query'
-
 import { CustomerInput }                from '../../services/typeDefs/globals/graphql-global-types'
 import { CustomerType }                 from '../../services/typeDefs/globals/graphql-global-types'
 import { MutationCreateCustomer }       from '../../services/operations/mutations/create-customer.mutation'
@@ -22,8 +19,8 @@ import { ICreateCustomersState}         from '../../interfaces/react-components/
 // Imports Section (Helper Functions)
 //---------------------------------------------------------------------------------
 import { getEnumFromString }            from '../../helpers/type.helpers'
-import { ValidationDescriptor }         from '../../helpers/validations.helper'
 import { ValidationHelper }             from '../../helpers/validations.helper' 
+import { ValidationDescriptor }         from '../../helpers/validations.helper'
 //---------------------------------------------------------------------------------
 // Imports Section (External Components)
 //---------------------------------------------------------------------------------
@@ -59,16 +56,20 @@ export class CreateCustomer extends
                 ...customer,
                 age: 0,
                 type: CustomerType.BASIC
-            }
+            },
+            validators: []
         }
     }
 
     //-------------------------------------------------------------------------
     // Lifecycle Eventhandler Methods
     //-------------------------------------------------------------------------
-    componentWillMount()
+    async componentWillMount()
     {
-        this.validators.setValidators('Customer')
+        await this.validators.setValidators('Customer')
+        this.setState({
+            validators: this.validators.getValidators()
+        })
     }    
     
     //-------------------------------------------------------------------------
@@ -82,7 +83,7 @@ export class CreateCustomer extends
                 {/* PAGE TITLE  */}
                 <h2 className="text-center mb-3">Agregar Nuevo Cliente</h2>
                 
-                {this.loadValidations(this.props, this.state)}
+                {this.renderForm(this.props, this.state, this.validators)}
 
             </React.Fragment>
         );
@@ -91,47 +92,6 @@ export class CreateCustomer extends
     
     //-------------------------------------------------------------------------
     // Private Methods Section
-    //-------------------------------------------------------------------------
-    private loadValidations(
-        props: ICreateCustomersProps,
-        state: ICreateCustomersState
-    ): JSX.Element
-    {
-        return (
-            <QueryCustomerValidations
-                query={Q_GET_CUSTOMER_VALIDATIONS}
-            >
-                {({ loading: loadingValidations, error: errorValidations, data: dataValidations }) =>
-                {
-                    if (loadingValidations)
-                    {
-                        return "Cargando..."
-                    }
-                    if (errorValidations)
-                    {
-                        return `Error: ${errorValidations.message}`
-                    }
-                    if (dataValidations)
-                    {
-                        const validators: ValidationDescriptor[] = []
-                        dataValidations.getCustomerValidations.forEach((validator) =>
-                        {
-                            validators.push(validator as ValidationDescriptor)
-                        })
-                        //this.validators.setValidators(validators)
-                    }
-
-                    /* DATA ENTRY FORM  */
-                    return (
-                        <React.Fragment>
-                            {this.renderForm(this.props, this.state, this.validators)}
-                        </React.Fragment>
-                    )
-                }}
-            </QueryCustomerValidations>
-        )    
-    }    
-    
     //-------------------------------------------------------------------------
     private renderForm(
         props: ICreateCustomersProps,

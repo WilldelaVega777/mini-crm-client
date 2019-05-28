@@ -4,7 +4,7 @@
 import { CustomerInput }        from '../../services/typeDefs/globals/graphql-global-types'
 import { ValidationError  }     from '../../helpers/validations.helper';
 import { ValidationHelper }     from '../../helpers/validations.helper';
-
+import { ValidationDescriptor } from '../../helpers/validations.helper'
 
 //---------------------------------------------------------------------------------
 // Interface Definitions Section
@@ -17,5 +17,6 @@ export interface ICreateCustomersProps
 //---------------------------------------------------------------------------------
 export interface ICreateCustomersState
 {
-    newCustomer     : CustomerInput
+    newCustomer     : CustomerInput,
+    validators      : ValidationDescriptor[]
 }

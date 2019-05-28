@@ -44,14 +44,14 @@ export class ValidationHelper
     //-----------------------------------------------------------------
     // Private Fields Section
     //-----------------------------------------------------------------
-    private validators: ValidationDescriptor[];
+    private validations: ValidationDescriptor[];
     
     //-----------------------------------------------------------------
     // Constructor Method Section
     //-----------------------------------------------------------------
     constructor()
     {
-        this.validators = [];
+        this.validations = [];
     }
     
     //-----------------------------------------------------------------
@@ -65,7 +65,7 @@ export class ValidationHelper
                 EnvironmentService.getInstance().getApiUrlFor(schema)
             )
             const data = await response.json()
-            this.validators = (data as ValidationDescriptor[])
+            this.validations = (data as ValidationDescriptor[])
         }
         catch (e)
         {
@@ -74,57 +74,63 @@ export class ValidationHelper
         }
     }
     //-----------------------------------------------------------------
+    public getValidators(): ValidationDescriptor[]
+    {
+        return this.validations    
+    }
+    
+    //-----------------------------------------------------------------
     public runValidations(data: any): ValidationError[]  
     {
         return [{ field: "firstName", type: ErrorTypes.required }]
     }
     //-----------------------------------------------------------------
     public getRequired(field: string) : boolean
-    {
+    {   
         const validator: ValidationDescriptor = 
-            this.getVO(field, this.validators)
-            
-        return validator.required;
+            this.getVO(field, this.validations)
+                
+        return ((validator && validator.required) ? validator.required : false)
     }
     //-----------------------------------------------------------------
     public getMaxLength(field: string): number
-    {
+    {   
         const validator: ValidationDescriptor =
-            this.getVO(field, this.validators)
+            this.getVO(field, this.validations)
 
-        return (validator.max) ? validator.max : 0
+        return ((validator && validator.max) ? validator.max : 100)
     }
     //-----------------------------------------------------------------
     public getMinLength(field: string): number
     {
         const validator: ValidationDescriptor =
-            this.getVO(field, this.validators)
+            this.getVO(field, this.validations)
 
-        return (validator.min) ? validator.min : 0
+        return ((validator && validator.min) ? validator.min : 0)
     }
     //-----------------------------------------------------------------
     public getMax(field: string): number
     {
         const validator: ValidationDescriptor =
-            this.getVO(field, this.validators)
+            this.getVO(field, this.validations)
 
-        return (validator.max) ? validator.max : 0
+        return ((validator && validator.max) ? validator.max : 100)
     }    
     //-----------------------------------------------------------------
     public getMin(field: string): number
     {
         const validator: ValidationDescriptor =
-            this.getVO(field, this.validators)
+            this.getVO(field, this.validations)
 
-        return (validator.min) ? validator.min : 0
+        return ((validator && validator.min) ? validator.min : 0)
     }
     //-----------------------------------------------------------------
     public getRegex(field: string): string
     {
         const validator: ValidationDescriptor =
-            this.getVO(field, this.validators)
+            this.getVO(field, this.validations)
 
-        return (validator.regex) ? validator.regex : ''
+        return ((validator && validator.regex) ? validator.regex : '')
     }    
     
     //-----------------------------------------------------------------
@@ -133,6 +139,6 @@ export class ValidationHelper
     private getVO(field: string, validators: ValidationDescriptor[])
     : ValidationDescriptor
     {
-        return ((this.validators.filter(validator => validator.field === field))[0])
+        return ((this.validations.filter(validator => validator.field === field))[0])
     }
 }
