@@ -6,24 +6,25 @@ import ReactDOM                 from 'react-dom';
 //---------------------------------------------------------------------------------
 // Imports Section (Resources)
 //---------------------------------------------------------------------------------
-import './styles/index.css';
+import './styles/bootstrap.css'
+import './styles/fontawesome.css'
 //---------------------------------------------------------------------------------
 // Imports Section (Components: App Component)
 //---------------------------------------------------------------------------------
-import { App }                  from './components/app/App';
+import { App }                  from './components/app/App'
 //---------------------------------------------------------------------------------
 // Imports Section (Servicer Worker)
 //---------------------------------------------------------------------------------
-import * as serviceWorker       from './serviceWorker';
+import * as serviceWorker       from './serviceWorker'
 
 
 //---------------------------------------------------------------------------------
 // Render App Component (Bootstrap Section)
 //---------------------------------------------------------------------------------
-ReactDOM.render(<App title="Will" />, document.getElementById('root'));
+ReactDOM.render(<App title="Will" />, document.getElementById('root'))
 
 
 //---------------------------------------------------------------------------------
 // Service Working Configuration (Off by Default)
 //---------------------------------------------------------------------------------
-serviceWorker.unregister();
+serviceWorker.unregister()

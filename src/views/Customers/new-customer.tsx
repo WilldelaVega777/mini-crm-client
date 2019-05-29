@@ -7,6 +7,7 @@ import { SyntheticEvent }               from 'react'
 // Imports Section (Apollo Types/Interfaces)
 //---------------------------------------------------------------------------------
 import { CustomerInput }                from '../../services/typeDefs/globals/graphql-global-types'
+import { EmailInput }                   from '../../services/typeDefs/globals/graphql-global-types'
 import { CustomerType }                 from '../../services/typeDefs/globals/graphql-global-types'
 import { MutationCreateCustomer }       from '../../services/operations/mutations/create-customer.mutation'
 import { M_CREATE_CUSTOMER }            from '../../services/operations/mutations/create-customer.mutation'
@@ -20,7 +21,6 @@ import { ICreateCustomersState}         from '../../interfaces/react-components/
 //---------------------------------------------------------------------------------
 import { getEnumFromString }            from '../../helpers/type.helpers'
 import { ValidationHelper }             from '../../helpers/validations.helper' 
-import { ValidationDescriptor }         from '../../helpers/validations.helper'
 //---------------------------------------------------------------------------------
 // Imports Section (External Components)
 //---------------------------------------------------------------------------------
@@ -57,7 +57,8 @@ export class CreateCustomer extends
                 age: 0,
                 type: CustomerType.BASIC
             },
-            validators: []
+            validators: [],
+            emails: []
         }
     }
 
@@ -77,12 +78,23 @@ export class CreateCustomer extends
     //-------------------------------------------------------------------------
     public render(): JSX.Element
     {
+        // Component CSS
+        const css = `
+            .button_new_email 
+            {
+                position:absolute;
+                bottom:0             
+            }
+        `
         // Return Form
         return (
             <React.Fragment>
-                {/* PAGE TITLE  */}
-                <h2 className="text-center mb-3">Agregar Nuevo Cliente</h2>
+                {/* Apply CSS  */}
+                <style>
+                    {css}
+                </style>
                 
+                {/* Create Form  */}           
                 {this.renderForm(this.props, this.state, this.validators)}
 
             </React.Fragment>
@@ -100,33 +112,58 @@ export class CreateCustomer extends
     ): JSX.Element 
     {
         return (
-            <div className="row justify-content-center">
+            <React.Fragment>
+                {/* PAGE TITLE  */}
+                <h2 className="text-center mb-3">Agregar Nuevo Cliente</h2>
+                
+                {/* FORM  */}
+                <div className="row justify-content-center">
 
-                <MutationCreateCustomer
-                    mutation={M_CREATE_CUSTOMER}
-                    onCompleted={() => this.props.history.push('/')}
-                >
-                    {(createCustomer: any) =>
-                    {
-                        return (
-                            <form name="frmNewCustomer"
-                                className="col-md-8 m-3"
-                                onSubmit={e => this.frmNewCustomer_submit(e, createCustomer)}
-                            >
+                    <MutationCreateCustomer
+                        mutation={M_CREATE_CUSTOMER}
+                        onCompleted={() => this.props.history.push('/')}
+                    >
+                        {(createCustomer: any) =>
+                        {
+                            return (
+                                <form name="frmNewCustomer"
+                                    className="col-md-8 m-3"
+                                    onSubmit={e => this.frmNewCustomer_submit(e, createCustomer)}
+                                    onChange={e => this.frmNewCustomer_change(e)}
+                                >
 
-                                {this.ctrl_form_layout(props, state, validators)}
+                                    {this.ctrl_form_layout(props, state, validators)}
 
-                            </form>
-                        )
-                    }}
-                </MutationCreateCustomer>
-            </div>
+                                </form>
+                            )
+                        }}
+                    </MutationCreateCustomer>
+                </div>
+                
+                
+            </React.Fragment>
+
         )
     }
         
     
     //-------------------------------------------------------------------------
     // Eventhandler Methods Section
+    //-------------------------------------------------------------------------
+    frmNewCustomer_change(e: SyntheticEvent)
+    {
+        let {name, value} = (e.target as HTMLFormElement)
+        
+        value = ((name === "age") ? Number(value) : value)
+        value = ((name === "type") ? getEnumFromString(CustomerType, value) : value)
+                
+        this.setState({
+            newCustomer: {
+                ...this.state.newCustomer,
+                [name] : value
+            }
+        })
+    }
     //-------------------------------------------------------------------------
     async frmNewCustomer_submit(e: SyntheticEvent, createCustomer: any): Promise<void | undefined>
     {
@@ -163,7 +200,27 @@ export class CreateCustomer extends
 
             await (e.target as HTMLFormElement).reset()
         }
-    }    
+    }
+    //-------------------------------------------------------------------------
+    cmdNewEmail_click(e: SyntheticEvent)
+    {
+        e.preventDefault()
+        this.setState({
+            emails: this.state.emails.concat([{
+                email: ''
+            }])
+        })
+    }
+    //-------------------------------------------------------------------------
+    cmdRemoveEmail_click(e: SyntheticEvent, pIndex: number)
+    {
+        e.preventDefault()
+        
+        this.setState({
+            emails: this.state.emails.filter((email, index) => index !== pIndex)
+        })
+        
+    }
     
     //-------------------------------------------------------------------------
     // Private ComponentFragments Section (Controls)
@@ -188,15 +245,6 @@ export class CreateCustomer extends
                     minLength={validators.getMinLength('first_name')}
                     maxLength={validators.getMaxLength('first_name')}
                     pattern={validators.getRegex('first_name')}
-                    onChange={e =>
-                    {
-                        this.setState({
-                            newCustomer: {
-                                ...state.newCustomer,
-                                first_name: e.target.value
-                            }
-                        })
-                    }}
                 />
             </React.Fragment>
         )
@@ -221,16 +269,7 @@ export class CreateCustomer extends
                     required={validators.getRequired('last_name')}
                     minLength={validators.getMinLength('last_name')}
                     maxLength={validators.getMaxLength('last_name')}
-                    pattern={validators.getRegex('last_name')}                    
-                    onChange={e =>
-                    {
-                        this.setState({
-                            newCustomer: {
-                                ...this.state.newCustomer,
-                                last_name: e.target.value
-                            }
-                        });
-                    }}
+                    pattern={validators.getRegex('last_name')}
                 />
             </React.Fragment>
         )
@@ -255,16 +294,7 @@ export class CreateCustomer extends
                     required={validators.getRequired('company')}
                     minLength={validators.getMinLength('company')}
                     maxLength={validators.getMaxLength('company')}
-                    pattern={validators.getRegex('company')}                    
-                    onChange={e =>
-                    {
-                        this.setState({
-                            newCustomer: {
-                                ...this.state.newCustomer,
-                                company: e.target.value
-                            }
-                        });
-                    }}
+                    pattern={validators.getRegex('company')}
                 />
             </React.Fragment>
         )
@@ -280,26 +310,33 @@ export class CreateCustomer extends
     {
         return (
             <React.Fragment>
-                <label>Email</label>
-                <input
-                    type="email"
-                    name="email"
-                    className="form-control"
-                    placeholder="Email"
-                    required={validators.getRequired('email')}
-                    minLength={validators.getMinLength('email')} 
-                    maxLength={validators.getMaxLength('email')}
-                    pattern={validators.getRegex('email')}
-                    onChange={e =>
-                    {
-                        this.setState({
-                            newCustomer: {
-                                ...this.state.newCustomer,
-                                email: e.target.value
-                            }
-                        });
-                    }}
-                />
+                {this.state.emails.map((email: EmailInput, index: number) => {
+                    return (
+                        <div key={index} className="form-group col-md-12 pl-1 pr-0">
+                            <label>Email {index +1}</label>
+                            <div className="form-row input-group mb-3">
+                                <input  type="email" 
+                                        className="form-control" 
+                                        name="email"
+                                        placeholder="Email"
+                                        required={validators.getRequired('email')}
+                                        minLength={validators.getMinLength('email')}
+                                        maxLength={validators.getMaxLength('email')}
+                                        pattern={validators.getRegex('email')}
+                                />
+                                <div className="input-group-append">
+                                    <button id="cmdRemoveEmail"
+                                            type="button"
+                                            className="btn btn-outline-danger" 
+                                            onClick={e => this.cmdRemoveEmail_click(e, index)}
+                                    >
+                                        &times; Eliminar Email
+                                    </button>
+                                </div>
+                            </div>
+                        </div>            
+                    )
+                })}
             </React.Fragment>
         )
     }
@@ -323,15 +360,6 @@ export class CreateCustomer extends
                     required={validators.getRequired('age')}
                     min={validators.getMin('age')}
                     max={validators.getMax('age')}
-                    onChange={e =>
-                    {
-                        this.setState({
-                            newCustomer: {
-                                ...this.state.newCustomer,
-                                age: Number(e.target.value)
-                            }
-                        });
-                    }}
                 />
             </React.Fragment>
         )
@@ -349,17 +377,10 @@ export class CreateCustomer extends
         return (
             <React.Fragment>
                 <label>Tipo Cliente</label>
-                <select className="form-control"
+                <select 
+                    name="type"
+                    className="form-control"
                     required={validators.getRequired('type')}
-                    onChange={e =>
-                    {
-                        this.setState({
-                            newCustomer: {
-                                ...this.state.newCustomer,
-                                type: getEnumFromString(CustomerType, e.target.value)
-                            }
-                        });
-                    }}
                 >
                     <option value="">Elegir...</option>
                     <option value="PREMIUM">PREMIUM</option>
@@ -403,13 +424,26 @@ export class CreateCustomer extends
                     </div>
                 </div>
                 <div className="form-row">
-                    <div className="form-group col-md-6">
+                    <div className="form-group col-md-12">
                         {this.ctrl_company(this.props, this.state, this.validators)}
                     </div>
-                    <div className="form-group col-md-6">                        
-                        {this.ctrl_email(this.props, this.state, this.validators)}
-                    </div>
                 </div>
+
+                {this.ctrl_email(this.props, this.state, this.validators)}    
+
+                <div className="form-row mt-3 mb-4">
+                    <div className="col-md-12 text-center">
+                        <button id="cmdNewEmail"
+                                className="btn btn-warning"
+                                onClick={e => this.cmdNewEmail_click(e)}
+                        >
+                            <i className="fas fa-plus"></i>
+                            &nbsp;&nbsp;Agregar Email
+                        </button>
+                    </div>
+                </div>  
+
+                
                 <div className="form-row">
                     <div className="form-group col-md-6">
                         {this.ctrl_age(this.props, this.state, this.validators)}
@@ -425,3 +459,4 @@ export class CreateCustomer extends
         )
     }
 }
+

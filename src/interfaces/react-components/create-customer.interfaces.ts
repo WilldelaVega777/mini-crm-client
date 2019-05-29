@@ -2,6 +2,7 @@
 // Import Methods Section
 //---------------------------------------------------------------------------------
 import { CustomerInput }        from '../../services/typeDefs/globals/graphql-global-types'
+import { EmailInput }           from '../../services/typeDefs/globals/graphql-global-types'
 import { ValidationError  }     from '../../helpers/validations.helper';
 import { ValidationHelper }     from '../../helpers/validations.helper';
 import { ValidationDescriptor } from '../../helpers/validations.helper'
@@ -18,5 +19,6 @@ export interface ICreateCustomersProps
 export interface ICreateCustomersState
 {
     newCustomer     : CustomerInput,
-    validators      : ValidationDescriptor[]
+    validators      : ValidationDescriptor[],
+    emails          : EmailInput[]
 }

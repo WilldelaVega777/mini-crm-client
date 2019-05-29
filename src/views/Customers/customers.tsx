@@ -39,8 +39,9 @@ export class Customers extends React.Component<ICustomersProps, ICustomersState>
             <QueryCustomers
                 query={Q_GET_CUSTOMERS} 
                 variables={{limit: this.props.limit}}
+                pollInterval={1000}
             >
-                {({loading, error, data}) => {
+                {({loading, error, data, startPolling, stopPolling}) => {
                     if (loading)
                     {
                         return "Cargando..."

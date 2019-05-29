@@ -18,8 +18,12 @@ export interface CustomerInput {
   company: string;
   age: number;
   type: CustomerType;
-  email: string;
+  email: EmailInput[];
   orders?: (OrderInput | null)[] | null;
+}
+
+export interface EmailInput {
+  email: string;
 }
 
 export interface OrderInput {
