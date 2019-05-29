@@ -40,10 +40,10 @@ export class CreateCustomer extends
     //-------------------------------------------------------------------------
     // Constructor Method Section
     //-------------------------------------------------------------------------
-    constructor(props: ICreateCustomersProps, state: ICreateCustomersState)
+    constructor(props: ICreateCustomersProps)
     {
         // Calls Super
-        super(props, state)
+        super(props)
 
         // Initialize CustomerInput for State
         const customer: CustomerInput = {} as CustomerInput
@@ -78,21 +78,11 @@ export class CreateCustomer extends
     //-------------------------------------------------------------------------
     public render(): JSX.Element
     {
-        // Component CSS
-        const css = `
-            .button_new_email 
-            {
-                position:absolute;
-                bottom:0             
-            }
-        `
         // Return Form
         return (
             <React.Fragment>
                 {/* Apply CSS  */}
-                <style>
-                    {css}
-                </style>
+                {this.getCSS()}
                 
                 {/* Create Form  */}           
                 {this.renderForm(this.props, this.state, this.validators)}
@@ -104,6 +94,25 @@ export class CreateCustomer extends
     
     //-------------------------------------------------------------------------
     // Private Methods Section
+    //-------------------------------------------------------------------------
+    private getCSS(): JSX.Element
+    {
+        const css = `
+            .button_new_email 
+            {
+                position:absolute;
+                bottom:0             
+            }
+        `
+        
+        return (
+            <React.Fragment>
+                <style>
+                    {css}
+                </style>                
+            </React.Fragment>
+        )
+    }
     //-------------------------------------------------------------------------
     private renderForm(
         props: ICreateCustomersProps,
@@ -145,7 +154,24 @@ export class CreateCustomer extends
 
         )
     }
-        
+    //-------------------------------------------------------------------------
+    private validateEmails(): boolean
+    {
+        let bRetVal: boolean = false
+        if (this.state.emails.length > 0)
+        {
+            const emptyOnes: EmailInput[] = 
+                this.state.emails.filter(
+                    (email: EmailInput) => (email.email === '')
+                )
+            if (emptyOnes.length === 0)
+            {
+                bRetVal = true
+            }
+        }
+        return bRetVal;
+    }
+    
     
     //-------------------------------------------------------------------------
     // Eventhandler Methods Section
@@ -153,28 +179,66 @@ export class CreateCustomer extends
     frmNewCustomer_change(e: SyntheticEvent)
     {
         let {name, value} = (e.target as HTMLFormElement)
+
+        // Debug:
+        //const message = `Campo: ${name}, Valor: ${value}`
+        //console.log(message);
         
         value = ((name === "age") ? Number(value) : value)
         value = ((name === "type") ? getEnumFromString(CustomerType, value) : value)
-                
-        this.setState({
-            newCustomer: {
-                ...this.state.newCustomer,
-                [name] : value
-            }
-        })
+        
+        if (name.substring(0,5) === 'email')
+        {
+            const ctrlIndex: number = Number(name.substr(6))
+            this.setState({
+                emails: this.state.emails.map((email: EmailInput, index: number) => {
+                    if (index === (ctrlIndex-1))
+                    {
+                        return { 
+                            email: value 
+                        }
+                    }
+                    else
+                    {
+                        return {
+                            ...email
+                        }
+                    }
+                })
+            })
+        }
+        else
+        {
+            this.setState({
+                newCustomer: {
+                    ...this.state.newCustomer,
+                    [name] : value
+                }
+            })            
+        }
     }
     //-------------------------------------------------------------------------
     async frmNewCustomer_submit(e: SyntheticEvent, createCustomer: any): Promise<void | undefined>
     {
         e.preventDefault()
         e.persist()
-
+        
         // Validation Analysis        
         if ((e.target as HTMLFormElement).checkValidity())
         {
+            // Specific Form (Entity) Validations
+            if (!this.validateEmails())
+            {
+                Swal.fire('Crear Nuevo Cliente',
+                    'No se capturó ningún correo.',
+                    'warning')
+                return
+            }
+            
+            // Specific Form (Entity) Preparation
             const input = {
-                ...this.state.newCustomer
+                ...this.state.newCustomer,
+                emails: this.state.emails
             }
 
             Swal.fire(
@@ -206,9 +270,9 @@ export class CreateCustomer extends
     {
         e.preventDefault()
         this.setState({
-            emails: this.state.emails.concat([{
-                email: ''
-            }])
+            emails: this.state.emails.concat(
+               [ { email: '' } ]
+            )
         })
     }
     //-------------------------------------------------------------------------
@@ -235,17 +299,26 @@ export class CreateCustomer extends
     { 
         return (
             <React.Fragment>
-                <label>Nombre</label>
-                <input
-                    type="text"
-                    name="first_name"
-                    className="form-control"
-                    placeholder="Nombre"
-                    required={validators.getRequired('first_name')}
-                    minLength={validators.getMinLength('first_name')}
-                    maxLength={validators.getMaxLength('first_name')}
-                    pattern={validators.getRegex('first_name')}
-                />
+                <div className="form-group pl-1 pr-0">
+                    <label>Nombre</label>
+                    <div className="input-group mb-3">
+                        <input
+                            type="text"
+                            name="first_name"
+                            className="form-control"
+                            placeholder="Nombre"
+                            required={validators.getRequired('first_name')}
+                            minLength={validators.getMinLength('first_name')}
+                            maxLength={validators.getMaxLength('first_name')}
+                            pattern={validators.getRegex('first_name')}
+                        />
+                        <div className="input-group-append">
+                            <span className="input-group-text" id="basic-addon2">
+                                <i className="far fa-address-book"></i>
+                            </span>
+                        </div>
+                    </div> 
+                </div>              
             </React.Fragment>
         )
     }
@@ -260,17 +333,26 @@ export class CreateCustomer extends
     {
         return (
             <React.Fragment>
-                <label>Apellido</label>
-                <input
-                    type="text"
-                    name="last_name"
-                    className="form-control"
-                    placeholder="Apellido"
-                    required={validators.getRequired('last_name')}
-                    minLength={validators.getMinLength('last_name')}
-                    maxLength={validators.getMaxLength('last_name')}
-                    pattern={validators.getRegex('last_name')}
-                />
+                <div className="form-group pl-1 pr-0">
+                    <label>Apellido</label>
+                    <div className="input-group mb-3">
+                        <input
+                            type="text"
+                            name="last_name"
+                            className="form-control"
+                            placeholder="Apellido"
+                            required={validators.getRequired('last_name')}
+                            minLength={validators.getMinLength('last_name')}
+                            maxLength={validators.getMaxLength('last_name')}
+                            pattern={validators.getRegex('last_name')}
+                        />
+                        <div className="input-group-append">
+                            <span className="input-group-text" id="basic-addon2">
+                                <i className="far fa-address-book"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
             </React.Fragment>
         )
     }
@@ -285,17 +367,26 @@ export class CreateCustomer extends
     {
         return (
             <React.Fragment>
-                <label>Empresa</label>
-                <input
-                    type="text"
-                    name="company"
-                    className="form-control"
-                    placeholder="Empresa"
-                    required={validators.getRequired('company')}
-                    minLength={validators.getMinLength('company')}
-                    maxLength={validators.getMaxLength('company')}
-                    pattern={validators.getRegex('company')}
-                />
+                <div className="form-group pl-1 pr-0">
+                    <label>Empresa</label>
+                    <div className="input-group mb-3">
+                        <input
+                            type="text"
+                            name="company"
+                            className="form-control"
+                            placeholder="Empresa"
+                            required={validators.getRequired('company')}
+                            minLength={validators.getMinLength('company')}
+                            maxLength={validators.getMaxLength('company')}
+                            pattern={validators.getRegex('company')}
+                        />
+                        <div className="input-group-append">
+                            <span className="input-group-text" id="basic-addon2">
+                                <i className="fas fa-city"></i>
+                            </span>
+                        </div>
+                    </div>                        
+                </div>
             </React.Fragment>
         )
     }
@@ -317,12 +408,12 @@ export class CreateCustomer extends
                             <div className="form-row input-group mb-3">
                                 <input  type="email" 
                                         className="form-control" 
-                                        name="email"
+                                        name={`email_${index+1}`}
                                         placeholder="Email"
-                                        required={validators.getRequired('email')}
-                                        minLength={validators.getMinLength('email')}
-                                        maxLength={validators.getMaxLength('email')}
-                                        pattern={validators.getRegex('email')}
+                                        required={validators.getRequired('emails')}
+                                        minLength={validators.getMinLength('emails')}
+                                        maxLength={validators.getMaxLength('emails')}
+                                        pattern={validators.getRegex('emails')}
                                 />
                                 <div className="input-group-append">
                                     <button id="cmdRemoveEmail"
@@ -351,16 +442,27 @@ export class CreateCustomer extends
     {
         return (
             <React.Fragment>
-                <label>Edad</label>
-                <input
-                    type="number"
-                    name="age"
-                    className="form-control"
-                    placeholder="Edad"
-                    required={validators.getRequired('age')}
-                    min={validators.getMin('age')}
-                    max={validators.getMax('age')}
-                />
+                
+                <div className="form-group pl-1 pr-0">                
+                    <label>Edad</label>
+                    <div className="input-group mb-3">
+                        <div className="input-group-prepend">
+                            <span className="input-group-text">
+                                <i className="fas fa-birthday-cake"></i>
+                            </span>
+                        </div>
+                        <input
+                            type="number"
+                            name="age"
+                            className="form-control"
+                            placeholder="Edad"
+                            required={validators.getRequired('age')}
+                            min={validators.getMin('age')}
+                            max={validators.getMax('age')}
+                        />
+                    </div>
+                </div>
+                
             </React.Fragment>
         )
     }
@@ -376,16 +478,29 @@ export class CreateCustomer extends
     {
         return (
             <React.Fragment>
-                <label>Tipo Cliente</label>
-                <select 
-                    name="type"
-                    className="form-control"
-                    required={validators.getRequired('type')}
-                >
-                    <option value="">Elegir...</option>
-                    <option value="PREMIUM">PREMIUM</option>
-                    <option value="BASIC">BASICO</option>
-                </select>
+                <div className="form-group pl-1 pr-0">  
+                    <label>Tipo Cliente</label>
+                    <div className="input-group mb-3">
+                        <div className="input-group-prepend">
+                            <label className="input-group-text">
+                                <i className="fas fa-hand-peace"></i>
+                            </label>
+                        </div>
+
+
+                        <select
+                            name="type"
+                            className="custom-select"
+                            required={validators.getRequired('type')}
+                        >
+                            <option value="">Elegir...</option>
+                            <option value="PREMIUM">PREMIUM</option>
+                            <option value="BASIC">BASICO</option>
+                        </select>
+
+
+                    </div>
+                </div>
             </React.Fragment>
         )
     }

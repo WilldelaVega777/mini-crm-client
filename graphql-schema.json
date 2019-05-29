@@ -173,7 +173,7 @@
             "deprecationReason": null
           },
           {
-            "name": "email",
+            "name": "emails",
             "description": "",
             "args": [],
             "type": {
@@ -506,7 +506,7 @@
             "defaultValue": null
           },
           {
-            "name": "email",
+            "name": "emails",
             "description": "",
             "type": {
               "kind": "NON_NULL",

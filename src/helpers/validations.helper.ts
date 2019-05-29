@@ -8,7 +8,6 @@ import { EnvironmentService }       from '../services/app-services/environment-s
 //---------------------------------------------------------------------
 export interface ValidationDescriptor
 {
-    __typename: "ValidationDescriptor";
     field: string | null;
     type: string | null;
     required: boolean;

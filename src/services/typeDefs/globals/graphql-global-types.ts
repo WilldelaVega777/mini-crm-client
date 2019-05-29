@@ -18,7 +18,7 @@ export interface CustomerInput {
   company: string;
   age: number;
   type: CustomerType;
-  email: EmailInput[];
+  emails: EmailInput[];
   orders?: (OrderInput | null)[] | null;
 }
 
