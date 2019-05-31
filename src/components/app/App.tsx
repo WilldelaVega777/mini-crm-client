@@ -10,15 +10,12 @@ import ApolloClient                 from 'apollo-boost';
 //---------------------------------------------------------------------------------
 // Imports Section (App Components)
 //---------------------------------------------------------------------------------
-import { Header }           from '../Shared/header/header';
+import { Header }           from '../Shared/header';
+import { Footer }           from '../Shared/footer';
 import { Customers }        from '../../views/Customers/customers';
 import { CreateCustomer }   from '../../views/Customers/new-customer';
 import { EditCustomer }     from '../../views/Customers/edit-customer';
-//---------------------------------------------------------------------------------
-// Imports Section (Component Interfaces)
-//---------------------------------------------------------------------------------
-import { IAppProps }        from '../../interfaces/react-components/app.interfaces';
-import { IAppState }        from '../../interfaces/react-components/app.interfaces'; 
+
 
 //---------------------------------------------------------------------------------
 // Component Class
@@ -63,30 +60,67 @@ export class App extends React.Component<IAppProps, IAppState>
             <ApolloProvider client={this.apolloClient}>
                 <Router>
                     <React.Fragment>
+                        {this.getCSS()}
                         <Header createButtonCaption="Nuevo Cliente" />
-                        <div className="container">
-                            <Switch>
-                                <Route  exact 
-                                        path="/" 
-                                        render={(props) => 
-                                            <Customers {...props} limit={100} />
-                                        }
-                                />
-                                <Route  exact 
-                                        path="/customer/create"
-                                        render={(props) =>
-                                            <CreateCustomer {...props} shouldNavigateBack={true} />
-                                        }
-                                />
-                                <Route  exact 
-                                        path="/customer/edit/:id"   
-                                        component={EditCustomer}
-                                /> 
-                            </Switch>
-                        </div>
+                        <main role="main" className="flex-shrink-0">
+                            <div className="container">
+                                <Switch>
+                                    <Route  exact 
+                                            path="/" 
+                                            render={(props) => 
+                                                <Customers {...props} limit={100} />
+                                            }
+                                    />
+                                    <Route  exact 
+                                            path="/customer/create"
+                                            render={(props) =>
+                                                <CreateCustomer {...props} shouldNavigateBack={true} />
+                                            }
+                                    />
+                                    <Route  exact
+                                            path="/customer/edit/:id"
+                                            render={(props) =>
+                                                <EditCustomer {...props} shouldNavigateBack={true} />
+                                            }
+                                    /> 
+                                </Switch>
+                            </div>
+                        </main>
+                        <Footer/>
                     </React.Fragment>
                 </Router>
             </ApolloProvider>
         );
+    }
+    
+    //-------------------------------------------------------------------------
+    // Private Methods Section
+    //-------------------------------------------------------------------------
+    private getCSS(): JSX.Element
+    {
+        const css = `
+
+        `
+
+        return (
+            <React.Fragment>
+                <style>
+                    {css}
+                </style>
+            </React.Fragment>
+        )
     }    
+}
+
+//-----------------------------------------------------------------------------
+// Interfaces Section
+//-----------------------------------------------------------------------------
+export interface IAppProps 
+{
+    title: string;
+}
+//-----------------------------------------------------------------------------
+export interface IAppState
+{
+
 }

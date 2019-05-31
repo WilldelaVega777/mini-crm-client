@@ -53,6 +53,8 @@ export class Header extends React.Component<IHeaderProps, IHeaderState>
     }
 }
 //---------------------------------------------------------------------------------
+// Component Interfaces Section
+//---------------------------------------------------------------------------------
 interface IHeaderProps
 {
     createButtonCaption: string;

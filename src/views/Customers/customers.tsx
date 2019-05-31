@@ -5,11 +5,6 @@ import React                    from 'react'
 import { QueryCustomers }       from '../../services/operations/queries/customers.query'
 import { Q_GET_CUSTOMERS }      from '../../services/operations/queries/customers.query'
 import { Link }                 from 'react-router-dom';
-//---------------------------------------------------------------------------------
-// Imports Section (Component Interfaces)
-//---------------------------------------------------------------------------------
-import { ICustomersProps }      from '../../interfaces/react-components/customers.interfaces'
-import { ICustomersState }      from '../../interfaces/react-components/customers.interfaces'
 
 
 //---------------------------------------------------------------------------------
@@ -30,6 +25,14 @@ export class Customers extends React.Component<ICustomersProps, ICustomersState>
         }
     }
 
+    //-------------------------------------------------------------------------
+    // Lifecycle Eventhandler Methods Section
+    //-------------------------------------------------------------------------
+    componentWillMount()
+    {
+        
+    }
+    
     //-------------------------------------------------------------------------
     // Render Method Section
     //-------------------------------------------------------------------------
@@ -88,4 +91,17 @@ export class Customers extends React.Component<ICustomersProps, ICustomersState>
             </QueryCustomers>
         );
     }
+}
+
+//---------------------------------------------------------------------------------
+// Interface Declarations Section
+//---------------------------------------------------------------------------------
+export interface ICustomersProps
+{
+    limit: number
+}
+//---------------------------------------------------------------------------------
+export interface ICustomersState
+{
+
 }
