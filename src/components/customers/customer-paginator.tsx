@@ -23,11 +23,17 @@ interface ICustomerPaginatorProps
 export const CustomerPaginator: React.SFC<ICustomerPaginatorProps> =
 (props) =>
 {
+    function testLog()
+    {
+        console.log('works!')    
+    }
+    
     return (
         <div className="row justify-content-center mt-3">
             <nav>
                 <ul className="pagination">
                     {/* << PREV */}
+                    
                     <li className={props.currentPage === 1 ? 'page-item disabled' : 'page-item'}>
                         <a className="page-link"
                             href="#" 
@@ -72,7 +78,10 @@ export const CustomerPaginator: React.SFC<ICustomerPaginatorProps> =
                     <li className={props.currentPage === props.totalPages ? 'page-item disabled' : 'page-item'}>
                         <a className="page-link" 
                             href="#" 
-                            onClick={()=>props.onPageNext()}
+                            onClick={()=>{
+                                props.onPageNext()
+                                testLog()
+                            }}
                         >
                             <span aria-hidden="true">&raquo;</span>
                             <span className="sr-only">Next</span>
