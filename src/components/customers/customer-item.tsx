@@ -1,9 +1,9 @@
 //---------------------------------------------------------------------------------
 // Imports Section 
 //---------------------------------------------------------------------------------
-import React from 'react'
-import { Link } from 'react-router-dom';
-import { customers_customers as Customer } from '../../services/typeDefs/operations/customers'
+import React                                    from 'react'
+import { Link }                                 from 'react-router-dom';
+import { getCustomers_customers as Customer }   from '../../services/typeDefs/operations/getCustomers'
 
 //---------------------------------------------------------------------------------
 // Component Interface

@@ -71,7 +71,7 @@ export class App extends React.Component<IAppProps, IAppState>
                                     <Route  exact 
                                             path="/" 
                                             render={(props) => 
-                                                <Customers {...props} limit={100} />
+                                                <Customers {...props} limit={3} initialOffset={0} />
                                             }
                                     />
                                     <Route  exact 

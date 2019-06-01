@@ -4,20 +4,24 @@
 import { gql }                  from 'apollo-boost';
 import { Query }                from 'react-apollo'
 
-import { customers }            from '../../typeDefs/operations/customers'
-import { customersVariables }   from '../../typeDefs/operations/customers'
+import { getCustomers }            from '../../typeDefs/operations/getCustomers'
+import { getCustomersVariables }   from '../../typeDefs/operations/getCustomers'
 
 //---------------------------------------------------------------------------------
 // GQL Query: Customers
 //---------------------------------------------------------------------------------
 export const Q_GET_CUSTOMERS = gql`
-    query customers($limit: Int) {
-        customers(limit: $limit) 
-        {
-            id
-            first_name
+    query getCustomers($limit: Int!, $offset: Int!) {
+        customers(limit: $limit, offset: $offset) {
+            id,
             last_name
+            first_name
             company
+            emails {
+                email
+            }
+            age
+            type
         }
     }
 `;
@@ -25,4 +29,4 @@ export const Q_GET_CUSTOMERS = gql`
 //---------------------------------------------------------------------------------
 // Query Class: Customers
 //---------------------------------------------------------------------------------
-export class QueryCustomers extends Query<customers, customersVariables> {}
+export class QueryGetCustomers extends Query<getCustomers, getCustomersVariables> {}

@@ -203,11 +203,11 @@ export class RemoveCustomer extends
         }
     }
     //-------------------------------------------------------------------------
-    private async confirmRemove(id: string, removeCustomer: any, refetch: any)
+    private async confirmRemove(input: string, removeCustomer: any, refetch: any)
     {
         try
         {
-            await removeCustomer({ variables: id })
+            await removeCustomer({ variables: {input} })
             await refetch()
             
             Swal.fire(
