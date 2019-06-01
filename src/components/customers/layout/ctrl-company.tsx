@@ -2,15 +2,16 @@
 // Imports Section 
 //---------------------------------------------------------------------------------
 import React                from 'react'
-import { ValidationHelper } from '../../helpers/validations.helper'
+import { ValidationHelper } from '../../../helpers/validations.helper'
 
 //---------------------------------------------------------------------------------
 // Component Interface:
 //---------------------------------------------------------------------------------
 interface ICtrlCompanyProps
 {
-    validators     : ValidationHelper
-    value?         : string | undefined
+    validators      : ValidationHelper
+    value?          : string | undefined
+    readOnly        : boolean
 }
 //--------------------------------------------------------------------------------
 // Component for Company:
@@ -32,6 +33,7 @@ export const CtrlCompany: React.SFC<ICtrlCompanyProps> =
                         maxLength={props.validators.getMaxLength('company')}
                         pattern={props.validators.getRegex('company')}
                         defaultValue={props.value}
+                        readOnly={props.readOnly}
                     />
                     <div className="input-group-append">
                         <span className="input-group-text" id="basic-addon2">

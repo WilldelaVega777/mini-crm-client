@@ -2,15 +2,16 @@
 // Imports Section 
 //---------------------------------------------------------------------------------
 import React                from 'react'
-import { ValidationHelper } from '../../helpers/validations.helper'
+import { ValidationHelper } from '../../../helpers/validations.helper'
 
 //---------------------------------------------------------------------------------
 // Component Interface:
 //---------------------------------------------------------------------------------
 interface ICtrlTypeProps
 {
-    validators: ValidationHelper
-    value?    : string | undefined
+    validators      : ValidationHelper
+    value?          : string | undefined
+    readOnly        : boolean
 }
 
 //---------------------------------------------------------------------------------
@@ -34,6 +35,7 @@ export const CtrlType: React.SFC<ICtrlTypeProps> =
                         className="custom-select"
                         required={props.validators.getRequired('type')}
                         defaultValue={props.value}
+                        disabled={props.readOnly}
                     >
                         <option value="">Elegir...</option>
                         <option value="PREMIUM">PREMIUM</option>

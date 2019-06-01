@@ -1,20 +1,21 @@
 //---------------------------------------------------------------------------------
 // Imports Section (React Libs)
 //---------------------------------------------------------------------------------
-import React                        from 'react';
-import { BrowserRouter as Router }  from 'react-router-dom';
-import { Route }                    from 'react-router-dom';
-import { Switch }                   from 'react-router-dom';
-import { ApolloProvider }           from 'react-apollo';
-import ApolloClient                 from 'apollo-boost';
+import React                                from 'react';
+import { BrowserRouter as Router }          from 'react-router-dom';
+import { Route }                            from 'react-router-dom';
+import { Switch }                           from 'react-router-dom';
+import { ApolloProvider }                   from 'react-apollo';
+import ApolloClient, { InMemoryCache }      from 'apollo-boost';
 //---------------------------------------------------------------------------------
 // Imports Section (App Components)
 //---------------------------------------------------------------------------------
-import { Header }           from '../Shared/header';
-import { Footer }           from '../Shared/footer';
-import { Customers }        from '../../views/Customers/customers';
-import { CreateCustomer }   from '../../views/Customers/new-customer';
-import { EditCustomer }     from '../../views/Customers/edit-customer';
+import { Header }                           from '../Shared/header';
+import { Footer }                           from '../Shared/footer';
+import { Customers }                        from '../../views/Customers/customers';
+import { CreateCustomer }                   from '../../views/Customers/new-customer';
+import { EditCustomer }                     from '../../views/Customers/edit-customer';
+import { RemoveCustomer }                   from '../../views/Customers/remove-customer'
 
 
 //---------------------------------------------------------------------------------
@@ -39,10 +40,12 @@ export class App extends React.Component<IAppProps, IAppState>
         this.state = {
             
         }
-        
-        // Configure Apollo Client
+                   
         this.apolloClient = new ApolloClient({
             uri: "http://localhost:4000/graphql",
+            cache: new InMemoryCache({
+                addTypename: false
+            }),
             onError: ({ networkError, graphQLErrors }) =>
             {
                 console.log('graphQLErrors:', graphQLErrors);
@@ -83,6 +86,12 @@ export class App extends React.Component<IAppProps, IAppState>
                                                 <EditCustomer {...props} shouldNavigateBack={true} />
                                             }
                                     /> 
+                                    <Route exact
+                                        path="/customer/remove/:id"
+                                        render={(props) =>
+                                            <RemoveCustomer {...props} shouldNavigateBack={true} />
+                                        }
+                                    />                                     
                                 </Switch>
                             </div>
                         </main>

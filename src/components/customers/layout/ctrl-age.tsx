@@ -2,43 +2,43 @@
 // Imports Section 
 //---------------------------------------------------------------------------------
 import React                from 'react'
-import { ValidationHelper } from '../../helpers/validations.helper'
+import { ValidationHelper } from '../../../helpers/validations.helper'
 
 //---------------------------------------------------------------------------------
-// Component Interface
+// Component Interface:
 //---------------------------------------------------------------------------------
-interface ICtrlLastnameProps
+interface ICtrlAgeProps
 {
     validators      : ValidationHelper
     value?          : string | undefined
+    readOnly        : boolean
 }
-
 //---------------------------------------------------------------------------------
-// Component for Last Name:
+// Component for Age:
 //---------------------------------------------------------------------------------
-export const CtrlLastname: React.SFC<ICtrlLastnameProps> = 
+export const CtrlAge: React.SFC<ICtrlAgeProps>  = 
 (props) => {
     return (
         <React.Fragment>
             <div className="form-group pl-1 pr-0">
-                <label>Apellido</label>
+                <label>Edad</label>
                 <div className="input-group mb-3">
-                    <input
-                        type="text"
-                        name="last_name"
-                        className="form-control"
-                        placeholder="Nombre"
-                        required={props.validators.getRequired('last_name')}
-                        minLength={props.validators.getMinLength('last_name')}
-                        maxLength={props.validators.getMaxLength('last_name')}
-                        pattern={props.validators.getRegex('last_name')}
-                        defaultValue={props.value}
-                    />
-                    <div className="input-group-append">
-                        <span className="input-group-text" id="basic-addon2">
-                            <i className="far fa-address-book"></i>
+                    <div className="input-group-prepend">
+                        <span className="input-group-text">
+                            <i className="fas fa-birthday-cake"></i>
                         </span>
                     </div>
+                    <input
+                        type="number"
+                        name="age"
+                        className="form-control"
+                        placeholder="Edad"
+                        required={props.validators.getRequired('age')}
+                        min={props.validators.getMin('age')}
+                        max={props.validators.getMax('age')}
+                        defaultValue={props.value}
+                        readOnly={props.readOnly}
+                    />
                 </div>
             </div>
         </React.Fragment>

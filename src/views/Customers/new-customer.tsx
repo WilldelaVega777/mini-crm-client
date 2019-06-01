@@ -20,11 +20,12 @@ import { ValidationDescriptor }         from '../../helpers/validations.helper'
 //---------------------------------------------------------------------------------
 // Imports Section (Internal Components)
 //---------------------------------------------------------------------------------
-import { CtrlLayout }                   from '../../components/customers/ctrl-layout'
+import { CustomerLayout }                   from '../../components/customers/customer-layout'
 //---------------------------------------------------------------------------------
 // Imports Section (External Components)
 //---------------------------------------------------------------------------------
 import Swal                             from 'sweetalert2';
+
 
 //---------------------------------------------------------------------------------
 // Component Class
@@ -48,6 +49,7 @@ export class CreateCustomer extends
         // Initialize CustomerInput for State
         const customer: CustomerInput = {} as CustomerInput
         
+        // Initial Values for Private Fields
         this.validators = new ValidationHelper();
         
         // Initialize State
@@ -74,7 +76,7 @@ export class CreateCustomer extends
     }    
     
     //-------------------------------------------------------------------------
-    // Render Method Section
+    // RENDER Method
     //-------------------------------------------------------------------------
     public render(): JSX.Element
     {
@@ -90,7 +92,6 @@ export class CreateCustomer extends
             </React.Fragment>
         );
     }
-    
     
     //-------------------------------------------------------------------------
     // Private Methods Section
@@ -125,9 +126,10 @@ export class CreateCustomer extends
                 {/* PAGE TITLE  */}
                 <h2 className="text-center mb-3">Agregar Nuevo Cliente</h2>
                 
-                {/* FORM  */}
+                {/* MAIN COMPONENT LAYOUT  */}
                 <div className="row justify-content-center">
-
+                    
+                    {/* DEFINE DATA MUTATION / MUTATION UI  */}
                     <MutationCreateCustomer
                         mutation={M_CREATE_CUSTOMER}
                         onCompleted={() => this.props.history.push('/')}
@@ -135,13 +137,14 @@ export class CreateCustomer extends
                         {(createCustomer: any) =>
                         {
                             return (
+                                
                                 <form name="frmNewCustomer"
                                     className="col-md-8 m-3"
                                     onSubmit={e => this.frmNewCustomer_submit(e, createCustomer)}
                                     onChange={e => this.frmNewCustomer_change(e)}
                                 >
 
-                                    <CtrlLayout 
+                                    <CustomerLayout 
                                         emails={this.state.emails}
                                         triggerCreate={(e: SyntheticEvent) =>
                                         {

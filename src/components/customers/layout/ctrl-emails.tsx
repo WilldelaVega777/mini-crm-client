@@ -1,34 +1,21 @@
 //---------------------------------------------------------------------------------
-// Usage: 
-//---------------------------------------------------------------------------------
-/*
-    {
-        ctrl_emails(
-            this.state.emails,
-            (e) => this.cmdNewEmail_click(e, index)
-            (e, indexToRemove) => this.cmdRemoveEmail_click(e, index)
-            this.validators
-        )
-    }
-*/
-
-//---------------------------------------------------------------------------------
 // Imports Section 
 //---------------------------------------------------------------------------------
 import React                from 'react'
 import { SyntheticEvent }   from 'react'
-import { ValidationHelper } from '../../helpers/validations.helper'
-import { EmailInput }       from '../../services/typeDefs/globals/graphql-global-types'
+import { ValidationHelper } from '../../../helpers/validations.helper'
+import { EmailInput }       from '../../../services/typeDefs/globals/graphql-global-types'
 
 //---------------------------------------------------------------------------------
 // Component Interface:
 //---------------------------------------------------------------------------------
 interface ICtrlEmailsProps
 {
-    emails: EmailInput[],
-    triggerCreate: (e: SyntheticEvent) => void,
-    triggerDelete: (e: SyntheticEvent, index: number) => void,
-    validators: ValidationHelper
+    emails              : EmailInput[]
+    triggerCreate       : (e: SyntheticEvent) => void
+    triggerDelete       : (e: SyntheticEvent, index: number) => void
+    validators          : ValidationHelper
+    readOnly            : boolean
 }
 
 //-------------------------------------------------------------------------
@@ -61,7 +48,9 @@ export const CtrlEmails: React.SFC<ICtrlEmailsProps> =
                                     maxLength={props.validators.getMaxLength('emails')}
                                     pattern={props.validators.getRegex('emails')}
                                     defaultValue={email.email}
+                                    readOnly={props.readOnly}
                                 />
+                                { (!props.readOnly) &&
                                 <div className="input-group-append">
                                     <button id="cmdRemoveEmail"
                                         type="button"
@@ -71,6 +60,7 @@ export const CtrlEmails: React.SFC<ICtrlEmailsProps> =
                                         &times; Eliminar Email
                                     </button>
                                 </div>
+                                }
                             </div>                            
                             
                         </div>
@@ -78,6 +68,7 @@ export const CtrlEmails: React.SFC<ICtrlEmailsProps> =
                 )
             })}
             
+            { (!props.readOnly) &&
             <div className="form-row mt-3 mb-4">
                 <div className="col-md-12 text-center">
                     <button id="cmdNewEmail"
@@ -89,7 +80,8 @@ export const CtrlEmails: React.SFC<ICtrlEmailsProps> =
                         Agregar Email
                     </button>
                 </div>
-            </div>  
+            </div>
+            }
         </React.Fragment>
     )
 }

@@ -3,35 +3,34 @@
 //---------------------------------------------------------------------------------
 import { gql }                      from 'apollo-boost';
 import { Mutation }                 from 'react-apollo'
-import { updateCustomer }           from '../../typeDefs/operations/updateCustomer'
-import { updateCustomerVariables }  from '../../typeDefs/operations/updateCustomer'
 
+import { removeCustomer }           from '../../typeDefs/operations/removeCustomer'
+import { removeCustomerVariables }  from '../../typeDefs/operations/removeCustomer'
 
 //---------------------------------------------------------------------------------
 // GQL Mutation: Create Customer
 //---------------------------------------------------------------------------------
-export const M_UPDATE_CUSTOMER = gql`
-    mutation updateCustomer($input : CustomerInput) {
-        updateCustomer(input: $input)
-        {
-            id
-            first_name
-            last_name
-            company
-            emails {
-                email
-            }
-            age
-            type
-        }
+export const M_REMOVE_CUSTOMER = gql`
+    mutation removeCustomer($input : ID!) {
+        removeCustomer(input: $input)
     }
 `;
 
 //---------------------------------------------------------------------------------
 // Mutation Class: CreateCustomer
 //---------------------------------------------------------------------------------
-export class MutationUpdateCustomer extends
-    Mutation<updateCustomer, updateCustomerVariables> { }
+ export class MutationRemoveCustomer extends
+     Mutation<removeCustomer, removeCustomerVariables> { }
+
+
+
+
+
+
+
+
+
+
 
 
 

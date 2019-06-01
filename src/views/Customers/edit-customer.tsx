@@ -22,7 +22,7 @@ import { ValidationDescriptor }         from '../../helpers/validations.helper'
 //---------------------------------------------------------------------------------
 // Imports Section (Internal Components)
 //---------------------------------------------------------------------------------
-import { CtrlLayout }                   from '../../components/customers/ctrl-layout'
+import { CustomerLayout }                   from '../../components/customers/customer-layout'
 //---------------------------------------------------------------------------------
 // Imports Section (External Components)
 //---------------------------------------------------------------------------------
@@ -53,6 +53,7 @@ export class EditCustomer extends
         // Initialize CustomerInput for State
         const customer: CustomerInput = {} as CustomerInput
 
+        // Initial Values for Private Fields
         this.validators = new ValidationHelper()
         this.customer   = customer
         this.timeoutId  = 0
@@ -81,9 +82,8 @@ export class EditCustomer extends
         })
     }
     
-    
     //-------------------------------------------------------------------------
-    // Render Method Section
+    // RENDER Method
     //-------------------------------------------------------------------------
     public render(): JSX.Element
     {
@@ -128,6 +128,7 @@ export class EditCustomer extends
         validators: ValidationHelper
     ): JSX.Element 
     {
+        // Obtain Customer Id from Route
         const { id } = this.props.match.params
         
         return (
@@ -135,60 +136,72 @@ export class EditCustomer extends
                 
                 {/* PAGE TITLE  */}
                 <h2 className="text-center mb-3">Editar Cliente</h2>
-                <QueryGetCustomerById 
-                    query={Q_GET_CUSTOMER_BY_ID} 
-                    variables={{ id: id } }
-                    pollInterval={1000}
-                >
-                    {({ loading, error, data }) => {
-                        if (loading)
-                        {
-                            return "Cargando..."
-                        }
-                        if (error)
-                        {
-                            return `Error: ${error.message}` 
-                        }
-                        if (data && data.getCustomer)
-                        {
-                            this.setCustomer(id, data.getCustomer as CustomerInput)
-                        }
-                        return (
-                            <div className="row justify-content-center">
-                                <MutationUpdateCustomer mutation={M_UPDATE_CUSTOMER}>
-                                {
-                                    (updateCustomer) => {
-                                        return (
-                                            <form name="frmEditCustomer"
-                                                className="col-md-8 m-3"
-                                                onSubmit={e => this.frmEditCustomer_submit(e, updateCustomer)}
-                                                onChange={e => this.frmEditCustomer_change(e)}
-                                            >
+                
+                {/* MAIN COMPONENT LAYOUT  */}
+                <div className="row justify-content-center">
+                    
+                    {/* GET CUSTOMER DATA  */}
+                    <QueryGetCustomerById 
+                        query={Q_GET_CUSTOMER_BY_ID} 
+                        variables={{ id: id }}
+                    >
+                        {({ loading, error, data, refetch }) => {
+                            if (loading)
+                            {
+                                return "Put something that looks good for loading here..."
+                            }
+                            if (error)
+                            {
+                                return `Error: ${error.message}` 
+                            }
+                            if (data && data.getCustomer)
+                            {
+                                this.setCustomer(id, data.getCustomer as CustomerInput)
+                            }
+                            return (
+                                <React.Fragment>
+                                    
+                                    {/* DEFINE DATA MUTATION / MUTATION UI  */}
+                                    <MutationUpdateCustomer 
+                                        mutation={M_UPDATE_CUSTOMER}
+                                        onCompleted={() => this.props.history.push('/')}
+                                    >
+                                    {
+                                        (updateCustomer) => {
+                                            return (
+                                                
+                                                <form name="frmEditCustomer"
+                                                    className="col-md-8 m-3"
+                                                    onSubmit={e => this.frmEditCustomer_submit(e, updateCustomer, refetch)}
+                                                    onChange={e => this.frmEditCustomer_change(e)}
+                                                >
 
-                                                <CtrlLayout
-                                                    emails={this.state.emails}
-                                                    triggerCreate={(e: SyntheticEvent) =>
-                                                    {
-                                                        this.cmdNewEmail_click(e)
-                                                    }}
-                                                    triggerDelete={(e: SyntheticEvent, indexToRemove: number) =>
-                                                    {
-                                                        this.cmdRemoveEmail_click(e, indexToRemove)
-                                                    }}
-                                                    data={this.customer}
-                                                    validators={this.validators}
-                                                />
+                                                    <CustomerLayout
+                                                        emails={this.state.emails}
+                                                        triggerCreate={(e: SyntheticEvent) =>
+                                                        {
+                                                            this.cmdNewEmail_click(e)
+                                                        }}
+                                                        triggerDelete={(e: SyntheticEvent, indexToRemove: number) =>
+                                                        {
+                                                            this.cmdRemoveEmail_click(e, indexToRemove)
+                                                        }}
+                                                        data={this.customer}
+                                                        validators={this.validators}
+                                                    />
 
-                                            </form>    
-                                        )
+                                                </form>
+                                                
+                                            )
+                                        }
                                     }
-                                }
-                                </MutationUpdateCustomer>
-                            </div>
-                        )
-                    }}
-                </QueryGetCustomerById>
-
+                                    </MutationUpdateCustomer>
+                                    
+                                </React.Fragment>
+                            )
+                        }}
+                    </QueryGetCustomerById>
+                </div>
             </React.Fragment>
         )
     }
@@ -225,7 +238,6 @@ export class EditCustomer extends
         }
         return bRetVal;
     }
-    
     
     //-------------------------------------------------------------------------
     // Eventhandler Methods Section
@@ -273,7 +285,7 @@ export class EditCustomer extends
         }
     }
     //-------------------------------------------------------------------------
-    async frmEditCustomer_submit(e: SyntheticEvent, updateCustomer: any): Promise<void | undefined>
+    async frmEditCustomer_submit(e: SyntheticEvent, updateCustomer: any, refetch: any): Promise<void | undefined>
     {
         e.preventDefault()
         e.persist()
@@ -293,12 +305,8 @@ export class EditCustomer extends
             // Specific Form (Entity) Preparation
              const input = {
                 ...this.state.editCustomer,
-                emails: this.state.emails.map((email) => {
-                    delete (email as any).__typename
-                    return email
-                })
+                emails: this.state.emails
             }
-            delete (input as any).__typename
             
             try
             {
@@ -306,16 +314,18 @@ export class EditCustomer extends
                     variables: { input }
                 })
                 
+                await refetch()
+                
                 Swal.fire(
-                    'Crear Nuevo Cliente',
-                    'El Nuevo Cliente ha sido guardado con éxito.',
+                    'Actualizar Cliente',
+                    'El Cliente ha sido actualizado con éxito.',
                     'success'
                 )
             }
             catch (error)
             {
                 Swal.fire(
-                    'Crear Nuevo Cliente',
+                    'Actualizar Cliente',
                     `Error: ${error.message}`,
                     'error'
                 )
