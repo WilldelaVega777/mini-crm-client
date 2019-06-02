@@ -34,7 +34,7 @@ export class Footer extends React.Component<IFooterProps, IFooterState>
                 {this.getCSS()}
                 
                 <footer className="footer mt-auto py-3">
-                    <nav className="navbar navbar-expand-lg navbar-dark bg-primary justify-content-between d-flex mb-4">
+                    <nav className="navbar navbar-expand-lg navbar-dark bg-primary justify-content-between d-flex mb-4 custom-top-padding">
                         <div className="container">
                             <span className="text-muted">GeoSysOnline <i className="far fa-copyright"></i> 2019 - All rights reserved.</span>
                         </div>
@@ -51,6 +51,10 @@ export class Footer extends React.Component<IFooterProps, IFooterState>
     private getCSS(): JSX.Element
     {
         const css = `
+            .custom-top-padding
+            {
+                padding-top: 12px;
+            }
             .footer 
             {
                 position: fixed;

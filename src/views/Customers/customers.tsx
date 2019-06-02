@@ -29,13 +29,12 @@ export class Customers extends React.Component<ICustomersProps, ICustomersState>
         super(props)
         
         // Initialize Private Fields
-        this.customers      = [];
-        this.totalRecords   = 0;
+        this.customers      = []
+        this.totalRecords   = 0
         
         // Initialize State
         this.state = {
             offset          : 0,
-            initialRange    : 1,
             currentPage     : 1
         }
     }
@@ -80,16 +79,16 @@ export class Customers extends React.Component<ICustomersProps, ICustomersState>
         )
     }
     //-------------------------------------------------------------------------
-    private renderLayout(props: ICustomersProps, state: ICustomersState): JSX.Element 
+    private renderLayout(props: ICustomersProps, state: ICustomersState)
+    : JSX.Element 
     {
         return (
             <React.Fragment>
                 <QueryGetCustomersPaginated
                     query={Q_GET_CUSTOMERS}
                     variables={{ limit: props.limit, offset: state.offset }}
-                    pollInterval={1000}
                 >
-                    {({ loading, error, data, startPolling, stopPolling, refetch }) =>
+                    {({ loading, error, data }) =>
                     {
                         if (loading)
                         {
@@ -122,13 +121,11 @@ export class Customers extends React.Component<ICustomersProps, ICustomersState>
                                     
                                     {/* Pagination */}
                                     <CustomerPaginator 
-                                        id="pgtCustomers"
-                                        onPagePrev={()=>this.pgtCustomers_prev()}
-                                        onPageNext={()=>this.pgtCustomers_next()}
-                                        onPageNumber={(page: number)=>this.pgtCustomers_page(page)}
-                                        initialRange={state.initialRange}
-                                        currentPage={state.currentPage}
-                                        totalPages={this.getTotalPages(this.totalRecords)}
+                                        maxRangeSize={3}
+                                        pageSize={this.props.limit}
+                                        totalRecords={this.totalRecords}
+                                        currentPage={this.state.currentPage}
+                                        onPageChange={(newOffset: number, newPage: number) => this.setPageFor(newOffset, newPage)}
                                     />
                               
                                 </React.Fragment>
@@ -140,74 +137,12 @@ export class Customers extends React.Component<ICustomersProps, ICustomersState>
         )
     }
     //-------------------------------------------------------------------------
-    private getOffset(): number
+    private setPageFor(offset: number, page: number)
     {
-        return ((this.state.currentPage-1) * this.props.limit)
-    }
-    //-------------------------------------------------------------------------
-    private async setPageFor(offset: number)
-    {
-        await this.setState({
-            offset: offset
+        this.setState({
+            offset      : offset,
+            currentPage : page
         })
-    }    
-    //-------------------------------------------------------------------------
-    private getTotalPages(totalRecords: number): number
-    {
-        return (Math.ceil(totalRecords/this.props.limit))
-    }
-
-    //-------------------------------------------------------------------------
-    // Eventhandler Methods Section
-    //-------------------------------------------------------------------------
-    private async pgtCustomers_prev()
-    {
-        if ((this.state.currentPage === this.state.initialRange) && 
-            (this.state.currentPage !== 1))
-        {
-            await this.setState({
-                currentPage     : (this.state.currentPage -1),
-                initialRange    : (this.state.initialRange -1)
-            })
-            await this.setPageFor(this.getOffset())        
-        }
-        else if ((this.state.currentPage !== (this.state.initialRange)) && 
-                 (this.state.currentPage !== 1))
-        {
-            await this.setState({
-                currentPage: (this.state.currentPage - 1)
-            })
-            await this.setPageFor(this.getOffset())
-        }
-    }
-    //-------------------------------------------------------------------------
-    private async pgtCustomers_next()
-    {
-        if ((this.state.currentPage === (this.state.initialRange +2)) && 
-            (this.state.currentPage !== this.getTotalPages(this.totalRecords)))
-        {
-            await this.setState({
-                currentPage: (this.state.currentPage + 1),
-                initialRange: (this.state.initialRange + 1)
-            })
-            await this.setPageFor(this.getOffset())
-        }
-        else if ((this.state.currentPage !== (this.state.initialRange + 2)) && 
-                 (this.state.currentPage !== this.getTotalPages(this.totalRecords)))
-        {
-            await this.setState({
-                currentPage: (this.state.currentPage + 1)
-            })
-            await this.setPageFor(this.getOffset())
-        }
-    }
-    //-------------------------------------------------------------------------
-    private async pgtCustomers_page(page: number)
-    {
-        await this.setState({
-            currentPage: page
-        })
-        await this.setPageFor(this.getOffset())
     }
 }
 
@@ -223,6 +158,5 @@ export interface ICustomersProps
 export interface ICustomersState
 {
     offset          : number
-    initialRange    : number
     currentPage     : number
 }
