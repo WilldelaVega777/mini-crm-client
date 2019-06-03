@@ -35,12 +35,8 @@ export class App extends React.Component<IAppProps, IAppState>
     {
         // Call Parent Constructor
         super(props);
-                
-        // Configure State
-        this.state = {
-            
-        }
-                   
+        
+        // Configure Apollo Client
         this.apolloClient = new ApolloClient({
             uri: "http://localhost:4000/graphql",
             cache: new InMemoryCache({
@@ -124,12 +120,12 @@ export class App extends React.Component<IAppProps, IAppState>
 //-----------------------------------------------------------------------------
 // Interfaces Section
 //-----------------------------------------------------------------------------
-export interface IAppProps 
+interface IAppProps 
 {
-    title: string;
+
 }
 //-----------------------------------------------------------------------------
-export interface IAppState
+interface IAppState
 {
 
 }

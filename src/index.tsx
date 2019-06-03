@@ -11,7 +11,7 @@ import './styles/fontawesome.css'
 //---------------------------------------------------------------------------------
 // Imports Section (Components: App Component)
 //---------------------------------------------------------------------------------
-import { App }                  from './components/app/App'
+import { App }                  from './components/App/App'
 //---------------------------------------------------------------------------------
 // Imports Section (Servicer Worker)
 //---------------------------------------------------------------------------------
@@ -21,7 +21,7 @@ import * as serviceWorker       from './serviceWorker'
 //---------------------------------------------------------------------------------
 // Render App Component (Bootstrap Section)
 //---------------------------------------------------------------------------------
-ReactDOM.render(<App title="Will" />, document.getElementById('root'))
+ReactDOM.render(<App/>, document.getElementById('root'))
 
 
 //---------------------------------------------------------------------------------

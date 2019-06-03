@@ -6,7 +6,7 @@ import { getCustomers_customers as Customer }   from '../../services/typeDefs/op
 import { QueryGetCustomersPaginated }           from '../../services/operations/queries/getCustomersPaginated.query'
 import { Q_GET_CUSTOMERS }                      from '../../services/operations/queries/getCustomersPaginated.query'
 import { CustomerItem }                         from '../../components/customers/customer-item'
-import { Paginator }                            from '../../components/customers/customer-paginator'
+import { Paginator }                            from '../../components/Shared/paginator'
 
 
 //---------------------------------------------------------------------------------
