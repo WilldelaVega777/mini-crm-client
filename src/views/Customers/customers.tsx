@@ -6,7 +6,7 @@ import { getCustomers_customers as Customer }   from '../../services/typeDefs/op
 import { QueryGetCustomersPaginated }           from '../../services/operations/queries/getCustomersPaginated.query'
 import { Q_GET_CUSTOMERS }                      from '../../services/operations/queries/getCustomersPaginated.query'
 import { CustomerItem }                         from '../../components/customers/customer-item'
-import { CustomerPaginator }                    from '../../components/customers/customer-paginator'
+import { Paginator }                            from '../../components/customers/customer-paginator'
 
 
 //---------------------------------------------------------------------------------
@@ -34,8 +34,9 @@ export class Customers extends React.Component<ICustomersProps, ICustomersState>
         
         // Initialize State
         this.state = {
-            offset          : 0,
-            currentPage     : 1
+            offset              : 0,
+            initialPageInRange  : 1,
+            currentPage         : 1
         }
     }
     
@@ -43,7 +44,7 @@ export class Customers extends React.Component<ICustomersProps, ICustomersState>
     // Render Method Section
     //-------------------------------------------------------------------------
     public render(): JSX.Element
-    {
+    {   
         return (
             <React.Fragment>
 
@@ -71,11 +72,9 @@ export class Customers extends React.Component<ICustomersProps, ICustomersState>
         `
 
         return (
-            <React.Fragment>
-                <style>
-                    {css}
-                </style>
-            </React.Fragment>
+            <style>
+                {css}
+            </style>
         )
     }
     //-------------------------------------------------------------------------
@@ -83,67 +82,85 @@ export class Customers extends React.Component<ICustomersProps, ICustomersState>
     : JSX.Element 
     {
         return (
-            <React.Fragment>
-                <QueryGetCustomersPaginated
-                    query={Q_GET_CUSTOMERS}
-                    variables={{ limit: props.limit, offset: state.offset }}
-                >
-                    {({ loading, error, data }) =>
+            <QueryGetCustomersPaginated
+                query={Q_GET_CUSTOMERS}
+                variables={{ limit: props.limit, offset: state.offset }}
+                pollInterval={1000}
+            >
+                {({ loading, error, data, startPolling, stopPolling }) =>
+                {
+                    if (loading)
                     {
-                        if (loading)
-                        {
-                            return "Cargando..."
-                        }
-                        if (error)
-                        {
-                            return `Error: ${error.message}`
-                        }
-                        if (data)
-                        {
-                            // Pass Data to Private Properties
-                            this.customers    = data.getCustomers.customers
-                            this.totalRecords = data.getCustomers.metadata.totalRecords
-                            
-                            // Build UI
-                            return (
-                                <React.Fragment>
-                                    {/* PAGE TITLE */}
-                                    <h2 className="text-center mb-3">Lista de Clientes</h2>
-                                    
-                                    {/* Customer List */}
-                                    <ul className="list-group">
-                                        {
-                                            this.customers.map(customer => (
-                                                <CustomerItem customer={(customer as Customer)} key={customer.id} />
-                                            ))
+                        return "Cargando..."
+                    }
+                    if (error)
+                    {
+                        return `Error: ${error.message}`
+                    }
+                    if (data)
+                    {
+                        // Pass Data to Private Properties
+                        this.customers    = data.getCustomers.customers
+                        this.totalRecords = data.getCustomers.metadata.totalRecords
+                        
+                        // Build UI
+                        return (
+                            <React.Fragment>
+                                {/* PAGE TITLE */}
+                                <h2 className="text-center mb-3">Lista de Clientes</h2>
+                                
+                                {/* Customer List */}
+                                <ul className="list-group">
+                                    {
+                                        this.customers.map(customer => (
+                                            <CustomerItem customer={(customer as Customer)} key={customer.id} />
+                                        ))
+                                    }
+                                </ul>
+                                
+                                {/* Pagination */}
+                                <Paginator
+                                    maxRangeSize={3}
+                                    pageSize={this.props.limit}
+                                    totalRecords={this.totalRecords}
+                                    currentPage={this.state.currentPage}
+                                    initialPageInRange={this.state.initialPageInRange}
+                                    onPageChange={
+                                        (newOffset: number, newPage: number, initialRange?: number | undefined) => {
+                                            (initialRange) ? 
+                                                this.setPageFor(newOffset, newPage, initialRange ) 
+                                                : this.setPageFor(newOffset, newPage)
                                         }
-                                    </ul>
-                                    
-                                    {/* Pagination */}
-                                    <CustomerPaginator 
-                                        maxRangeSize={3}
-                                        pageSize={this.props.limit}
-                                        totalRecords={this.totalRecords}
-                                        currentPage={this.state.currentPage}
-                                        onPageChange={(newOffset: number, newPage: number) => this.setPageFor(newOffset, newPage)}
-                                    />
-                              
-                                </React.Fragment>
-                            )
-                        }
-                    }}
-                </QueryGetCustomersPaginated>
-            </React.Fragment>
+                                    }
+                                />
+                            
+                            </React.Fragment>
+                        )
+                    }
+                }}
+            </QueryGetCustomersPaginated>
         )
     }
     //-------------------------------------------------------------------------
-    private setPageFor(offset: number, page: number)
+    private setPageFor(offset: number, page: number, initialRange?: number | undefined)
     {
-        this.setState({
-            offset      : offset,
-            currentPage : page
-        })
+        if (initialRange)
+        {
+            this.setState({
+                offset              : offset,
+                currentPage         : page,
+                initialPageInRange  : initialRange
+            })  
+        }
+        else
+        {
+            this.setState({
+                offset              : offset,
+                currentPage         : page
+            })            
+        }
     }
+ 
 }
 
 //---------------------------------------------------------------------------------
@@ -151,12 +168,13 @@ export class Customers extends React.Component<ICustomersProps, ICustomersState>
 //---------------------------------------------------------------------------------
 export interface ICustomersProps
 {
-    limit           : number
-    initialOffset   : number
+    limit               : number
+    initialOffset       : number
 }
 //---------------------------------------------------------------------------------
 export interface ICustomersState
 {
-    offset          : number
-    currentPage     : number
+    offset              : number
+    currentPage         : number
+    initialPageInRange  : number
 }
