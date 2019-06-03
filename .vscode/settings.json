@@ -16,7 +16,6 @@
         "**/.eslintrc"          : true,
         "**/tslint.json"        : true,
         "**/serviceWorker.ts"   : true,
-        "**/*.test.tsx"         : true,
         "**/react-app-env.d.ts" : true,
         "**/graphql-schema.json": true
     },
