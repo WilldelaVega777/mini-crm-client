@@ -6,11 +6,11 @@ import { SyntheticEvent }               from 'react'
 //---------------------------------------------------------------------------------
 // Imports Section (Apollo Types/Interfaces)
 //---------------------------------------------------------------------------------
-import { CustomerInput }                from '../../services/typeDefs/globals/graphql-global-types'
+import { CustomerInput }                from '../../services/typeDefs/globals/graphql-global-types' 
 import { EmailInput }                   from '../../services/typeDefs/globals/graphql-global-types'
 import { CustomerType }                 from '../../services/typeDefs/globals/graphql-global-types'
-import { MutationCreateCustomer }       from '../../services/operations/mutations/create-customer.mutation'
-import { M_CREATE_CUSTOMER }            from '../../services/operations/mutations/create-customer.mutation'
+import { MutationCreateCustomer }       from '../../services/operations/mutations/customers/create-customer.mutation'
+import { M_CREATE_CUSTOMER }            from '../../services/operations/mutations/customers/create-customer.mutation'
 //---------------------------------------------------------------------------------
 // Imports Section (Helper Functions)
 //---------------------------------------------------------------------------------
@@ -20,7 +20,7 @@ import { ValidationDescriptor }         from '../../helpers/validations.helper'
 //---------------------------------------------------------------------------------
 // Imports Section (Internal Components)
 //---------------------------------------------------------------------------------
-import { CustomerLayout }                   from '../../components/customers/customer-layout'
+import { CustomerLayout }               from '../../components/customers/customer-layout' 
 //---------------------------------------------------------------------------------
 // Imports Section (External Components)
 //---------------------------------------------------------------------------------
@@ -83,6 +83,7 @@ export class CreateCustomer extends
         // Return Form
         return (
             <React.Fragment>
+                
                 {/* Apply CSS  */}
                 {this.getCSS()}
                 
@@ -304,13 +305,13 @@ export class CreateCustomer extends
 //---------------------------------------------------------------------------------
 // Interface Definitions Section
 //---------------------------------------------------------------------------------
-export interface ICreateCustomersProps
+interface ICreateCustomersProps
 {
     shouldNavigateBack: boolean,
     history: any
 }
 //---------------------------------------------------------------------------------
-export interface ICreateCustomersState
+interface ICreateCustomersState
 {
     newCustomer: CustomerInput,
     validators: ValidationDescriptor[],

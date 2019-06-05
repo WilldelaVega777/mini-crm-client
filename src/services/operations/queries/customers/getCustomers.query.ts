@@ -1,22 +1,21 @@
 //---------------------------------------------------------------------------------
 // Imports Section (React/Apollo Libs)
 //---------------------------------------------------------------------------------
-import { gql }                      from 'apollo-boost';
-import { Mutation }                 from 'react-apollo'
-import { updateCustomer }           from '../../typeDefs/operations/updateCustomer'
-import { updateCustomerVariables }  from '../../typeDefs/operations/updateCustomer'
+import { gql }                  from 'apollo-boost';
+import { Query }                from 'react-apollo'
 
+import { getCustomers }            from '../../../typeDefs/operations/getCustomers'
+import { getCustomersVariables }   from '../../../typeDefs/operations/getCustomers'
 
 //---------------------------------------------------------------------------------
-// GQL Mutation: Create Customer
+// GQL Query: Customers
 //---------------------------------------------------------------------------------
-export const M_UPDATE_CUSTOMER = gql`
-    mutation updateCustomer($input : CustomerInput) {
-        updateCustomer(input: $input)
-        {
-            id
-            first_name
+export const Q_GET_CUSTOMERS = gql`
+    query getCustomers($limit: Int!, $offset: Int!) {
+        customers(limit: $limit, offset: $offset) {
+            id,
             last_name
+            first_name
             company
             emails {
                 email
@@ -28,11 +27,6 @@ export const M_UPDATE_CUSTOMER = gql`
 `;
 
 //---------------------------------------------------------------------------------
-// Mutation Class: CreateCustomer
+// Query Class: Customers
 //---------------------------------------------------------------------------------
-export class MutationUpdateCustomer extends
-    Mutation<updateCustomer, updateCustomerVariables> { }
-
-
-
-
+export class QueryGetCustomers extends Query<getCustomers, getCustomersVariables> {}

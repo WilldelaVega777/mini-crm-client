@@ -1,21 +1,27 @@
 //---------------------------------------------------------------------------------
 // Imports Section (React Libs)
 //---------------------------------------------------------------------------------
-import React                                from 'react';
-import { BrowserRouter as Router }          from 'react-router-dom';
-import { Route }                            from 'react-router-dom';
-import { Switch }                           from 'react-router-dom';
-import { ApolloProvider }                   from 'react-apollo';
-import ApolloClient, { InMemoryCache }      from 'apollo-boost';
+import React                                from 'react'
+import ApolloClient                         from 'apollo-boost' 
+import { BrowserRouter as Router }          from 'react-router-dom'
+import { Route }                            from 'react-router-dom'
+import { Switch }                           from 'react-router-dom'
+import { ApolloProvider }                   from 'react-apollo'
+import { InMemoryCache }                    from 'apollo-boost';
 //---------------------------------------------------------------------------------
 // Imports Section (App Components)
 //---------------------------------------------------------------------------------
-import { Header }                           from '../Shared/header';
-import { Footer }                           from '../Shared/footer';
-import { Customers }                        from '../../views/Customers/customers';
-import { CreateCustomer }                   from '../../views/Customers/new-customer';
-import { EditCustomer }                     from '../../views/Customers/edit-customer';
+import { Header }                           from '../Shared/header'
+import { Footer }                           from '../Shared/footer'
+import { Customers }                        from '../../views/Customers/_customers'
+import { CreateCustomer }                   from '../../views/Customers/create-customer'
+import { EditCustomer }                     from '../../views/Customers/edit-customer'
 import { RemoveCustomer }                   from '../../views/Customers/remove-customer'
+
+import { Products }                         from '../../views/Products/_products'
+import { CreateProduct }                    from '../../views/Products/create-product'
+import { EditProduct }                      from '../../views/Products/edit-product'
+import { RemoveProduct }                    from '../../views/Products/remove-product'
 
 
 //---------------------------------------------------------------------------------
@@ -26,7 +32,7 @@ export class App extends React.Component<IAppProps, IAppState>
     //-------------------------------------------------------------------------
     // Private Fields Section
     //-------------------------------------------------------------------------
-    private apolloClient        : ApolloClient<{}>;
+    private apolloClient        : ApolloClient<{}>
     
     //-------------------------------------------------------------------------
     // Constructor Method Section
@@ -64,12 +70,20 @@ export class App extends React.Component<IAppProps, IAppState>
                         <main role="main" className="flex-shrink-0">
                             <div className="container">
                                 <Switch>
+                                    {/* Customers */}
                                     <Route  exact 
                                             path="/" 
                                             render={(props) => 
                                                 <Customers {...props} limit={3} initialOffset={0} />
                                             }
                                     />
+                                    
+                                    <Route exact
+                                        path="/customers"
+                                        render={(props) =>
+                                            <Customers {...props} limit={3} initialOffset={0} />
+                                        }
+                                    />                                    
                                     <Route  exact 
                                             path="/customer/create"
                                             render={(props) =>
@@ -83,11 +97,37 @@ export class App extends React.Component<IAppProps, IAppState>
                                             }
                                     /> 
                                     <Route exact
-                                        path="/customer/remove/:id"
+                                            path="/customer/remove/:id"
+                                            render={(props) =>
+                                                <RemoveCustomer {...props} shouldNavigateBack={true} />
+                                            }
+                                    />     
+                                    
+                                    {/* Products */}
+                                    <Route exact
+                                        path="/products"
                                         render={(props) =>
-                                            <RemoveCustomer {...props} shouldNavigateBack={true} />
+                                            <Products {...props} limit={3} initialOffset={0} />
                                         }
-                                    />                                     
+                                    />
+                                    <Route exact
+                                        path="/product/create"
+                                        render={(props) =>
+                                            <CreateProduct {...props} shouldNavigateBack={true} />
+                                        }
+                                    />
+                                    <Route exact
+                                        path="/product/edit/:id"
+                                        render={(props) =>
+                                            <EditProduct {...props} shouldNavigateBack={true} />
+                                        }
+                                    />    
+                                    <Route exact
+                                        path="/product/remove/:id"
+                                        render={(props) =>
+                                            <RemoveProduct {...props} shouldNavigateBack={true} />
+                                        }
+                                    />                                                                                                                                 
                                 </Switch>
                             </div>
                         </main>

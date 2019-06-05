@@ -4,8 +4,8 @@
 import { gql }                  from 'apollo-boost';
 import { Query }                from 'react-apollo'
 
-import { getCustomerById }            from '../../typeDefs/operations/getCustomerById'
-import { getCustomerByIdVariables }   from '../../typeDefs/operations/getCustomerById'
+import { getCustomerById }            from '../../../typeDefs/operations/getCustomerById'
+import { getCustomerByIdVariables }   from '../../../typeDefs/operations/getCustomerById'
 
 //---------------------------------------------------------------------------------
 // GQL Query: Customers

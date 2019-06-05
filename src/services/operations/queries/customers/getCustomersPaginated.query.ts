@@ -4,8 +4,8 @@
 import { gql }                              from 'apollo-boost';
 import { Query }                            from 'react-apollo'
 
-import { getCustomersPaginated }            from '../../typeDefs/operations/getCustomersPaginated'
-import { getCustomersPaginatedVariables }   from '../../typeDefs/operations/getCustomersPaginated'
+import { getCustomersPaginated }            from '../../../typeDefs/operations/getCustomersPaginated'
+import { getCustomersPaginatedVariables }   from '../../../typeDefs/operations/getCustomersPaginated'
 
 //---------------------------------------------------------------------------------
 // GQL Query: Customers

@@ -31,6 +31,13 @@ export interface OrderInput {
   price: number;
 }
 
+export interface ProductInput {
+  id?: string | null;
+  name: string;
+  price: number;
+  stock: number;
+}
+
 //==============================================================
 // END Enums and Input Objects
 //==============================================================

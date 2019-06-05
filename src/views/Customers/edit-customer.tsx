@@ -6,13 +6,13 @@ import { SyntheticEvent }               from 'react'
 //---------------------------------------------------------------------------------
 // Imports Section (Apollo & Interfaces)
 //---------------------------------------------------------------------------------
-import { QueryGetCustomerById }         from '../../services/operations/queries/getCustomerById.query'
-import { Q_GET_CUSTOMER_BY_ID }         from '../../services/operations/queries/getCustomerById.query'
+import { QueryGetCustomerById }         from '../../services/operations/queries/customers/getCustomerById.query'
+import { Q_GET_CUSTOMER_BY_ID }         from '../../services/operations/queries/customers/getCustomerById.query'
 import { CustomerInput }                from '../../services/typeDefs/globals/graphql-global-types'
 import { EmailInput}                    from '../../services/typeDefs/globals/graphql-global-types'
 import { CustomerType }                 from '../../services/typeDefs/globals/graphql-global-types'
-import { MutationUpdateCustomer }       from '../../services/operations/mutations/edit-customer.mutation'
-import { M_UPDATE_CUSTOMER }            from '../../services/operations/mutations/edit-customer.mutation'
+import { MutationUpdateCustomer }       from '../../services/operations/mutations/customers/edit-customer.mutation'
+import { M_UPDATE_CUSTOMER }            from '../../services/operations/mutations/customers/edit-customer.mutation'
 //---------------------------------------------------------------------------------
 // Imports Section (Helper Functions)
 //---------------------------------------------------------------------------------
