@@ -28,6 +28,8 @@ interface ICustomerLayoutProps
     data?           : CustomerInput | undefined
     validators      : ValidationHelper
     readOnly?       : boolean | undefined
+    maxEmails?      : number  | undefined
+    hideLabels?     : boolean | undefined
 }
 //-------------------------------------------------------------------------
 // Component for Emails:
@@ -42,7 +44,7 @@ export const CustomerLayout: React.SFC<ICustomerLayoutProps> =
     {
         strAge = customer.age.toString()
     }
-    
+    const customer2 : CustomerInput | undefined = customer
     return (
         <React.Fragment>
             <div className="form-row">
@@ -94,6 +96,7 @@ export const CustomerLayout: React.SFC<ICustomerLayoutProps> =
                 
                 validators={props.validators}
                 readOnly={ (props.readOnly) ? true : false }
+                maxEmails={ (props.maxEmails) ? props.maxEmails : 0 }
             />
 
             <div className="form-row">

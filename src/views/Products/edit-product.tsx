@@ -161,7 +161,7 @@ export class EditProduct extends
                                     {/* DEFINE DATA MUTATION / MUTATION UI  */}
                                     <MutationUpdateProduct
                                         mutation={M_UPDATE_PRODUCT}
-                                        onCompleted={() => this.props.history.push('/')}
+                                        onCompleted={() => this.props.history.push('/products')}
                                     >
                                         {
                                             (updateProduct) =>

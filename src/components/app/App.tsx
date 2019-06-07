@@ -23,6 +23,8 @@ import { CreateProduct }                    from '../../views/Products/create-pr
 import { EditProduct }                      from '../../views/Products/edit-product'
 import { RemoveProduct }                    from '../../views/Products/remove-product'
 
+import { CreateOrder }                      from '../../views/Orders/create-order'
+
 
 //---------------------------------------------------------------------------------
 // Component Class
@@ -127,7 +129,16 @@ export class App extends React.Component<IAppProps, IAppState>
                                         render={(props) =>
                                             <RemoveProduct {...props} shouldNavigateBack={true} />
                                         }
-                                    />                                                                                                                                 
+                                    />
+                                    
+                                    <Route exact
+                                        path="/order/create/:id"
+                                        render={(props) =>
+                                            <CreateOrder {...props} shouldNavigateBack={true} />
+                                        }
+                                    />
+                                    
+                                                                                                                                                                   
                                 </Switch>
                             </div>
                         </main>

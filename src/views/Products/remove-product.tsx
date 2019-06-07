@@ -143,7 +143,7 @@ export class RemoveProduct extends
 
                                 <MutationRemoveProduct
                                     mutation={M_REMOVE_PRODUCT}
-                                    onCompleted={() => this.props.history.push('/')}
+                                    onCompleted={() => this.props.history.push('/products')}
                                 >
                                     {
                                         removeProduct =>
@@ -197,7 +197,7 @@ export class RemoveProduct extends
         try
         {
             await removeProduct({ variables: { input } })
-            await refetch()
+            //await refetch()
 
             Swal.fire(
                 'Eliminar Producto',

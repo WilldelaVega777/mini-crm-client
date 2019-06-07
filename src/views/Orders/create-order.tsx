@@ -1,91 +1,91 @@
 //---------------------------------------------------------------------------------
 // Imports Section (React Libs)
 //---------------------------------------------------------------------------------
-import React                        from 'react'
-import { SyntheticEvent }           from 'react'
+import React                            from 'react' 
+//import { SyntheticEvent }               from 'react'
 //---------------------------------------------------------------------------------
-// Imports Section (Apollo Types/Interfaces)
+// Imports Section (Apollo & Interfaces)
 //---------------------------------------------------------------------------------
-import { ProductInput }             from '../../services/typeDefs/globals/graphql-global-types'
-import { MutationCreateProduct }    from '../../services/operations/mutations/products/create-product.mutation'
-import { M_CREATE_PRODUCT }         from '../../services/operations/mutations/products/create-product.mutation'
+import { QueryGetCustomerById }         from '../../services/operations/queries/customers/getCustomerById.query'
+import { Q_GET_CUSTOMER_BY_ID }         from '../../services/operations/queries/customers/getCustomerById.query'
+import { CustomerInput }                from '../../services/typeDefs/globals/graphql-global-types'
 //---------------------------------------------------------------------------------
 // Imports Section (Helper Functions)
 //---------------------------------------------------------------------------------
-import { ValidationHelper } from '../../helpers/validations.helper'
-import { ValidationDescriptor } from '../../helpers/validations.helper'
+import { ValidationHelper }             from '../../helpers/validations.helper' 
+import { ValidationDescriptor }         from '../../helpers/validations.helper'
 //---------------------------------------------------------------------------------
 // Imports Section (Internal Components)
 //---------------------------------------------------------------------------------
-import { ProductLayout } from '../../components/products/product-layout'
+import { OrderLayout }                  from '../../components/orders/order-layout'
 //---------------------------------------------------------------------------------
 // Imports Section (External Components)
 //---------------------------------------------------------------------------------
-import Swal from 'sweetalert2';
+//import Swal                             from 'sweetalert2';
 
 
 //---------------------------------------------------------------------------------
 // Component Class
 //---------------------------------------------------------------------------------
-export class CreateProduct extends
-    React.Component<ICreateProductProps, ICreateProductState>
+export class CreateOrder extends 
+    React.Component<ICreateOrderProps, ICreateOrderState>
 {
     //-------------------------------------------------------------------------
     // Private Fields Section
     //-------------------------------------------------------------------------
-    private validators: ValidationHelper;
-
+    private validators          : ValidationHelper
+    private customer            : CustomerInput
+    private timeoutId           : number
+    
     //-------------------------------------------------------------------------
     // Constructor Method Section
     //-------------------------------------------------------------------------
-    constructor(props: ICreateProductProps)
+    constructor(props: ICreateOrderProps)
     {
         // Calls Super
         super(props)
-
-        // Initialize ProductInput for State
-        const product: ProductInput = {} as ProductInput
+        
+        // Initialize CustomerInput for State
+        const customer: CustomerInput = {} as CustomerInput
 
         // Initial Values for Private Fields
-        this.validators = new ValidationHelper();
-
+        this.validators = new ValidationHelper()
+        this.customer   = customer
+        this.timeoutId  = 0
+        
         // Initialize State
         this.state = {
-            newProduct: {
-                ...product,
-                price       : 0.0,
-                stock       : 0
-            },
-            validators: []
+            viewCustomer    : customer,
+            validators      : []
         }
     }
 
+    
     //-------------------------------------------------------------------------
     // Lifecycle Eventhandler Methods
     //-------------------------------------------------------------------------
     async componentWillMount()
     {
-        await this.validators.setValidators('Product')
+        await this.validators.setValidators('Customer')
         this.setState({
             validators: this.validators.getValidators()
         })
     }
-
+    
     //-------------------------------------------------------------------------
     // RENDER Method
     //-------------------------------------------------------------------------
     public render(): JSX.Element
     {
-        // Return Form
         return (
             <React.Fragment>
                 
                 {/* Apply CSS  */}
-                {this.getCSS()}
-
+                { this.getCSS() }
+                
                 {/* Create Form  */}
                 {this.renderForm(this.props, this.state, this.validators)}
-
+                
             </React.Fragment>
         );
     }
@@ -113,125 +113,97 @@ export class CreateProduct extends
     }
     //-------------------------------------------------------------------------
     private renderForm(
-        props: ICreateProductProps,
-        state: ICreateProductState,
+        props: ICreateOrderProps,
+        state: ICreateOrderState,
         validators: ValidationHelper
     ): JSX.Element 
     {
+        // Obtain Customer Id from Route
+        const { id } = this.props.match.params
         return (
             <React.Fragment>
+                
                 {/* PAGE TITLE  */}
-                <h2 className="text-center mb-3">Agregar Nuevo Producto</h2>
-
+                <h2 className="text-center mb-3">Crear Orden de Compra</h2>
+                
                 {/* MAIN COMPONENT LAYOUT  */}
                 <div className="row justify-content-center">
-
-                    {/* DEFINE DATA MUTATION / MUTATION UI  */}
-                    <MutationCreateProduct
-                        mutation={M_CREATE_PRODUCT}
-                        onCompleted={() => this.props.history.push('/products')}
+                    
+                    {/* GET CUSTOMER DATA  */}
+                    <QueryGetCustomerById 
+                        query={Q_GET_CUSTOMER_BY_ID} 
+                        variables={{ id: id }}
                     >
-                        {(createProduct: any) =>
-                        {
+                        {({ loading, error, data, refetch }) => {
+                            if (loading)
+                            {
+                                return "Put something that looks good for loading here..."
+                            }
+                            if (error)
+                            {
+                                return `Error: ${error.message}` 
+                            }
+                            if (data && data.getCustomer)
+                            {
+                                this.setCustomer(id, data.getCustomer as CustomerInput)
+                            }
                             return (
-
-                                <form name="frmNewProduct"
-                                    className="col-md-8 m-3"
-                                    onSubmit={e => this.frmNewProduct_submit(e, createProduct)}
-                                    onChange={e => this.frmNewProduct_change(e)}
-                                >
-
-                                    <ProductLayout
+                                <React.Fragment>
+       
+                                    <OrderLayout
+                                        data={this.customer}
                                         validators={this.validators}
+                                        maxEmails={1}
                                     />
-
-                                </form>
+                                    
+                                </React.Fragment>
                             )
                         }}
-                    </MutationCreateProduct>
+                    </QueryGetCustomerById>
                 </div>
-
-
             </React.Fragment>
-
         )
     }
-
+    
+    //-------------------------------------------------------------------------
+    // Private Methods Section (Utility)
+    //-------------------------------------------------------------------------
+    private setCustomer(id: string, ci: CustomerInput)
+    {
+        if (!this.customer.id)
+        {
+            this.customer = ci
+            this.customer.id = id
+            this.timeoutId = window.setTimeout(() => {
+                this.setState({
+                    viewCustomer: {
+                        ...this.customer
+                    }
+                })
+                window.clearTimeout(this.timeoutId)
+            },0)            
+        }
+    }
     
     //-------------------------------------------------------------------------
     // Eventhandler Methods Section
     //-------------------------------------------------------------------------
-    frmNewProduct_change(e: SyntheticEvent)
-    {
-        let { name, value } = (e.target as HTMLFormElement)
+ 
 
-        // Debug:
-        //const message = `Campo: ${name}, Valor: ${value}`
-        //console.log(message);
-
-        value = ((name === "price") ? Number(value) : value)
-        value = ((name === "stock") ? Number(value) : value)
-        
-        this.setState({
-            newProduct: {
-                ...this.state.newProduct,
-                [name]: value
-            }
-        })
-
-    }
-    //-------------------------------------------------------------------------
-    async frmNewProduct_submit(e: SyntheticEvent, createProduct: any): Promise<void | undefined>
-    {
-        e.preventDefault()
-        e.persist()
-
-        // Validation Analysis        
-        if ((e.target as HTMLFormElement).checkValidity())
-        {
-            // Specific Form (Entity) Preparation
-            const input = {
-                ...this.state.newProduct
-            }
-
-            try
-            {
-                await createProduct({
-                    variables: { input }
-                })
-
-                Swal.fire(
-                    'Crear Nuevo Producto',
-                    'El Nuevo Producto ha sido guardado con éxito.',
-                    'success'
-                )
-            }
-            catch (error)
-            {
-                Swal.fire(
-                    'Crear Nuevo Producto',
-                    `Error: ${error.message}`,
-                    'error'
-                )
-                console.error(error)
-            }
-
-            await (e.target as HTMLFormElement).reset()
-        }
-    }
 }
 
 //---------------------------------------------------------------------------------
 // Interface Definitions Section
 //---------------------------------------------------------------------------------
-interface ICreateProductProps
+export interface ICreateOrderProps
 {
     shouldNavigateBack: boolean,
-    history: any
+    history: any,
+    match: any
 }
 //---------------------------------------------------------------------------------
-interface ICreateProductState
+export interface ICreateOrderState
 {
-    newProduct: ProductInput,
-    validators: ValidationDescriptor[]
+    viewCustomer: CustomerInput
+    validators  : ValidationDescriptor[]
 }

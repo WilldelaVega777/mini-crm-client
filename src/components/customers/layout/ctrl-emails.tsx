@@ -16,6 +16,7 @@ interface ICtrlEmailsProps
     triggerDelete       : (e: SyntheticEvent, index: number) => void
     validators          : ValidationHelper
     readOnly            : boolean
+    maxEmails           : number
 }
 
 //-------------------------------------------------------------------------
@@ -23,9 +24,15 @@ interface ICtrlEmailsProps
 //-------------------------------------------------------------------------
 export const CtrlEmails: React.SFC<ICtrlEmailsProps> = 
 (props) => {
+    const totalEmails = ((props.emails.length > props.maxEmails) ? 
+        ((props.maxEmails === 0) ? 
+        props.emails.length : props.maxEmails): props.emails.length)
+        
+    const finalEmails: EmailInput[] = props.emails.slice(0, totalEmails)
+    
     return (
         <React.Fragment>
-            {props.emails.map((email: EmailInput, index: number) =>
+            {finalEmails.map((email: EmailInput, index: number) =>
             {
                 return (
                     <div key={index} className="form-group col-md-12 pl-1 pr-0">
