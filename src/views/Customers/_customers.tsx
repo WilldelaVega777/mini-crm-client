@@ -8,6 +8,8 @@ import { Q_GET_CUSTOMERS }                      from '../../services/operations/
 import { CustomerItem }                         from '../../components/customers/customer-item'
 import { Paginator }                            from '../../components/Shared/paginator'
 import { Link }                                 from 'react-router-dom'
+import { Loading }                              from '../../components/Shared/loading'
+import Swal                                     from 'sweetalert2'
 
 //---------------------------------------------------------------------------------
 // Component Class
@@ -91,11 +93,19 @@ export class Customers extends React.Component<ICustomersProps, ICustomersState>
                     {
                         if (loading)
                         {
-                            return "Cargando..."
+                            return (
+                                <Loading/>
+                            )
                         }
                         if (error)
                         {
-                            return `Error: ${error.message}`
+                            //${error.message}`
+                            Swal.fire(
+                                'Error', 
+                                `Cargando Datos: Parameters empepitation aborting..`,
+                                'error'
+                            )
+                            return ''
                         }
                         if (data)
                         {

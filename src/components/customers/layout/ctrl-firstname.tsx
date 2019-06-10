@@ -12,6 +12,7 @@ interface ICtrlFirstnameProps
     validators  : ValidationHelper
     value?      : string | undefined
     readOnly    : boolean
+    hideLabels? : boolean | undefined
 }
 
 //---------------------------------------------------------------------------------
@@ -22,7 +23,11 @@ export const CtrlFirstname: React.SFC<ICtrlFirstnameProps> =
     return (
         <React.Fragment>
             <div className="form-group pl-1 pr-0">
-                <label>Nombre</label>
+                {
+                    (props.hideLabels)
+                    ? ''
+                    : <label>Nombre</label>
+                }
                 <div className="input-group mb-3">
                     <input
                         type="text"

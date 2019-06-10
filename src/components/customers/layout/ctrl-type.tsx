@@ -12,6 +12,7 @@ interface ICtrlTypeProps
     validators      : ValidationHelper
     value?          : string | undefined
     readOnly        : boolean
+    hideLabels?     : boolean | undefined
 }
 
 //---------------------------------------------------------------------------------
@@ -22,7 +23,11 @@ export const CtrlType: React.SFC<ICtrlTypeProps> =
     return (
         <React.Fragment>
             <div className="form-group pl-1 pr-0">
-                <label>Tipo Cliente</label>
+                {
+                    (props.hideLabels)
+                    ? ''
+                    : <label>Tipo Cliente</label>
+                }
                 <div className="input-group mb-3">
                     <div className="input-group-prepend">
                         <label className="input-group-text">

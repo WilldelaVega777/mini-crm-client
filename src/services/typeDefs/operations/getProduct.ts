@@ -11,6 +11,7 @@ export interface getProduct_getProduct {
   id: string;
   name: string;
   price: number;
+  reorder: number;
   stock: number;
 }
 

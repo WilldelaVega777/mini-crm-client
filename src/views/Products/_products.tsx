@@ -8,6 +8,8 @@ import { Q_GET_PRODUCTS }                                       from '../../serv
 import { ProductItem }                                          from '../../components/products/product-item'
 import { Paginator }                                            from '../../components/Shared/paginator'
 import { Link }                                                 from 'react-router-dom'
+import { Loading }                                              from '../../components/Shared/loading'
+import Swal                                                     from 'sweetalert2'
 
 //---------------------------------------------------------------------------------
 // Component Class
@@ -91,11 +93,18 @@ export class Products extends React.Component<IProductsProps, IProductsState>
                     {
                         if (loading)
                         {
-                            return "Cargando..."
+                            return (
+                                <Loading/>
+                            )
                         }
                         if (error)
                         {
-                            return `Error: ${error.message}`
+                            Swal.fire(
+                                'Error', 
+                                `Cargando Datos: ${error.message}`, 
+                                'error'
+                            )
+                            return ''
                         }
                         if (data)
                         {

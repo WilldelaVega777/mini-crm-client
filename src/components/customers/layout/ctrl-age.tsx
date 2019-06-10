@@ -12,6 +12,7 @@ interface ICtrlAgeProps
     validators      : ValidationHelper
     value?          : string | undefined
     readOnly        : boolean
+    hideLabels?     : boolean | undefined
 }
 //---------------------------------------------------------------------------------
 // Component for Age:
@@ -21,7 +22,11 @@ export const CtrlAge: React.SFC<ICtrlAgeProps>  =
     return (
         <React.Fragment>
             <div className="form-group pl-1 pr-0">
-                <label>Edad</label>
+                {
+                    (props.hideLabels)
+                    ? ''
+                    : <label>Edad</label>
+                }
                 <div className="input-group mb-3">
                     <div className="input-group-prepend">
                         <span className="input-group-text">

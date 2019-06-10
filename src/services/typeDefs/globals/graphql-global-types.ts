@@ -11,6 +11,13 @@ export enum CustomerType {
   PREMIUM = "PREMIUM",
 }
 
+export enum OrderStatus {
+  CANCELLED = "CANCELLED",
+  DISPATCHED = "DISPATCHED",
+  PAID = "PAID",
+  REQUESTED = "REQUESTED",
+}
+
 export interface CustomerInput {
   id?: string | null;
   first_name: string;
@@ -27,8 +34,15 @@ export interface EmailInput {
 }
 
 export interface OrderInput {
-  product: string;
-  price: number;
+  id?: string | null;
+  date: any;
+  status: OrderStatus;
+  items: OrderItemInput[];
+}
+
+export interface OrderItemInput {
+  quantity: number;
+  product: ProductInput;
 }
 
 export interface ProductInput {
@@ -36,6 +50,7 @@ export interface ProductInput {
   name: string;
   price: number;
   stock: number;
+  reorder: number;
 }
 
 //==============================================================

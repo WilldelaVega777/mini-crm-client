@@ -44,7 +44,6 @@ export const CustomerLayout: React.SFC<ICustomerLayoutProps> =
     {
         strAge = customer.age.toString()
     }
-    const customer2 : CustomerInput | undefined = customer
     return (
         <React.Fragment>
             <div className="form-row">
@@ -54,6 +53,7 @@ export const CustomerLayout: React.SFC<ICustomerLayoutProps> =
                             (customer) ? (customer as CustomerInput).first_name : undefined
                         }
                         readOnly={ (props.readOnly) ? true : false }
+                        hideLabels={props.hideLabels}
                     />
                 </div>
                 <div className="form-group col-md-6">
@@ -62,6 +62,7 @@ export const CustomerLayout: React.SFC<ICustomerLayoutProps> =
                             (customer) ? (customer as CustomerInput).last_name : undefined
                         }
                         readOnly={ (props.readOnly) ? true : false }
+                        hideLabels={props.hideLabels}
                     />
                 </div>
             </div>
@@ -72,6 +73,7 @@ export const CustomerLayout: React.SFC<ICustomerLayoutProps> =
                             (customer) ? (customer as CustomerInput).company : undefined
                         }
                         readOnly={ (props.readOnly) ? true : false }
+                        hideLabels={props.hideLabels}
                     />
                 </div>
             </div>
@@ -97,23 +99,26 @@ export const CustomerLayout: React.SFC<ICustomerLayoutProps> =
                 validators={props.validators}
                 readOnly={ (props.readOnly) ? true : false }
                 maxEmails={ (props.maxEmails) ? props.maxEmails : 0 }
+                hideLabels={props.hideLabels}
             />
 
             <div className="form-row">
-                <div className="form-group col-md-6">
+                <div className="form-group col-md-5">
                     <CtrlAge validators={props.validators} 
                         value={
                             (customer) ? strAge : undefined
                         }
                         readOnly={ (props.readOnly) ? true : false }
+                        hideLabels={props.hideLabels}
                     />
                 </div>
-                <div className="form-group col-md-6">
+                <div className="form-group col-md-7">
                     <CtrlType validators={props.validators} 
                         value={
                             (customer) ? (customer as CustomerInput).type : undefined
                         }
-                        readOnly={ (props.readOnly) ? true : false }                
+                        readOnly={ (props.readOnly) ? true : false }
+                        hideLabels={props.hideLabels}
                     />
                 </div>
             </div>

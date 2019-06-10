@@ -12,6 +12,7 @@ interface ICtrlCompanyProps
     validators      : ValidationHelper
     value?          : string | undefined
     readOnly        : boolean
+    hideLabels?     : boolean | undefined
 }
 //--------------------------------------------------------------------------------
 // Component for Company:
@@ -21,7 +22,11 @@ export const CtrlCompany: React.SFC<ICtrlCompanyProps> =
     return (
         <React.Fragment>
             <div className="form-group pl-1 pr-0">
-                <label>Empresa</label>
+                {
+                    (props.hideLabels)
+                    ? ''
+                    : <label>Empresa</label>
+                }
                 <div className="input-group mb-3">
                     <input
                         type="text"

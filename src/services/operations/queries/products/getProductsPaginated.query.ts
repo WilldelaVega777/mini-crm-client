@@ -15,9 +15,10 @@ export const Q_GET_PRODUCTS = gql`
         getProducts(limit: $limit, offset: $offset) {
             products {
                 id,
-                    name,
-                    price,
-                    stock
+                name,
+                price,
+                reorder,
+                stock
             }
             
             metadata {

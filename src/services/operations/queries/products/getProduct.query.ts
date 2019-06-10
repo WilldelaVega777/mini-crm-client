@@ -17,6 +17,7 @@ export const Q_GET_PRODUCT = gql`
             id
             name
             price
+            reorder
             stock
         }
     }

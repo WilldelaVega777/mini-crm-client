@@ -9,6 +9,7 @@ import { ProductInput }        from '../../services/typeDefs/globals/graphql-glo
 //---------------------------------------------------------------------------------
 import { CtrlName }             from './layout/ctrl-name'
 import { CtrlPrice }            from './layout/ctrl-price'
+import { CtrlReorder }          from './layout/ctrl-reorder'
 import { CtrlStock }            from './layout/ctrl-stock'
 import { CtrlSubmit }           from '../Shared/ctrl-submit'
 
@@ -29,19 +30,21 @@ export const ProductLayout: React.SFC<IProductLayoutProps> =
 {
 
     const product = props.data
-    let strPrice: string = '';
-    let strStock: string = '';
+    let strPrice    : string = ''
+    let strReorder  : string = ''
+    let strStock    : string = ''
 
     if (product)
     {
-        strPrice = product.price.toString()
-        strStock = product.stock.toString()
+        strPrice    = product.price.toString()
+        strReorder  = product.reorder.toString()
+        strStock    = product.stock.toString()
     }
 
     return (
         <React.Fragment>
             <div className="form-row">
-                <div className="form-group col-md-12">
+                <div className="form-group col-md-6">
                     <CtrlName validators={props.validators}
                         value={
                             (product) ? (product as ProductInput).name : undefined
@@ -49,12 +52,20 @@ export const ProductLayout: React.SFC<IProductLayoutProps> =
                         readOnly={(props.readOnly) ? true : false}
                     />
                 </div>
-            </div>
-            <div className="form-row">
                 <div className="form-group col-md-6">
                     <CtrlPrice validators={props.validators}
                         value={
                             (product) ? strPrice : undefined
+                        }
+                        readOnly={(props.readOnly) ? true : false}
+                    />
+                </div>                
+            </div>
+            <div className="form-row">
+                <div className="form-group col-md-6">
+                    <CtrlReorder validators={props.validators}
+                        value={
+                            (product) ? strReorder : undefined
                         }
                         readOnly={(props.readOnly) ? true : false}
                     />

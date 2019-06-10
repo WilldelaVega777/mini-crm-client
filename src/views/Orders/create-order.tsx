@@ -2,13 +2,16 @@
 // Imports Section (React Libs)
 //---------------------------------------------------------------------------------
 import React                            from 'react' 
-//import { SyntheticEvent }               from 'react'
 //---------------------------------------------------------------------------------
 // Imports Section (Apollo & Interfaces)
 //---------------------------------------------------------------------------------
 import { QueryGetCustomerById }         from '../../services/operations/queries/customers/getCustomerById.query'
 import { Q_GET_CUSTOMER_BY_ID }         from '../../services/operations/queries/customers/getCustomerById.query'
 import { CustomerInput }                from '../../services/typeDefs/globals/graphql-global-types'
+import { OrderInput }                   from '../../services/typeDefs/globals/graphql-global-types'
+import { OrderItemInput }               from '../../services/typeDefs/globals/graphql-global-types'
+import { QueryGetProducts }             from '../../services/operations/queries/products/getProductsPaginated.query'
+import { Q_GET_PRODUCTS }               from '../../services/operations/queries/products/getProductsPaginated.query'
 //---------------------------------------------------------------------------------
 // Imports Section (Helper Functions)
 //---------------------------------------------------------------------------------
@@ -18,10 +21,11 @@ import { ValidationDescriptor }         from '../../helpers/validations.helper'
 // Imports Section (Internal Components)
 //---------------------------------------------------------------------------------
 import { OrderLayout }                  from '../../components/orders/order-layout'
+import { Loading }                      from '../../components/Shared/loading'
 //---------------------------------------------------------------------------------
 // Imports Section (External Components)
 //---------------------------------------------------------------------------------
-//import Swal                             from 'sweetalert2';
+import Swal                             from 'sweetalert2'
 
 
 //---------------------------------------------------------------------------------
@@ -36,6 +40,7 @@ export class CreateOrder extends
     private validators          : ValidationHelper
     private customer            : CustomerInput
     private timeoutId           : number
+    private errorCounter        : number
     
     //-------------------------------------------------------------------------
     // Constructor Method Section
@@ -47,29 +52,21 @@ export class CreateOrder extends
         
         // Initialize CustomerInput for State
         const customer: CustomerInput = {} as CustomerInput
+        const order   : OrderInput    = {} as OrderInput
 
         // Initial Values for Private Fields
-        this.validators = new ValidationHelper()
-        this.customer   = customer
-        this.timeoutId  = 0
+        this.validators     = new ValidationHelper()
+        this.customer       = customer
+        this.timeoutId      = 0
+        this.errorCounter   = 0
         
         // Initialize State
         this.state = {
-            viewCustomer    : customer,
-            validators      : []
+            viewCustomer : customer,
+            validators   : [],
+            order        : order,
+            orderItems   : []
         }
-    }
-
-    
-    //-------------------------------------------------------------------------
-    // Lifecycle Eventhandler Methods
-    //-------------------------------------------------------------------------
-    async componentWillMount()
-    {
-        await this.validators.setValidators('Customer')
-        this.setState({
-            validators: this.validators.getValidators()
-        })
     }
     
     //-------------------------------------------------------------------------
@@ -120,6 +117,8 @@ export class CreateOrder extends
     {
         // Obtain Customer Id from Route
         const { id } = this.props.match.params
+        
+        // Return JSX
         return (
             <React.Fragment>
                 
@@ -134,27 +133,81 @@ export class CreateOrder extends
                         query={Q_GET_CUSTOMER_BY_ID} 
                         variables={{ id: id }}
                     >
-                        {({ loading, error, data, refetch }) => {
+                        {({ loading, error, data }) => {
                             if (loading)
                             {
-                                return "Put something that looks good for loading here..."
+                                return (
+                                    <Loading/>
+                                )
                             }
                             if (error)
                             {
-                                return `Error: ${error.message}` 
+                                if (this.errorCounter === 0)
+                                {
+                                    Swal.fire(
+                                        'Error', 
+                                        `Cargando Datos: ${error.message}`, 
+                                        'error'
+                                    )
+                                    this.errorCounter++
+                                    return (
+                                        <Loading/>
+                                    )
+                                }
                             }
                             if (data && data.getCustomer)
                             {
+                                this.errorCounter = 0
                                 this.setCustomer(id, data.getCustomer as CustomerInput)
                             }
                             return (
                                 <React.Fragment>
-       
-                                    <OrderLayout
-                                        data={this.customer}
-                                        validators={this.validators}
-                                        maxEmails={1}
-                                    />
+                                    <QueryGetProducts
+                                        query={Q_GET_PRODUCTS}
+                                        variables={{ limit: 0, offset: 0 }}
+                                        pollInterval={1000}
+                                    >
+                                    {
+                                        ({loading, error, data, startPolling, stopPolling}) => {
+                                            if (loading)
+                                            {
+                                                return (
+                                                    <Loading/>
+                                                )                                                
+                                            }
+                                            if (error)
+                                            {
+                                                if (this.errorCounter === 0)
+                                                {
+                                                    Swal.fire(
+                                                        'Error', 
+                                                        `Cargando Datos: ${error.message}`, 
+                                                        'error'
+                                                    )
+                                                    this.errorCounter++
+                                                    return (
+                                                        <Loading/>
+                                                    )
+                                                }
+                                            }
+                                            if (data)
+                                            {
+                                                this.errorCounter = 0
+                                                return (
+                                                    <OrderLayout
+                                                        customer={this.customer}
+                                                        products={(data.getProducts.products)}
+                                                        orderItems={this.state.orderItems}
+                                                        validators={this.validators}
+                                                        maxEmails={1}
+                                                    />                                                    
+                                                )
+                                            }
+                                        }
+                                    }    
+                                        
+                                    </QueryGetProducts>                                    
+
                                     
                                 </React.Fragment>
                             )
@@ -204,6 +257,8 @@ export interface ICreateOrderProps
 //---------------------------------------------------------------------------------
 export interface ICreateOrderState
 {
-    viewCustomer: CustomerInput
-    validators  : ValidationDescriptor[]
+    viewCustomer    : CustomerInput
+    validators      : ValidationDescriptor[]
+    order           : OrderInput
+    orderItems      : OrderItemInput[]
 }

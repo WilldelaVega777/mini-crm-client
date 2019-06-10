@@ -20,10 +20,11 @@ import { ValidationDescriptor }     from '../../helpers/validations.helper'
 // Imports Section (Internal Components)
 //---------------------------------------------------------------------------------
 import { ProductLayout }            from '../../components/products/product-layout'
+import { Loading }                  from '../../components/Shared/loading'
 //---------------------------------------------------------------------------------
 // Imports Section (External Components)
 //---------------------------------------------------------------------------------
-import Swal from 'sweetalert2';
+import Swal                         from 'sweetalert2'
 
 
 //---------------------------------------------------------------------------------
@@ -145,11 +146,18 @@ export class EditProduct extends
                         {
                             if (loading)
                             {
-                                return "Put something that looks good for loading here..."
+                                return (
+                                    <Loading/>
+                                )
                             }
                             if (error)
                             {
-                                return `Error: ${error.message}`
+                                Swal.fire(
+                                    'Error', 
+                                    `Cargando Datos: ${error.message}`, 
+                                    'error'
+                                )
+                                return ''
                             }
                             if (data && data.getProduct)
                             {

@@ -1,8 +1,8 @@
 {
     "git.ignoreLimitWarning": true,
-    "workbench.colorTheme": "Winter is Coming (Dark Blue)",
+    "workbench.colorTheme": "Brave Contrast (rainglow)",
     "files.exclude": {
-        "**/.gitignore"         : true,
+        "**/.gitignore"         : false,
         "**/*.md"               : true,
         "**/*.js"               : true,
         "**/*.js.map"           : true,
@@ -11,7 +11,7 @@
         "**/.bowerrc"           : true,
         "**/package.json"       : true,
         "**/package-lock.json"  : true,
-        "**/tsconfig.json"      : true,
+        "**/tsconfig.json"      : false,
         "**/.editorconfig"      : true,
         "**/.eslintrc"          : true,
         "**/tslint.json"        : true,

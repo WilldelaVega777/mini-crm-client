@@ -17,6 +17,7 @@ interface ICtrlEmailsProps
     validators          : ValidationHelper
     readOnly            : boolean
     maxEmails           : number
+    hideLabels?         : boolean | undefined
 }
 
 //-------------------------------------------------------------------------
@@ -36,10 +37,14 @@ export const CtrlEmails: React.SFC<ICtrlEmailsProps> =
             {
                 return (
                     <div key={index} className="form-group col-md-12 pl-1 pr-0">
-                        <label>Email {index + 1}</label>
+                        {
+                            (props.hideLabels)
+                            ? ''
+                            : <label>Email {index + 1}</label>
+                        }
                         
                         <div className="form-row input-group mb-3">
-                            <div className="input-group mb-3">
+                            <div className="input-group mb-3 ml-2">
                                 <div className="input-group-prepend">
                                     <span className="input-group-text" id="basic-addon1">
                                         <i className="fas fa-envelope"></i>
