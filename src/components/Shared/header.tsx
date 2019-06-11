@@ -112,6 +112,6 @@ interface IHeaderState
 }
 
 //---------------------------------------------------------------------------------
-// Module Exports Section / (HOC)
+// Module ExportSection / (HOC)
 //---------------------------------------------------------------------------------
 export const Header = withRouter(AppHeader)

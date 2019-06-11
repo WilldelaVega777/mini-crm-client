@@ -17,26 +17,9 @@ import { CtrlOrderItem }        from './layout/ctrl-order-item';
 //---------------------------------------------------------------------------------
 import Select                   from 'react-select'
 import Animated                 from 'react-select/animated'
-import * as CurrencyFormat      from 'react-currency-format';
-import Swal                     from 'sweetalert2';
+import * as CurrencyFormat      from 'react-currency-format'
+import Swal                     from 'sweetalert2'
 
-//---------------------------------------------------------------------------------
-// Component Interface
-//---------------------------------------------------------------------------------
-interface IOrderLayoutProps
-{
-    customer?           : CustomerInput | undefined
-    products            : ProductInput[]
-    validators          : ValidationHelper
-    readOnly?           : boolean | undefined
-    maxEmails?          : number  | undefined
-    onOrderItemsSave    : (orderItems: OrderItemInput[]) => void
-}
-interface IOrderLayoutState
-{
-    orderItems      : OrderItemInput[],
-    orderTotal      : number
-}
 
 //-------------------------------------------------------------------------
 // Component for Emails:
@@ -91,18 +74,14 @@ export class OrderLayout extends React.Component<IOrderLayoutProps, IOrderLayout
                                 <div className="col col-md-12">
                                     <hr/>
                                     <Select 
-                                        options={this.props.products.map(product => {
-                                            return {
-                                                label: product.name,
-                                                value: product.id
-                                            }
-                                        })} 
+                                        options={this.productsToOptions(this.props.products)} 
                                         isMulti={true}
                                         components={Animated()}
                                         placeholder="Seleccionar Productos"
                                         className="mb-4"
                                         onChange={
                                             (value) => this.selectProduct_change(value)}
+                                        value={this.orderItemsToOptions(this.state.orderItems)}
                                     />
                                     <div className="d-flex justify-content-end mb-2" 
                                          style={{marginTop: '-17px', minWidth: '100%'}}>
@@ -289,11 +268,11 @@ export class OrderLayout extends React.Component<IOrderLayoutProps, IOrderLayout
         }, () => this.calculateTotals() )
     }
     //-------------------------------------------------------------------------
-    ctrlOrderItem_orderItemDeleted(orderItemId: string)
+    ctrlOrderItem_orderItemDeleted(productId: string)
     {
         this.setState({
             orderItems : this.state.orderItems.filter((orderItem: OrderItemInput) => {
-                return (orderItem.product.id !== orderItemId)
+                return (orderItem.product.id !== productId)
             })
         }, () => this.calculateTotals() )
     }
@@ -315,4 +294,54 @@ export class OrderLayout extends React.Component<IOrderLayoutProps, IOrderLayout
             orderTotal: newTotal
         })
     }
+    //-------------------------------------------------------------------------
+    private productsToOptions(products: ProductInput[]): ISelectOptions[]
+    {
+        return products.map(product => {
+            return {
+                label: product.name,
+                value: product.id
+            }
+        })
+    }
+    //-------------------------------------------------------------------------
+    private orderItemsToOptions(orderItems: OrderItemInput[]): ISelectOptions[]
+    {
+        return this.state.orderItems.map(
+            (orderItem: OrderItemInput) => {
+                return {
+                    label: orderItem.product.name,
+                    value: orderItem.product.id
+                }    
+            }
+        )
+    }
+}
+
+//---------------------------------------------------------------------------------
+// Component Interface
+//---------------------------------------------------------------------------------
+interface IOrderLayoutProps
+{
+    customer?           : CustomerInput | undefined
+    products            : ProductInput[]
+    validators          : ValidationHelper
+    readOnly?           : boolean | undefined
+    maxEmails?          : number  | undefined
+    onOrderItemsSave    : (orderItems: OrderItemInput[]) => void
+}
+//---------------------------------------------------------------------------------
+interface IOrderLayoutState
+{
+    orderItems      : OrderItemInput[],
+    orderTotal      : number
+}
+
+//---------------------------------------------------------------------------------
+// Component Specific Interfaces
+//---------------------------------------------------------------------------------
+interface ISelectOptions
+{
+    label       : string
+    value       : any
 }

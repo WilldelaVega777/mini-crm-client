@@ -206,7 +206,7 @@ export class CreateOrder extends
                                         }
                                     }    
                                         
-                                    </QueryGetProducts>                                    
+                                    </QueryGetProducts>
 
                                     
                                 </React.Fragment>
@@ -243,12 +243,6 @@ export class CreateOrder extends
         /// Add Mutation for saving order to renderLayout()
         /// TODO: Implement this by validating and executing a mutation
     }
-    
-    //-------------------------------------------------------------------------
-    // Eventhandler Methods Section
-    //-------------------------------------------------------------------------
- 
-
 }
 
 //---------------------------------------------------------------------------------
