@@ -197,9 +197,9 @@ export class CreateOrder extends
                                                     <OrderLayout
                                                         customer={this.customer}
                                                         products={(data.getProducts.products)}
-                                                        orderItems={this.state.orderItems}
                                                         validators={this.validators}
                                                         maxEmails={1}
+                                                        onOrderItemsSave={(orderItems: OrderItemInput[]) => this.saveOrderItems(orderItems)}
                                                     />                                                    
                                                 )
                                             }
@@ -236,6 +236,12 @@ export class CreateOrder extends
                 window.clearTimeout(this.timeoutId)
             },0)            
         }
+    }
+    //-------------------------------------------------------------------------
+    private saveOrderItems(orderItems: OrderItemInput[])
+    {
+        /// Add Mutation for saving order to renderLayout()
+        /// TODO: Implement this by validating and executing a mutation
     }
     
     //-------------------------------------------------------------------------
