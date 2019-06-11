@@ -201,10 +201,10 @@ export class OrderLayout extends React.Component<IOrderLayoutProps, IOrderLayout
                         <div className="col-md-12 d-flex justify-content-end">
                             <button  
                                 type="button"
-                                className="btn btn-danger"
+                                className="btn btn-success"
                                 onClick={() => this.cmdSaveChanges_click()}
                             >
-                                <i className="far fa-trash-alt"></i>
+                                Guardar Cambios
                             </button> 
                         </div>
                     </div>          
