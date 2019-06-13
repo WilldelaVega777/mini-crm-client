@@ -13,6 +13,11 @@ import {
 from '../../services/typeDefs/operations/getProductsPaginated'
 
 //---------------------------------------------------------------------------------
+// Imports (External Components)
+//---------------------------------------------------------------------------------
+import * as CurrencyFormat                  from 'react-currency-format';
+
+//---------------------------------------------------------------------------------
 // Component Interface
 //---------------------------------------------------------------------------------
 interface IProductItemProps
@@ -27,33 +32,40 @@ export const ProductItem: React.SFC<IProductItemProps> =
     (props) =>
     {
         return (
-
-            <li key={props.product.id} className="list-group-item">
-                <div className="row justify-content-between align-items-center">
-                    <div className="col-md-7 d-flex justify-content-between align-items-center">
-                        <span>
-                            {props.product.name} - ({props.product.stock.toString()})
-                            &nbsp;
-                            <i className="text-secondary">
-                                ${props.product.price}
-                                
-                            </i>
-                        </span>
-                    </div>
-                    <div className="col-md-5 d-flex justify-content-end">
-                        <Link to={'/product/edit/:id'.replace(':id', props.product.id)}
-                            className="btn btn-primary d-block d-md-inline-block mr-3"
-                        >
-                            Editar
-                        </Link>
-                        <Link to={'/product/remove/:id'.replace(':id', props.product.id)}
-                            className="btn btn-danger d-block d-md-inline-block mr-3"
-                        >
-                            Eliminar
-                        </Link>
-                    </div>
-                </div>
-            </li>
-
+            <tr>
+                <td>
+                    {props.product.name}
+                </td>
+                
+                <td className="align-right">
+                    <CurrencyFormat 
+                        value={(props.product.price).toFixed(2)} 
+                        thousandSeparator={true} 
+                        prefix={'$'} 
+                        displayType={'text'} 
+                    />
+                </td>
+                
+                <td className="text-center">
+                    {props.product.stock.toString()}
+                </td>
+                
+                <td className="text-right pl-4">
+                    <Link to={'/product/edit/:id'.replace(':id', props.product.id)}
+                        className="btn btn-primary btn-block d-md-inline-block mr-3"
+                    >
+                        Editar
+                    </Link>
+                </td>
+                
+                <td className="align-right pl-2">
+                    <Link to={'/product/remove/:id'.replace(':id', props.product.id)}
+                        className="btn btn-danger btn-block d-md-inline-block mr-3"
+                    >
+                        Eliminar
+                    </Link>
+                </td>
+                
+            </tr>                        
         )
     }

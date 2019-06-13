@@ -35,17 +35,19 @@ export const CtrlOrderItem: React.SFC<ICtrlOrderItemProps> =
             
             <td>
                 <input
-                    type="text"
+                    type="number"
                     name="first_name"
                     className="form-control"
                     placeholder="Cant."
                     required
+                    min={0}
+                    max={props.orderItem.product.stock}
                     minLength={1}
                     maxLength={8}
                     pattern="^[0-9]*$"
-                    defaultValue={'0'}
                     onChange={(value) => txtQuantity_changed(value)}
                     style={{maxWidth: '80px', textAlign: 'right'}}
+                    value={props.orderItem.quantity.toString()}
                 />
             </td>
             
@@ -53,7 +55,7 @@ export const CtrlOrderItem: React.SFC<ICtrlOrderItemProps> =
                 {currentProduct.name}
             </td>
             
-            <td className="align-middle">
+            <td className="text-right">
                 <CurrencyFormat 
                     value={currentProduct.price.toFixed(2)} 
                     thousandSeparator={true} 
@@ -62,7 +64,7 @@ export const CtrlOrderItem: React.SFC<ICtrlOrderItemProps> =
                 />
             </td>
             
-            <td className="align-middle">
+            <td className="text-right">
                 <CurrencyFormat 
                     value={(props.orderItem.quantity * currentProduct.price).toFixed(2)} 
                     thousandSeparator={true} 

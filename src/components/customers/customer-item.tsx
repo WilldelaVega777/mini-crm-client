@@ -23,7 +23,7 @@ export const CustomerItem: React.SFC<ICustomerItemProps> =
 
         <li key={props.customer.id} className="list-group-item">
             <div className="row justify-content-between align-items-center">
-                <div className="col-md-6 d-flex justify-content-between align-items-center">
+                <div className="col-md-4 d-flex justify-content-between align-items-center">
                     <span>
                         {props.customer.first_name} {props.customer.last_name}
                         &nbsp; - &nbsp;
@@ -32,9 +32,14 @@ export const CustomerItem: React.SFC<ICustomerItemProps> =
                         </i>
                     </span>
                 </div>
-                <div className="col-md-6 d-flex justify-content-end">
-                    <Link to={'/order/create/:id'.replace(':id', props.customer.id)}
+                <div className="col-md-8 d-flex justify-content-end">
+                    <Link to={'/orders/:id'.replace(':id', props.customer.id)}
                         className="btn btn-warning d-block d-md-inline-block mr-3"
+                    >
+                        Ver Ordenes
+                    </Link>
+                    <Link to={'/order/create/:id'.replace(':id', props.customer.id)}
+                        className="btn btn-info d-block d-md-inline-block mr-3"
                     >
                         Agregar Orden
                     </Link>

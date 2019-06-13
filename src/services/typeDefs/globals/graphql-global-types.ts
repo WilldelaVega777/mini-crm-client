@@ -36,8 +36,10 @@ export interface EmailInput {
 export interface OrderInput {
   id?: string | null;
   date: any;
+  customer: string;
   status: OrderStatus;
   items: OrderItemInput[];
+  total: number;
 }
 
 export interface OrderItemInput {

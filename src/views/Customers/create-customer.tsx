@@ -307,13 +307,13 @@ export class CreateCustomer extends
 //---------------------------------------------------------------------------------
 interface ICreateCustomersProps
 {
-    shouldNavigateBack: boolean,
+    shouldNavigateBack: boolean
     history: any
 }
 //---------------------------------------------------------------------------------
 interface ICreateCustomersState
 {
     newCustomer: CustomerInput,
-    validators: ValidationDescriptor[],
+    validators: ValidationDescriptor[]
     emails: EmailInput[]
 }

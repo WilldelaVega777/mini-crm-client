@@ -13,6 +13,9 @@ import { InMemoryCache }                    from 'apollo-boost';
 //---------------------------------------------------------------------------------
 import { Header }                           from '../Shared/header'
 import { Footer }                           from '../Shared/footer'
+
+import { Dashboard }                        from '../../views/Dashboard/dashboard'
+
 import { Customers }                        from '../../views/Customers/_customers'
 import { CreateCustomer }                   from '../../views/Customers/create-customer'
 import { EditCustomer }                     from '../../views/Customers/edit-customer'
@@ -23,6 +26,7 @@ import { CreateProduct }                    from '../../views/Products/create-pr
 import { EditProduct }                      from '../../views/Products/edit-product'
 import { RemoveProduct }                    from '../../views/Products/remove-product'
 
+import { Orders }                           from '../../views/Orders/_orders'
 import { CreateOrder }                      from '../../views/Orders/create-order'
 
 
@@ -72,14 +76,24 @@ export class App extends React.Component<IAppProps, IAppState>
                         <main role="main" className="flex-shrink-0">
                             <div className="container">
                                 <Switch>
-                                    {/* Customers */}
-                                    <Route  exact 
-                                            path="/" 
-                                            render={(props) => 
-                                                <Customers {...props} limit={3} initialOffset={0} />
-                                            }
-                                    />
                                     
+                                    {/* / */}           
+                                    <Route  exact 
+                                        path="/" 
+                                        render={(props) => 
+                                            <Dashboard {...props} shouldNavigateBack={true} />
+                                        }
+                                    />
+                                                                        
+                                    {/* Dashboard */}
+                                    <Route exact
+                                        path="/dashboard"
+                                        render={(props) =>
+                                            <Dashboard {...props} shouldNavigateBack={true}/>
+                                        }
+                                    />                                      
+                                    
+                                    {/* Customers */}
                                     <Route exact
                                         path="/customers"
                                         render={(props) =>
@@ -131,14 +145,21 @@ export class App extends React.Component<IAppProps, IAppState>
                                         }
                                     />
                                     
+                                    {/* Orders */}
+                                    <Route exact
+                                        path="/orders/:id"
+                                        render={(props) =>
+                                            <Orders {...props} limit={3} initialOffset={0} shouldNavigateBack={true}/>
+                                        }
+                                    />                                    
+                                    
                                     <Route exact
                                         path="/order/create/:id"
                                         render={(props) =>
                                             <CreateOrder {...props} shouldNavigateBack={true} />
                                         }
                                     />
-                                    
-                                                                                                                                                                   
+                                                                                                                                                                                                       
                                 </Switch>
                             </div>
                         </main>

@@ -11,8 +11,8 @@ import { getProductsPaginatedVariables }    from '../../../typeDefs/operations/g
 // GQL Query: Customers
 //---------------------------------------------------------------------------------
 export const Q_GET_PRODUCTS = gql`
-    query getProductsPaginated($limit: Int!, $offset: Int!) {
-        getProducts(limit: $limit, offset: $offset) {
+    query getProductsPaginated($limit: Int!, $offset: Int!, $stock: Boolean) {
+        getProducts(limit: $limit, offset: $offset, stock: $stock) {
             products {
                 id,
                 name,

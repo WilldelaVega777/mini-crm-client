@@ -33,4 +33,5 @@ export interface getProductsPaginated {
 export interface getProductsPaginatedVariables {
   limit: number;
   offset: number;
+  stock?: boolean | null;
 }

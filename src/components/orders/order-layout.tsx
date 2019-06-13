@@ -82,6 +82,7 @@ export class OrderLayout extends React.Component<IOrderLayoutProps, IOrderLayout
                                         onChange={
                                             (value) => this.selectProduct_change(value)}
                                         value={this.orderItemsToOptions(this.state.orderItems)}
+                                        isDisabled={this.validateForMoreOrderItems()}
                                     />
                                     <div className="d-flex justify-content-end mb-2" 
                                          style={{marginTop: '-17px', minWidth: '100%'}}>
@@ -125,8 +126,8 @@ export class OrderLayout extends React.Component<IOrderLayoutProps, IOrderLayout
                                             <tr className="table-primary">
                                                 <th className="align-center">Cantidad</th>
                                                 <th className="align-center">Producto</th>
-                                                <th className="align-center">Precio</th>
-                                                <th className="align-center">Total</th>
+                                                <th className="text-right">Precio</th>
+                                                <th className="text-right">Total</th>
                                                 <th></th>
                                             </tr>
                                         </thead>
@@ -156,7 +157,7 @@ export class OrderLayout extends React.Component<IOrderLayoutProps, IOrderLayout
                                                     />
                                                 </td>
                                                 <td></td>
-                                                <td>
+                                                <td className="text-right">
                                                     <strong>
                                                         <CurrencyFormat 
                                                             value={(this.state.orderTotal * 1.16).toFixed(2)} 
@@ -182,6 +183,7 @@ export class OrderLayout extends React.Component<IOrderLayoutProps, IOrderLayout
                                 type="button"
                                 className="btn btn-success"
                                 onClick={() => this.cmdSaveChanges_click()}
+                                disabled={this.validateOrder()}
                             >
                                 Guardar Cambios
                             </button> 
@@ -251,6 +253,7 @@ export class OrderLayout extends React.Component<IOrderLayoutProps, IOrderLayout
                                 ' para surtir su pedido en este momento.', 
                             'warning'
                         )
+                        newQuantity = 0
                     }
                     
                     return ({
@@ -315,6 +318,29 @@ export class OrderLayout extends React.Component<IOrderLayoutProps, IOrderLayout
                 }    
             }
         )
+    }
+    //-------------------------------------------------------------------------
+    private validateForMoreOrderItems()
+    {
+        return ((this.state.orderItems.length > 0) && (this.itemsWithZeroQuantity()))
+    }
+    //-------------------------------------------------------------------------
+    private validateOrder(): boolean
+    {            
+        return (
+                (this.state.orderItems.length === 0) || 
+                (this.state.orderTotal === 0) || 
+                (this.itemsWithZeroQuantity())
+        )
+    }
+    //-------------------------------------------------------------------------
+    private itemsWithZeroQuantity(): boolean
+    {
+        return (this.state.orderItems.filter(
+                (orderItem: OrderItemInput) => {
+                    return (orderItem.quantity === 0)
+                }
+        ).length > 0)
     }
 }
 
