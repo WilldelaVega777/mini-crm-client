@@ -43,6 +43,7 @@ export interface OrderInput {
 }
 
 export interface OrderItemInput {
+  id?: string | null;
   quantity: number;
   product: ProductInput;
 }

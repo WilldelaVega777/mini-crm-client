@@ -136,7 +136,7 @@ export class OrderLayout extends React.Component<IOrderLayoutProps, IOrderLayout
                                             this.state.orderItems.map((orderItem: OrderItemInput, index: number) => {
                                                 return (
                                                     <CtrlOrderItem
-                                                        key={(orderItem.product.id as string)}
+                                                        key={`${(orderItem.product.id as string)}${index.toString()}`}
                                                         orderItem={orderItem}
                                                         quantityChanged={(newOrderItem: OrderItemInput, newQuantity: number) => this.ctrlOrderItem_quantityChanged(newOrderItem, newQuantity)}
                                                         orderItemDeleted={(orderItemId: string) => this.ctrlOrderItem_orderItemDeleted(orderItemId)}
@@ -197,9 +197,7 @@ export class OrderLayout extends React.Component<IOrderLayoutProps, IOrderLayout
     // Eventhandler Methods Section
     //-------------------------------------------------------------------------
     selectProduct_change(items: any)
-    {
-        console.log(items)
-        
+    {   
         if (items)
         {
             this.setState({
@@ -271,11 +269,11 @@ export class OrderLayout extends React.Component<IOrderLayoutProps, IOrderLayout
         }, () => this.calculateTotals() )
     }
     //-------------------------------------------------------------------------
-    ctrlOrderItem_orderItemDeleted(productId: string)
+    ctrlOrderItem_orderItemDeleted(orderItemId: string)
     {
         this.setState({
             orderItems : this.state.orderItems.filter((orderItem: OrderItemInput) => {
-                return (orderItem.product.id !== productId)
+                return (orderItem.id !== orderItemId)
             })
         }, () => this.calculateTotals() )
     }

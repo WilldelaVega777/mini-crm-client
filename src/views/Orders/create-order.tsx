@@ -305,7 +305,6 @@ export class CreateOrder extends
         
         try
         {
-            console.log(input)
             await createOrder({
                 variables: { input }
             })

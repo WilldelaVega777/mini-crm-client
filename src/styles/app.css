@@ -17,3 +17,10 @@
 {
     background-color: #fdcb6e;
 }
+
+
+
+
+.page-item.active .page-link {
+    z-index: 0;
+}

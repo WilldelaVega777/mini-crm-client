@@ -55,7 +55,7 @@ export const CtrlOrderItem: React.SFC<ICtrlOrderItemProps> =
                 {currentProduct.name}
             </td>
             
-            <td className="text-right">
+            <td className="align-middle text-right">
                 <CurrencyFormat 
                     value={currentProduct.price.toFixed(2)} 
                     thousandSeparator={true} 
@@ -64,7 +64,7 @@ export const CtrlOrderItem: React.SFC<ICtrlOrderItemProps> =
                 />
             </td>
             
-            <td className="text-right">
+            <td className="align-middle text-right">
                 <CurrencyFormat 
                     value={(props.orderItem.quantity * currentProduct.price).toFixed(2)} 
                     thousandSeparator={true} 
@@ -76,7 +76,7 @@ export const CtrlOrderItem: React.SFC<ICtrlOrderItemProps> =
             <td className="align-middle">
                <button  type="button"
                         className="btn btn-danger"
-                        onClick={() => cmdDelete_click(props.orderItem.product.id as string)}
+                        onClick={() => cmdDelete_click(props.orderItem.id as string)}
                 >
                    <i className="far fa-trash-alt"></i>
                 </button> 
@@ -91,12 +91,11 @@ export const CtrlOrderItem: React.SFC<ICtrlOrderItemProps> =
     function txtQuantity_changed(event: ChangeEvent<HTMLInputElement>) 
     {    
         const currentQuantity = event.target.value ? Number(event.target.value) : 0
-        console.log(currentQuantity)
         props.quantityChanged(props.orderItem, currentQuantity)
     }
     //-------------------------------------------------------------------------
-    function cmdDelete_click(productId: string)
+    function cmdDelete_click(orderId: string)
     {
-        props.orderItemDeleted(productId)
+        props.orderItemDeleted(orderId)
     }
 }

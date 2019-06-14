@@ -55,7 +55,7 @@ export class Dashboard extends React.Component<IDashboardProps, IDashboardState>
         const css = `
             .rise-little 
             {
-                margin-top: 7px !important;        
+                margin-top: 7px !important; 
             }
         `
 
