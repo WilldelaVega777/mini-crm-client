@@ -120,11 +120,12 @@ export class Products extends React.Component<IProductsProps, IProductsState>
                                     {this.getPageTitle()}                                    
 
                                     {/* Product List */}
-                                    <table className="table table-striped">
+                                    <table className="table">
                                         <thead>
                                             <tr className="table-primary">
                                                 <th className="text-center">Nombre</th>
                                                 <th className="text-left">Precio</th>
+                                                <th className="text-center">Reorden</th>
                                                 <th className="text-center">Existencia</th>
                                                 <th className="text-center"></th>
                                                 <th className="text-center"></th>

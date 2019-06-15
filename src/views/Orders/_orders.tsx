@@ -138,6 +138,7 @@ export class Orders extends React.Component<IOrdersProps, IOrdersState>
                                     {
                                         this.orders.map(order => (
                                             <OrderCard order={(order as Order)} key={order.id} />
+
                                         ))
                                     }
                                     </div>

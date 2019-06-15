@@ -18,8 +18,30 @@
     background-color: #fdcb6e;
 }
 
+.bg-faded-spray
+{
+    background-color: #82ccdd;
+}
 
+.bg-paradise-green
+{
+    background-color: #b8e994;
+}
 
+.bg-golden-sand
+{
+    background-color: #eccc68;
+}
+
+.bg-jalapeno-red
+{
+    background-color: #b71540;
+}
+
+.bg-mandarin-red
+{
+    background-color: #e55039;
+}
 
 .page-item.active .page-link {
     z-index: 0;

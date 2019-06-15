@@ -8,7 +8,8 @@ import ReactDOM                 from 'react-dom';
 //---------------------------------------------------------------------------------
 import './styles/bootstrap.css'
 import './styles/fontawesome.css'
-import './styles/app.css'
+import './styles/animate.css'
+import './styles/_app.css'
 //---------------------------------------------------------------------------------
 // Imports Section (Components: App Component)
 //---------------------------------------------------------------------------------

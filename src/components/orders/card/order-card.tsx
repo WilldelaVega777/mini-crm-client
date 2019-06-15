@@ -66,7 +66,7 @@ export const OrderCard: React.SFC<IOrderCardProps> =
             (updateOrder) => {
                 return (
                     <div className="col-md-4">
-                        <div className={`card mb-3 ${cssClass}`}>
+                        <div className={`card mb-3 ${cssClass} animated fadeInLeft`}>
                             <div className="card-body">
                                 <p className="card-text font-weight-bold">
                                     Estado:

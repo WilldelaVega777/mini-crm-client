@@ -31,8 +31,22 @@ interface IProductItemProps
 export const ProductItem: React.SFC<IProductItemProps> =
     (props) =>
     {
+        let cssClass: string = 'success';
+        if (props.product.stock > (props.product.reorder * 1.40))
+        {
+            cssClass = 'bg-paradise-green'
+        }
+        else if (((props.product.stock > props.product.reorder) && (props.product.stock < props.product.reorder * 1.39)))
+        {
+            cssClass = 'bg-golden-sand'
+        }
+        else if ((((props.product.stock >= props.product.reorder))))
+        {
+            cssClass = 'bg-mandarin-red'
+        }
+
         return (
-            <tr>
+            <tr className={cssClass}>
                 <td>
                     {props.product.name}
                 </td>
@@ -44,6 +58,10 @@ export const ProductItem: React.SFC<IProductItemProps> =
                         prefix={'$'} 
                         displayType={'text'} 
                     />
+                </td>
+
+                <td className="text-center">
+                    {props.product.reorder.toString()}
                 </td>
                 
                 <td className="text-center">

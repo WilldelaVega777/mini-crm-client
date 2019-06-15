@@ -17,6 +17,7 @@
         "react-router-dom": "^5.0.0",
         "react-scripts": "3.0.1",
         "react-select": "^3.0.4",
+        "recharts": "^1.6.2",
         "sweetalert2": "^8.11.6",
         "sweetalert2-react-content": "^1.1.0",
         "typescript": "3.4.5"
@@ -51,6 +52,7 @@
         "@types/node": "12.0.2",
         "@types/react": "16.8.17",
         "@types/react-dom": "16.8.4",
-        "@types/react-router-dom": "^4.3.3"
+        "@types/react-router-dom": "^4.3.3",
+        "@types/recharts": "^1.1.16"
     }
 }

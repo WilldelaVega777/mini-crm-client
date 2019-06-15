@@ -1,34 +1,18 @@
 //---------------------------------------------------------------------------------
 // Imports Section (React Libs)
 //---------------------------------------------------------------------------------
-import React                                    from 'react'
-import { Link }                                 from 'react-router-dom'
+import React                       from 'react'
 
 //---------------------------------------------------------------------------------
-// Imports Section (Components)
+// Imports Section (Internal Components)
 //---------------------------------------------------------------------------------
-import { Loading }                              from '../../components/Shared/loading'
-import Swal                                     from 'sweetalert2'
+import { TopCustomers }            from '../../components/dashboard/topCustomers'
 
 //---------------------------------------------------------------------------------
 // Component Class
 //---------------------------------------------------------------------------------
 export class Dashboard extends React.Component<IDashboardProps, IDashboardState>
 {   
-    //-------------------------------------------------------------------------
-    // Private Fields Section
-    //-------------------------------------------------------------------------
-    
-    //-------------------------------------------------------------------------
-    // Constructor Method Section
-    //-------------------------------------------------------------------------
-    constructor(props: IDashboardProps)
-    {
-        // Calls Super
-        super(props)
-        
-    }
-    
     //-------------------------------------------------------------------------
     // Render Method Section
     //-------------------------------------------------------------------------
@@ -53,10 +37,7 @@ export class Dashboard extends React.Component<IDashboardProps, IDashboardState>
     private getCSS(): JSX.Element
     {
         const css = `
-            .rise-little 
-            {
-                margin-top: 7px !important; 
-            }
+
         `
 
         return (
@@ -72,7 +53,18 @@ export class Dashboard extends React.Component<IDashboardProps, IDashboardState>
         return (
             <React.Fragment>
                 
-                <p>Dashboard works!</p>
+                { this.getCSS() }
+                
+                { this.getPageTitle() }
+                
+                <div className="row justify-content-center">
+                    <div className="col col-md-5 mr-5">
+                        <TopCustomers/>
+                    </div>
+                    <div className="col col-md-5">
+                        <TopCustomers/>
+                    </div>                    
+                </div>
                 
             </React.Fragment>
         )
@@ -82,7 +74,7 @@ export class Dashboard extends React.Component<IDashboardProps, IDashboardState>
     {
         return (
             <div className="row">
-                <div className="col col-md-8 d-flex justify-content-end">
+                <div className="col col-md-8 d-flex justify-content-end mb-4">
                     <h2 className="text-center mb-3">CRM Dashboard</h2>
                 </div>
             </div>
