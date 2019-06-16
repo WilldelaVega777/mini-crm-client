@@ -120,13 +120,15 @@ export class Products extends React.Component<IProductsProps, IProductsState>
                                     {this.getPageTitle()}                                    
 
                                     {/* Product List */}
-                                    <table className="table">
+                                    <table className="table subtle-shadow">
                                         <thead>
                                             <tr className="table-primary">
                                                 <th className="text-center">Nombre</th>
                                                 <th className="text-left">Precio</th>
                                                 <th className="text-center">Reorden</th>
+                                                <th className="text-center">Existencia<sup>*</sup></th>
                                                 <th className="text-center">Existencia</th>
+                                                <th className="text-center"></th>
                                                 <th className="text-center"></th>
                                                 <th className="text-center"></th>
                                             </tr>
@@ -139,6 +141,10 @@ export class Products extends React.Component<IProductsProps, IProductsState>
                                         }   
                                         </tbody>
                                     </table>
+                                    
+                                    {/* Note */}
+                                    <p><sup>*</sup> La primera columna es la existencia descontando pedidos, la segunda es la existencia real en stock.</p>
+
 
                                     {/* Pagination */}
                                     <Paginator

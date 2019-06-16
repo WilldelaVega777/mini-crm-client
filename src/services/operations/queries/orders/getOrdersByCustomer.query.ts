@@ -25,6 +25,7 @@ export const Q_GET_ORDERS_BY_CUSTOMER = gql`
                         id
                         name
                         stock
+                        projected_stock
                         reorder
                         price
                     }

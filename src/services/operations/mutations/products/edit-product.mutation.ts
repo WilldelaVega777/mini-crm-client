@@ -18,6 +18,7 @@ export const M_UPDATE_PRODUCT = gql`
             name
             price
             stock
+            projected_stock
         }
     }    
 `;

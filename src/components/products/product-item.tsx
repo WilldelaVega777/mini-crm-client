@@ -36,17 +36,25 @@ export const ProductItem: React.SFC<IProductItemProps> =
         {
             cssClass = 'bg-paradise-green'
         }
-        else if (((props.product.stock > props.product.reorder) && (props.product.stock < props.product.reorder * 1.39)))
+        else if ((props.product.stock > props.product.reorder) && (props.product.stock < props.product.reorder * 1.39))
         {
-            cssClass = 'bg-golden-sand'
+            cssClass = 'bg-flat-flesh'
         }
-        else if ((((props.product.stock >= props.product.reorder))))
+        else if ((props.product.stock <= props.product.reorder) && (props.product.stock > 0))
         {
-            cssClass = 'bg-mandarin-red'
+            cssClass = 'bg-pink-glamour'
         }
-
+        else if (props.product.stock === 0)
+        {
+            cssClass = 'bg-jalapeno-red text-light'
+        }
+        else if (props.product.stock < 0)
+        {
+            cssClass = 'bg-primary text-light'
+        }        
+        
         return (
-            <tr className={cssClass}>
+            <tr className={`${cssClass} animated fadeIn`}>
                 <td>
                     {props.product.name}
                 </td>
@@ -63,24 +71,36 @@ export const ProductItem: React.SFC<IProductItemProps> =
                 <td className="text-center">
                     {props.product.reorder.toString()}
                 </td>
+
+                <td className="text-center">
+                    {(props.product.projected_stock as number).toString()}
+                </td>
                 
                 <td className="text-center">
                     {props.product.stock.toString()}
                 </td>
-                
-                <td className="text-right pl-4">
-                    <Link to={'/product/edit/:id'.replace(':id', props.product.id)}
-                        className="btn btn-primary btn-block d-md-inline-block mr-3"
+
+                <td className="align-right pl-1">
+                    <Link to={'/product/entry/:id'.replace(':id', props.product.id)}
+                        className="btn btn-primary d-md-inline-block mr-1"
                     >
-                        Editar
+                        <i className="fab fa-dropbox"></i>
                     </Link>
                 </td>
                 
-                <td className="align-right pl-2">
-                    <Link to={'/product/remove/:id'.replace(':id', props.product.id)}
-                        className="btn btn-danger btn-block d-md-inline-block mr-3"
+                <td className="align-right pl-1">
+                    <Link to={'/product/edit/:id'.replace(':id', props.product.id)}
+                        className="btn btn-info d-md-inline-block mr-1"
                     >
-                        Eliminar
+                        <i className="fas fa-edit"></i>
+                    </Link>
+                </td>
+                
+                <td className="align-right pl-1">
+                    <Link to={'/product/remove/:id'.replace(':id', props.product.id)}
+                        className="btn btn-danger d-md-inline-block mr-1"
+                    >
+                        <i className="far fa-trash-alt"></i>
                     </Link>
                 </td>
                 

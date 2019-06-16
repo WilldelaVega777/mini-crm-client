@@ -52,6 +52,7 @@ export interface ProductInput {
   id?: string | null;
   name: string;
   price: number;
+  projected_stock?: number | null;
   stock: number;
   reorder: number;
 }

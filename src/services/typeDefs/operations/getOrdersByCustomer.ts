@@ -13,6 +13,7 @@ export interface getOrdersByCustomer_getOrdersByCustomer_orders_items_product {
   id: string;
   name: string;
   stock: number;
+  projected_stock: number | null;
   reorder: number;
   price: number;
 }

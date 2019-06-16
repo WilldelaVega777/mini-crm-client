@@ -45,3 +45,4 @@ export const CtrlStock: React.SFC<ICtrlStockProps> =
             </React.Fragment>
         )
     }
+    

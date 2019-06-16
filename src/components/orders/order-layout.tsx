@@ -47,6 +47,8 @@ export class OrderLayout extends React.Component<IOrderLayoutProps, IOrderLayout
         return (
             <React.Fragment>
                 <div className="container mt-4">
+                    
+                    {/* Customer Data */}
                     <div className="form-row">
                         <div className="form-group col-md-4">
                             <h4 className="mb-3 text-secondary" style={{textAlign: 'center'}}>
@@ -62,7 +64,7 @@ export class OrderLayout extends React.Component<IOrderLayoutProps, IOrderLayout
                                 hideLabels={true}
                             />
                         </div>
-                        <div className="col col-md-8">
+                        <div className="col col-md-8 pr-3">
                             <div className="row">
                                 <div className="col col-md-12 d-flex justify-content-center">
                                     <h4 className="mb-3 ml-5 text-secondary">
@@ -73,104 +75,113 @@ export class OrderLayout extends React.Component<IOrderLayoutProps, IOrderLayout
                             <div className="row ml-5" style={{marginTop: '-17px'}}>
                                 <div className="col col-md-12">
                                     <hr/>
-                                    <Select 
-                                        options={this.productsToOptions(this.props.products)} 
-                                        isMulti={true}
-                                        components={Animated()}
-                                        placeholder="Seleccionar Productos"
-                                        className="mb-4"
-                                        onChange={
-                                            (value) => this.selectProduct_change(value)}
-                                        value={this.orderItemsToOptions(this.state.orderItems)}
-                                        isDisabled={this.validateForMoreOrderItems()}
-                                    />
-                                    <div className="d-flex justify-content-end mb-2" 
-                                         style={{marginTop: '-17px', minWidth: '100%'}}>
-
-                                        <span className="ml-4">
-                                            <strong className="text-primary">Subtotal:</strong>
-                                            &nbsp; 
-                                            <CurrencyFormat 
-                                                value={(this.state.orderTotal).toFixed(2)} 
-                                                thousandSeparator={true} 
-                                                prefix={'$'} 
-                                                displayType={'text'}
-                                            />                                            
-                                        </span>
-
-                                        <span className="ml-4">
-                                            <strong className="text-primary">IVA:</strong>
-                                            &nbsp; 
-                                            <CurrencyFormat 
-                                                value={(this.state.orderTotal * .16).toFixed(2)} 
-                                                thousandSeparator={true} 
-                                                prefix={'$'} 
-                                                displayType={'text'}
-                                            />                                            
-                                        </span>
-
+                                </div>
+                                
+                                {/* Order Data */}
+                                <div className="ml-1 p3 pt-3 bg-flat-flesh subtle-corners subtle-shadow"
+                                     style={{minWidth: '100%'}}
+                                >
                                     
-                                        <span className="ml-4">
-                                            <strong className="text-primary">Total:</strong>
-                                            &nbsp; 
-                                            <CurrencyFormat 
-                                                value={(this.state.orderTotal * 1.16).toFixed(2)}
-                                                thousandSeparator={true} 
-                                                prefix={'$'} 
-                                                displayType={'text'}
-                                            />                                            
-                                        </span>
-                                    </div>
-                                    <table className="table table-striped">
-                                        <thead>
-                                            <tr className="table-primary">
-                                                <th className="align-center">Cantidad</th>
-                                                <th className="align-center">Producto</th>
-                                                <th className="text-right">Precio</th>
-                                                <th className="text-right">Total</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                        {
-                                            this.state.orderItems.map((orderItem: OrderItemInput, index: number) => {
-                                                return (
-                                                    <CtrlOrderItem
-                                                        key={`${(orderItem.product.id as string)}${index.toString()}`}
-                                                        orderItem={orderItem}
-                                                        quantityChanged={(newOrderItem: OrderItemInput, newQuantity: number) => this.ctrlOrderItem_quantityChanged(newOrderItem, newQuantity)}
-                                                        orderItemDeleted={(orderItemId: string) => this.ctrlOrderItem_orderItemDeleted(orderItemId)}
-                                                    />                                                    
-                                                )                                                
-                                            })                                            
-                                        }   
-                                        </tbody>
-                                        <tfoot>
-                                            <tr className="table-success">
-                                                <td className="d-flex justify-content-end">IVA</td>
-                                                <td>
-                                                    <CurrencyFormat 
-                                                        value={(this.state.orderTotal * .16).toFixed(2)} 
-                                                        thousandSeparator={true} 
-                                                        prefix={'$'} 
-                                                        displayType={'text'} 
-                                                    />
-                                                </td>
-                                                <td></td>
-                                                <td className="text-right">
-                                                    <strong>
+                                    <div className="col col-md-12">
+                                        <Select 
+                                            options={this.productsToOptions(this.props.products)} 
+                                            isMulti={true}
+                                            components={Animated()}
+                                            placeholder="Seleccionar Productos"
+                                            className="mb-4"
+                                            onChange={
+                                                (value) => this.selectProduct_change(value)}
+                                            value={this.orderItemsToOptions(this.state.orderItems)}
+                                            isDisabled={this.validateForMoreOrderItems()}
+                                        />
+                                        <div className="d-flex justify-content-end mb-2" 
+                                            style={{marginTop: '-17px', minWidth: '100%'}}>
+
+                                            <span className="ml-4">
+                                                <strong className="text-primary">Subtotal:</strong>
+                                                &nbsp; 
+                                                <CurrencyFormat 
+                                                    value={(this.state.orderTotal).toFixed(2)} 
+                                                    thousandSeparator={true} 
+                                                    prefix={'$'} 
+                                                    displayType={'text'}
+                                                />                                            
+                                            </span>
+
+                                            <span className="ml-4">
+                                                <strong className="text-primary">IVA:</strong>
+                                                &nbsp; 
+                                                <CurrencyFormat 
+                                                    value={(this.state.orderTotal * .16).toFixed(2)} 
+                                                    thousandSeparator={true} 
+                                                    prefix={'$'} 
+                                                    displayType={'text'}
+                                                />                                            
+                                            </span>
+
+                                        
+                                            <span className="ml-4">
+                                                <strong className="text-primary">Total:</strong>
+                                                &nbsp; 
+                                                <CurrencyFormat 
+                                                    value={(this.state.orderTotal * 1.16).toFixed(2)}
+                                                    thousandSeparator={true} 
+                                                    prefix={'$'} 
+                                                    displayType={'text'}
+                                                />                                            
+                                            </span>
+                                        </div>
+                                        <table className="table table-striped">
+                                            <thead>
+                                                <tr className="table-primary">
+                                                    <th className="align-center">Cantidad</th>
+                                                    <th className="align-center">Producto</th>
+                                                    <th className="text-right">Precio</th>
+                                                    <th className="text-right">Total</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            {
+                                                this.state.orderItems.map((orderItem: OrderItemInput, index: number) => {
+                                                    return (
+                                                        <CtrlOrderItem
+                                                            key={`${(orderItem.product.id as string)}${index.toString()}`}
+                                                            orderItem={orderItem}
+                                                            quantityChanged={(newOrderItem: OrderItemInput, newQuantity: number) => this.ctrlOrderItem_quantityChanged(newOrderItem, newQuantity)}
+                                                            orderItemDeleted={(productId: string) => this.ctrlOrderItem_orderItemDeleted(productId)}
+                                                        />                                                    
+                                                    )                                                
+                                                })                                            
+                                            }   
+                                            </tbody>
+                                            <tfoot>
+                                                <tr className="table-success">
+                                                    <td className="d-flex justify-content-end">IVA</td>
+                                                    <td>
                                                         <CurrencyFormat 
-                                                            value={(this.state.orderTotal * 1.16).toFixed(2)} 
+                                                            value={(this.state.orderTotal * .16).toFixed(2)} 
                                                             thousandSeparator={true} 
                                                             prefix={'$'} 
                                                             displayType={'text'} 
                                                         />
-                                                    </strong>
-                                                </td>
-                                                <td></td>
-                                            </tr>
-                                        </tfoot>
-                                    </table>
+                                                    </td>
+                                                    <td></td>
+                                                    <td className="text-right">
+                                                        <strong>
+                                                            <CurrencyFormat 
+                                                                value={(this.state.orderTotal * 1.16).toFixed(2)} 
+                                                                thousandSeparator={true} 
+                                                                prefix={'$'} 
+                                                                displayType={'text'} 
+                                                            />
+                                                        </strong>
+                                                    </td>
+                                                    <td></td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -243,7 +254,7 @@ export class OrderLayout extends React.Component<IOrderLayoutProps, IOrderLayout
                 if (orderItem.product.id === newOrderItem.product.id)
                 {
                     // Enough in stock???
-                    if (newOrderItem.product.stock < newQuantity)
+                    if ((newOrderItem.product.projected_stock as number) < newQuantity)
                     {
                         Swal.fire(
                             'IMPORTANTE!', 
@@ -269,11 +280,11 @@ export class OrderLayout extends React.Component<IOrderLayoutProps, IOrderLayout
         }, () => this.calculateTotals() )
     }
     //-------------------------------------------------------------------------
-    ctrlOrderItem_orderItemDeleted(orderItemId: string)
+    ctrlOrderItem_orderItemDeleted(productId: string)
     {
         this.setState({
             orderItems : this.state.orderItems.filter((orderItem: OrderItemInput) => {
-                return (orderItem.id !== orderItemId)
+                return (orderItem.product.id !== productId)
             })
         }, () => this.calculateTotals() )
     }

@@ -19,12 +19,13 @@ import { Dashboard }                        from '../../views/Dashboard/dashboar
 import { Customers }                        from '../../views/Customers/_customers'
 import { CreateCustomer }                   from '../../views/Customers/create-customer'
 import { EditCustomer }                     from '../../views/Customers/edit-customer'
-import { RemoveCustomer }                   from '../../views/Customers/remove-customer'
+import { RemoveCustomer }                   from '../../views/Customers/remove-customer' 
 
 import { Products }                         from '../../views/Products/_products'
 import { CreateProduct }                    from '../../views/Products/create-product'
 import { EditProduct }                      from '../../views/Products/edit-product'
 import { RemoveProduct }                    from '../../views/Products/remove-product'
+import { StockEntry }                       from '../../views/Products/stock-entry'
 
 import { Orders }                           from '../../views/Orders/_orders'
 import { CreateOrder }                      from '../../views/Orders/create-order'
@@ -144,6 +145,13 @@ export class App extends React.Component<IAppProps, IAppState>
                                             <RemoveProduct {...props} shouldNavigateBack={true} />
                                         }
                                     />
+                                    
+                                    <Route exact
+                                        path="/product/entry/:id"
+                                        render={(props) =>
+                                            <StockEntry {...props} shouldNavigateBack={true} />
+                                        }
+                                    />                                    
                                     
                                     {/* Orders */}
                                     <Route exact

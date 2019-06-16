@@ -66,7 +66,7 @@ export const OrderCard: React.SFC<IOrderCardProps> =
             (updateOrder) => {
                 return (
                     <div className="col-md-4">
-                        <div className={`card mb-3 ${cssClass} animated fadeInLeft`}>
+                        <div className={`card mb-3 ${cssClass} animated fadeInLeft subtle-shadow`}>
                             <div className="card-body">
                                 <p className="card-text font-weight-bold">
                                     Estado:
@@ -75,26 +75,41 @@ export const OrderCard: React.SFC<IOrderCardProps> =
                                         defaultValue={props.order.status.toString()}
                                         onChange={e => { cbStatus_change(e) }}
                                     >
+                                        // Once Changed, should never be requested again!
+                                        {(props.order.status === OrderStatus.REQUESTED) && 
                                         <option 
                                             value={OrderStatus.REQUESTED.toString()}
                                         >
+
                                             PENDIENTE
                                         </option>
+                                        }
+                                        
+                                        // Only if Requested || Cancelled
+                                        {(props.order.status === OrderStatus.REQUESTED || props.order.status === OrderStatus.CANCELLED) && 
                                         <option 
                                             value={OrderStatus.CANCELLED.toString()}
                                         >
                                             CANCELADO
                                         </option>
+                                        }
+                                        
+                                        // Only if Requested || Dispatched
+                                        {(props.order.status === OrderStatus.REQUESTED || props.order.status === OrderStatus.DISPATCHED) && 
                                         <option 
                                             value={OrderStatus.DISPATCHED.toString()}
                                         >
                                             COMPLETADO
                                         </option>
+                                        }
+                                        
+                                        {(props.order.status === OrderStatus.PAID || props.order.status === OrderStatus.DISPATCHED) && 
                                         <option 
                                             value={OrderStatus.PAID.toString()}
                                         >
                                             PAGADO
                                         </option>
+                                        }
                                     </select>
                                 </p>
                                 

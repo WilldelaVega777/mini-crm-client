@@ -1,6 +1,17 @@
+body {
+    background-color:  #dfe6e9;
+    background-image: url(../assets/backgrounds/interlaced.png);
+    background-repeat: repeat;
+}
+
 .bg-sour-lemon
 {
     background-color: #ffeaa7;
+}
+
+.bg-flat-flesh
+{
+    background-color: #fad390;
 }
 
 .bg-soothing-breeze
@@ -43,6 +54,25 @@
     background-color: #e55039;
 }
 
+.bg-pink-glamour
+{
+    background-color: #ff7675
+}
+
 .page-item.active .page-link {
     z-index: 0;
+}
+
+.subtle-shadow {
+    box-shadow: 0px 3px 15px rgba(0,0,0,0.2);
+}
+
+.subtle-corners
+{
+    border-radius: 4px;
+}
+
+.btn-outline-danger
+{
+    background-color: #fff;
 }

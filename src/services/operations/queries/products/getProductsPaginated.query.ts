@@ -14,10 +14,11 @@ export const Q_GET_PRODUCTS = gql`
     query getProductsPaginated($limit: Int!, $offset: Int!, $stock: Boolean) {
         getProducts(limit: $limit, offset: $offset, stock: $stock) {
             products {
-                id,
-                name,
-                price,
-                reorder,
+                id
+                name
+                price
+                reorder
+                projected_stock
                 stock
             }
             

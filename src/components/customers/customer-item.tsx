@@ -34,24 +34,24 @@ export const CustomerItem: React.SFC<ICustomerItemProps> =
                 </div>
                 <div className="col-md-8 d-flex justify-content-end">
                     <Link to={'/orders/:id'.replace(':id', props.customer.id)}
-                        className="btn btn-warning d-block d-md-inline-block mr-3"
+                        className="btn btn-warning d-md-inline-block mr-3"
                     >
-                        Ver Ordenes
+                        <i className="fas fa-eye"></i>
                     </Link>
                     <Link to={'/order/create/:id'.replace(':id', props.customer.id)}
-                        className="btn btn-info d-block d-md-inline-block mr-3"
+                        className="btn btn-primary d-md-inline-block mr-3"
                     >
-                        Agregar Orden
+                        <i className="far fa-clipboard"></i>
                     </Link>
                     <Link to={'/customer/edit/:id'.replace(':id', props.customer.id)}
-                        className="btn btn-primary d-block d-md-inline-block mr-3"
+                        className="btn btn-info d-md-inline-block mr-3"
                     >
-                        Editar Cliente
+                        <i className="fas fa-edit"></i>
                     </Link>
                     <Link to={'/customer/remove/:id'.replace(':id', props.customer.id)}
-                        className="btn btn-danger d-block d-md-inline-block"
+                        className="btn btn-danger d-md-inline-block"
                     >
-                        Eliminar Cliente
+                        <i className="far fa-trash-alt"></i>
                     </Link>
                 </div>
             </div>

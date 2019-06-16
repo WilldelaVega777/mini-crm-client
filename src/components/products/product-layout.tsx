@@ -21,9 +21,10 @@ interface IProductLayoutProps
     data?: ProductInput | undefined
     validators: ValidationHelper
     readOnly?: boolean | undefined
+    editMode?: boolean | undefined
 }
 //-------------------------------------------------------------------------
-// Component for Emails:
+// Component for Product Layout:
 //-------------------------------------------------------------------------
 export const ProductLayout: React.SFC<IProductLayoutProps> =
 (props) =>
@@ -43,40 +44,42 @@ export const ProductLayout: React.SFC<IProductLayoutProps> =
 
     return (
         <React.Fragment>
-            <div className="form-row">
-                <div className="form-group col-md-6">
-                    <CtrlName validators={props.validators}
-                        value={
-                            (product) ? (product as ProductInput).name : undefined
-                        }
-                        readOnly={(props.readOnly) ? true : false}
-                    />
+            <div className="p-3 subtle-shadow mb-4 bg-soothing-breeze subtle-corners animated fadeInLeft">
+                <div className="form-row">
+                    <div className="form-group col-md-6">
+                        <CtrlName validators={props.validators}
+                            value={
+                                (product) ? (product as ProductInput).name : undefined
+                            }
+                            readOnly={(props.readOnly) ? true : false}
+                        />
+                    </div>
+                    <div className="form-group col-md-6">
+                        <CtrlPrice validators={props.validators}
+                            value={
+                                (product) ? strPrice : undefined
+                            }
+                            readOnly={(props.readOnly) ? true : false}
+                        />
+                    </div>                
                 </div>
-                <div className="form-group col-md-6">
-                    <CtrlPrice validators={props.validators}
-                        value={
-                            (product) ? strPrice : undefined
-                        }
-                        readOnly={(props.readOnly) ? true : false}
-                    />
-                </div>                
-            </div>
-            <div className="form-row">
-                <div className="form-group col-md-6">
-                    <CtrlReorder validators={props.validators}
-                        value={
-                            (product) ? strReorder : undefined
-                        }
-                        readOnly={(props.readOnly) ? true : false}
-                    />
-                </div>
-                <div className="form-group col-md-6">
-                    <CtrlStock validators={props.validators}
-                        value={
-                            (product) ? strStock : undefined
-                        }
-                        readOnly={(props.readOnly) ? true : false}
-                    />
+                <div className="form-row">
+                    <div className="form-group col-md-6">
+                        <CtrlReorder validators={props.validators}
+                            value={
+                                (product) ? strReorder : undefined
+                            }
+                            readOnly={(props.readOnly) ? true : false}
+                        />
+                    </div>
+                    <div className="form-group col-md-6">
+                        <CtrlStock validators={props.validators}
+                            value={
+                                (product) ? strStock : undefined
+                            }
+                            readOnly={((props.readOnly) || (props.editMode)) ? true : false}
+                        />
+                    </div>
                 </div>
             </div>
 

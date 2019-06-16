@@ -18,6 +18,7 @@ export const Q_GET_PRODUCT = gql`
             name
             price
             reorder
+            projected_stock
             stock
         }
     }

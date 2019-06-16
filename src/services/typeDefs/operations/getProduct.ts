@@ -12,6 +12,7 @@ export interface getProduct_getProduct {
   name: string;
   price: number;
   reorder: number;
+  projected_stock: number | null;
   stock: number;
 }
 

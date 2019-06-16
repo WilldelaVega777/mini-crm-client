@@ -12,6 +12,7 @@ export interface getProductsPaginated_getProducts_products {
   name: string;
   price: number;
   reorder: number;
+  projected_stock: number | null;
   stock: number;
 }
 

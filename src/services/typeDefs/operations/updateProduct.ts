@@ -14,6 +14,7 @@ export interface updateProduct_updateProduct {
   name: string;
   price: number;
   stock: number;
+  projected_stock: number | null;
 }
 
 export interface updateProduct {

@@ -170,6 +170,7 @@ export class CreateProduct extends
         //console.log(message);
 
         value = ((name === "price") ? Number(value) : value)
+        value = ((name === "reorder") ? Number(value) : value)
         value = ((name === "stock") ? Number(value) : value)
         
         this.setState({

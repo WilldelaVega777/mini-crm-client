@@ -19,7 +19,7 @@ import { ValidationDescriptor }     from '../../helpers/validations.helper'
 //---------------------------------------------------------------------------------
 // Imports Section (Internal Components)
 //---------------------------------------------------------------------------------
-import { ProductLayout }            from '../../components/products/product-layout'
+import { StockEntryLayout }         from '../../components/products/stock-entry-layout'
 import { Loading }                  from '../../components/Shared/loading'
 //---------------------------------------------------------------------------------
 // Imports Section (External Components)
@@ -30,8 +30,8 @@ import Swal                         from 'sweetalert2'
 //---------------------------------------------------------------------------------
 // Component Class
 //---------------------------------------------------------------------------------
-export class EditProduct extends
-    React.Component<IEditProductProps, IEditProductState>
+export class StockEntry extends
+    React.Component<IStockEntryProps, IStockEntryState>
 {
     //-------------------------------------------------------------------------
     // Private Fields Section
@@ -43,7 +43,7 @@ export class EditProduct extends
     //-------------------------------------------------------------------------
     // Constructor Method Section
     //-------------------------------------------------------------------------
-    constructor(props: IEditProductProps)
+    constructor(props: IStockEntryProps)
     {
         // Calls Super
         super(props)
@@ -58,11 +58,10 @@ export class EditProduct extends
 
         // Initialize State
         this.state = {
-            editProduct: {
-                ...product,
-                price: 0.0,
-                stock: 0
+            StockEntry: {
+                ...product
             },
+            newAmount: 0,
             validators: []
         }
     }
@@ -120,8 +119,8 @@ export class EditProduct extends
     }
     //-------------------------------------------------------------------------
     private renderForm(
-        props: IEditProductProps,
-        state: IEditProductState,
+        props: IStockEntryProps,
+        state: IStockEntryState,
         validators: ValidationHelper
     ): JSX.Element 
     {
@@ -132,7 +131,7 @@ export class EditProduct extends
             <React.Fragment>
 
                 {/* PAGE TITLE  */}
-                <h2 className="text-center mb-3">Editar Producto</h2>
+                <h2 className="text-center mb-3">Entrada de Almacén</h2>
 
                 {/* MAIN COMPONENT LAYOUT  */}
                 <div className="row justify-content-center">
@@ -176,18 +175,15 @@ export class EditProduct extends
                                             {
                                                 return (
 
-                                                    <form name="frmEditProduct"
+                                                    <form name="frmStockEntry"
                                                         className="col-md-8 m-3"
-                                                        onSubmit={e => this.frmEditProduct_submit(e, updateProduct, refetch)}
-                                                        onChange={e => this.frmEditProduct_change(e)}
+                                                        onSubmit={e => this.frmStockEntry_submit(e, updateProduct, refetch)}
                                                     >
-
-                                                        <ProductLayout
+                                                        <StockEntryLayout
                                                             data={this.product}
                                                             validators={this.validators}
-                                                            editMode={true}
+                                                            onAmountChanged={(e: number) => this.stockEntryLayout_amountChanged(e)}
                                                         />
-
                                                     </form>
 
                                                 )
@@ -213,7 +209,7 @@ export class EditProduct extends
             this.timeoutId = window.setTimeout(() =>
             {
                 this.setState({
-                    editProduct: this.product
+                    StockEntry: this.product
                 })
                 window.clearTimeout(this.timeoutId)
             }, 0)
@@ -223,26 +219,15 @@ export class EditProduct extends
     //-------------------------------------------------------------------------
     // Eventhandler Methods Section
     //-------------------------------------------------------------------------
-    frmEditProduct_change(e: SyntheticEvent)
+    stockEntryLayout_amountChanged(e: number)
     {
-        let { name, value } = (e.target as HTMLFormElement)
-
-        // Debug:
-        //const message = `Campo: ${name}, Valor: ${value}`
-        //console.log(message);
-
-        value = ((name === "price") ? Number(value) : value)
-        value = ((name === "stock") ? Number(value) : value)
-
         this.setState({
-            editProduct: {
-                ...this.state.editProduct,
-                [name]: value
-            }
+            newAmount: e
         })
     }
+
     //-------------------------------------------------------------------------
-    async frmEditProduct_submit(e: SyntheticEvent, updateProduct: any, refetch: any)
+    async frmStockEntry_submit(e: SyntheticEvent, updateProduct: any, refetch: any)
     : Promise<void | undefined>
     {
         e.preventDefault()
@@ -252,8 +237,17 @@ export class EditProduct extends
         if ((e.target as HTMLFormElement).checkValidity())
         {
             // Specific Form (Entity) Preparation
+
+            this.setState({
+            StockEntry : ({
+                ...this.state.StockEntry,
+                stock: this.state.StockEntry.stock += this.state.newAmount,
+                projected_stock: (this.product.projected_stock as number) += this.state.newAmount
+            } as ProductInput)
+            })
+
             const input = {
-                ...this.state.editProduct
+                ...this.state.StockEntry
             }
 
             try
@@ -287,15 +281,16 @@ export class EditProduct extends
 //---------------------------------------------------------------------------------
 // Interface Definitions Section
 //---------------------------------------------------------------------------------
-export interface IEditProductProps
+export interface IStockEntryProps
 {
     shouldNavigateBack: boolean,
     history: any,
     match: any
 }
 //---------------------------------------------------------------------------------
-export interface IEditProductState
+export interface IStockEntryState
 {
-    editProduct: ProductInput,
-    validators: ValidationDescriptor[]
+    StockEntry  : ProductInput,
+    newAmount   : number,
+    validators  : ValidationDescriptor[]
 }

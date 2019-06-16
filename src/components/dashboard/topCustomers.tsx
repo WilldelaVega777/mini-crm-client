@@ -2,11 +2,7 @@
 // Imports Section (React Libs)
 //---------------------------------------------------------------------------------
 import React                                from 'react'
-//---------------------------------------------------------------------------------
-// Imports Section (Apollo Main Type for Component)
-//---------------------------------------------------------------------------------
-import { getTopCustomers_getTopCustomers as TopCustomer, getTopCustomers }      
-from '../../services/typeDefs/operations/getTopCustomers'
+
 //---------------------------------------------------------------------------------
 // Imports Section (Apollo Interfaces)
 //---------------------------------------------------------------------------------
@@ -26,7 +22,6 @@ import { XAxis }                            from 'recharts';
 import { YAxis }                            from 'recharts';
 import { CartesianGrid }                    from 'recharts';
 import { Tooltip }                          from 'recharts';
-import { Legend }                           from 'recharts';
 
 //---------------------------------------------------------------------------------
 // Component Class
@@ -75,61 +70,61 @@ export class TopCustomers extends React.Component<ITopCustomersProps, ITopCustom
     {
         return (
             <React.Fragment>
+                
+                <div className={props.className}>
+                    { this.getComponentTitle() }
 
-                { this.getComponentTitle() }
-
-                <div className="row border border-primary" style={{ minHeight: '270px'}}>
-                    <div className="col col-md-12 d-flex justify-content-center align-middle">
-                        <div className="row">
-                            <div className="col col-md-12 my-auto">
-                                <QueryGetTopCustomers 
-                                    query={Q_GET_TOP_CUSTOMERS} 
-                                    pollInterval={1000}
-                                >
-                                {
-                                    ({loading, error, data, startPolling, stopPolling}) => {
-                                        if (loading)
-                                        {
-                                            return (
-                                                <Loading/>
-                                            )
-                                        }
-                                        if (error)
-                                        {
-                                            //${error.message}`
-                                            Swal.fire(
-                                                'Error', 
-                                                `Cargando Datos: Parameters empepitation aborting..`,
-                                                'error'
-                                            )
-                                            return ''
-                                        }
-                                        if (data)
-                                        {
-                                            const topCustomerData = data.getTopCustomers
-                                            
-                                            console.log(data)
-                                            return (
-                                                <React.Fragment>
-                                                    <BarChart width={430} height={250} data={topCustomerData as Object[]}
-                                                        margin={{top: 5, right: 30, left: 20, bottom: 5}}>
-                                                        <CartesianGrid strokeDasharray="3 3"/>
-                                                        <XAxis dataKey="name"/>
-                                                        <YAxis/>
-                                                        <Tooltip/>
-                                                        <Bar dataKey="total" fill="#8884d8" />
-                                                    </BarChart>
-                                                </React.Fragment>
-                                            )
-                                        }
-                                    }   
-                                }
-                                </QueryGetTopCustomers>
+                    <div className="row border border-primary subtle-shadow bg-white" style={{ minHeight: '270px'}}>
+                        <div className="col col-md-12 d-flex justify-content-center align-middle">
+                            <div className="row">
+                                <div className="col col-md-12 my-auto">
+                                    <QueryGetTopCustomers 
+                                        query={Q_GET_TOP_CUSTOMERS} 
+                                        pollInterval={1000}
+                                    >
+                                    {
+                                        ({loading, error, data, startPolling, stopPolling}) => {
+                                            if (loading)
+                                            {
+                                                return (
+                                                    <Loading/>
+                                                )
+                                            }
+                                            if (error)
+                                            {
+                                                //${error.message}`
+                                                Swal.fire(
+                                                    'Error', 
+                                                    `Cargando Datos: Parameters empepitation aborting..`,
+                                                    'error'
+                                                )
+                                                return ''
+                                            }
+                                            if (data)
+                                            {
+                                                const topCustomerData = data.getTopCustomers
+                                                
+                                                return (
+                                                    <React.Fragment>
+                                                        <BarChart width={430} height={250} data={topCustomerData as {}[]}
+                                                            margin={{top: 5, right: 30, left: 20, bottom: 5}}>
+                                                            <CartesianGrid strokeDasharray="3 3"/>
+                                                            <XAxis dataKey="name"/>
+                                                            <YAxis/>
+                                                            <Tooltip/>
+                                                            <Bar dataKey="total" fill="#fdcb6e" />
+                                                        </BarChart>
+                                                    </React.Fragment>
+                                                )
+                                            }
+                                        }   
+                                    }
+                                    </QueryGetTopCustomers>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>                
-                
+                    </div>                
+                </div>
             </React.Fragment>
         )
     }    
@@ -159,7 +154,7 @@ export class TopCustomers extends React.Component<ITopCustomersProps, ITopCustom
 //---------------------------------------------------------------------------------
 export interface ITopCustomersProps
 {
-    
+    className? : string | undefined
 }
 //---------------------------------------------------------------------------------
 export interface ITopCustomersState

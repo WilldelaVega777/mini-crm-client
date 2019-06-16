@@ -84,6 +84,7 @@ export class Customers extends React.Component<ICustomersProps, ICustomersState>
     {
         return (
             <React.Fragment>
+                <div className="animated fadeIn">
                 <QueryGetCustomersPaginated
                     query={Q_GET_CUSTOMERS}
                     variables={{ limit: props.limit, offset: this.state.offset }}
@@ -121,7 +122,7 @@ export class Customers extends React.Component<ICustomersProps, ICustomersState>
                                     {this.getPageTitle()}
                                     
                                     {/* Customer List */}
-                                    <ul className="list-group">
+                                    <ul className="list-group subtle-shadow">
                                         {
                                             this.customers.map(customer => (
                                                 <CustomerItem customer={(customer as Customer)} key={customer.id} />
@@ -149,7 +150,7 @@ export class Customers extends React.Component<ICustomersProps, ICustomersState>
                         }
                     }}
                 </QueryGetCustomersPaginated>
-                
+                </div>
                 
             </React.Fragment>
         )

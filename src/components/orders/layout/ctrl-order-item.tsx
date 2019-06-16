@@ -31,7 +31,7 @@ export const CtrlOrderItem: React.SFC<ICtrlOrderItemProps> =
     // Render Section
     //-------------------------------------------------------------------------    
     return (
-        <tr>
+        <tr className="animated fadeInDown">
             
             <td>
                 <input
@@ -41,7 +41,7 @@ export const CtrlOrderItem: React.SFC<ICtrlOrderItemProps> =
                     placeholder="Cant."
                     required
                     min={0}
-                    max={props.orderItem.product.stock}
+                    max={(props.orderItem.product.projected_stock as number)}
                     minLength={1}
                     maxLength={8}
                     pattern="^[0-9]*$"
@@ -76,7 +76,7 @@ export const CtrlOrderItem: React.SFC<ICtrlOrderItemProps> =
             <td className="align-middle">
                <button  type="button"
                         className="btn btn-danger"
-                        onClick={() => cmdDelete_click(props.orderItem.id as string)}
+                        onClick={() => cmdDelete_click(props.orderItem.product.id as string)}
                 >
                    <i className="far fa-trash-alt"></i>
                 </button> 
@@ -94,8 +94,8 @@ export const CtrlOrderItem: React.SFC<ICtrlOrderItemProps> =
         props.quantityChanged(props.orderItem, currentQuantity)
     }
     //-------------------------------------------------------------------------
-    function cmdDelete_click(orderId: string)
+    function cmdDelete_click(productId: string)
     {
-        props.orderItemDeleted(orderId)
+        props.orderItemDeleted(productId)
     }
 }

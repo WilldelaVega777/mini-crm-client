@@ -59,10 +59,10 @@ export class Dashboard extends React.Component<IDashboardProps, IDashboardState>
                 
                 <div className="row justify-content-center">
                     <div className="col col-md-5 mr-5">
-                        <TopCustomers/>
+                        <TopCustomers className="animated fadeInLeft"/>
                     </div>
                     <div className="col col-md-5">
-                        <TopCustomers/>
+                        <TopCustomers className="animated fadeInRight"/>
                     </div>                    
                 </div>
                 

@@ -46,80 +46,82 @@ export const CustomerLayout: React.SFC<ICustomerLayoutProps> =
     }
     return (
         <React.Fragment>
-            <div className="form-row">
-                <div className="form-group col-md-6">
-                    <CtrlFirstname validators={props.validators} 
-                        value={
-                            (customer) ? (customer as CustomerInput).first_name : undefined
-                        }
-                        readOnly={ (props.readOnly) ? true : false }
-                        hideLabels={props.hideLabels}
-                    />
+            <div className="p-3 subtle-shadow mb-4 bg-soothing-breeze subtle-corners animated fadeInRight">
+                <div className="form-row">
+                    <div className="form-group col-md-6">
+                        <CtrlFirstname validators={props.validators} 
+                            value={
+                                (customer) ? (customer as CustomerInput).first_name : undefined
+                            }
+                            readOnly={ (props.readOnly) ? true : false }
+                            hideLabels={props.hideLabels}
+                        />
+                    </div>
+                    <div className="form-group col-md-6">
+                        <CtrlLastname validators={props.validators} 
+                            value={
+                                (customer) ? (customer as CustomerInput).last_name : undefined
+                            }
+                            readOnly={ (props.readOnly) ? true : false }
+                            hideLabels={props.hideLabels}
+                        />
+                    </div>
                 </div>
-                <div className="form-group col-md-6">
-                    <CtrlLastname validators={props.validators} 
-                        value={
-                            (customer) ? (customer as CustomerInput).last_name : undefined
-                        }
-                        readOnly={ (props.readOnly) ? true : false }
-                        hideLabels={props.hideLabels}
-                    />
+                <div className="form-row">
+                    <div className="form-group col-md-12">
+                        <CtrlCompany validators={props.validators}
+                            value={
+                                (customer) ? (customer as CustomerInput).company : undefined
+                            }
+                            readOnly={ (props.readOnly) ? true : false }
+                            hideLabels={props.hideLabels}
+                        />
+                    </div>
                 </div>
-            </div>
-            <div className="form-row">
-                <div className="form-group col-md-12">
-                    <CtrlCompany validators={props.validators}
-                        value={
-                            (customer) ? (customer as CustomerInput).company : undefined
-                        }
-                        readOnly={ (props.readOnly) ? true : false }
-                        hideLabels={props.hideLabels}
-                    />
-                </div>
-            </div>
 
-            <CtrlEmails
-                emails={props.emails}
-                
-                triggerCreate={(e: SyntheticEvent) =>
-                {
-                    if (props.triggerCreate)
+                <CtrlEmails
+                    emails={props.emails}
+                    
+                    triggerCreate={(e: SyntheticEvent) =>
                     {
-                        props.triggerCreate(e)
-                    }
-                }}
-                triggerDelete={(e: SyntheticEvent, indexToRemove: number) =>
-                {
-                    if (props.triggerDelete)
+                        if (props.triggerCreate)
+                        {
+                            props.triggerCreate(e)
+                        }
+                    }}
+                    triggerDelete={(e: SyntheticEvent, indexToRemove: number) =>
                     {
-                        props.triggerDelete(e, indexToRemove)
-                    }
-                }}
-                
-                validators={props.validators}
-                readOnly={ (props.readOnly) ? true : false }
-                maxEmails={ (props.maxEmails) ? props.maxEmails : 0 }
-                hideLabels={props.hideLabels}
-            />
+                        if (props.triggerDelete)
+                        {
+                            props.triggerDelete(e, indexToRemove)
+                        }
+                    }}
+                    
+                    validators={props.validators}
+                    readOnly={ (props.readOnly) ? true : false }
+                    maxEmails={ (props.maxEmails) ? props.maxEmails : 0 }
+                    hideLabels={props.hideLabels}
+                />
 
-            <div className="form-row">
-                <div className="form-group col-md-5">
-                    <CtrlAge validators={props.validators} 
-                        value={
-                            (customer) ? strAge : undefined
-                        }
-                        readOnly={ (props.readOnly) ? true : false }
-                        hideLabels={props.hideLabels}
-                    />
-                </div>
-                <div className="form-group col-md-7">
-                    <CtrlType validators={props.validators} 
-                        value={
-                            (customer) ? (customer as CustomerInput).type : undefined
-                        }
-                        readOnly={ (props.readOnly) ? true : false }
-                        hideLabels={props.hideLabels}
-                    />
+                <div className="form-row">
+                    <div className="form-group col-md-5">
+                        <CtrlAge validators={props.validators} 
+                            value={
+                                (customer) ? strAge : undefined
+                            }
+                            readOnly={ (props.readOnly) ? true : false }
+                            hideLabels={props.hideLabels}
+                        />
+                    </div>
+                    <div className="form-group col-md-7">
+                        <CtrlType validators={props.validators} 
+                            value={
+                                (customer) ? (customer as CustomerInput).type : undefined
+                            }
+                            readOnly={ (props.readOnly) ? true : false }
+                            hideLabels={props.hideLabels}
+                        />
+                    </div>
                 </div>
             </div>
             
