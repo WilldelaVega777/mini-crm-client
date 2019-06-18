@@ -152,9 +152,9 @@ export class Customers extends React.Component<ICustomersProps, ICustomersState>
                                     
                                     
                                     <PaginatorFunctional 
-                                        maxRangeSize="3"
-                                        pageSize="3"
-                                        totalRecords="19"
+                                        maxRangeSize={3}
+                                        pageSize={3}
+                                        totalRecords={19}
                                         onPageChange={
                                             (newOffset: number, newPage: number, initialRange?: number | undefined) => {
                                                 (initialRange) ? 

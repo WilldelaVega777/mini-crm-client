@@ -20,7 +20,8 @@
         "recharts": "^1.6.2",
         "sweetalert2": "^8.11.6",
         "sweetalert2-react-content": "^1.1.0",
-        "typescript": "3.4.5"
+        "typescript": "3.4.5",
+        "use-state-with-callback": "^1.0.16"
     },
     "scripts": {
         "react:serve": "react-scripts start",
