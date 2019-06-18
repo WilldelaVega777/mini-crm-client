@@ -1,8 +1,9 @@
 //---------------------------------------------------------------------------------
 // Imports Section 
 //---------------------------------------------------------------------------------
-import React, { SyntheticEvent }            from 'react'
-
+import React                    from 'react'
+import { useState }             from 'react'
+import { SyntheticEvent }       from 'react'
 //---------------------------------------------------------------------------------
 // Component Class
 //---------------------------------------------------------------------------------
@@ -253,4 +254,96 @@ interface IPaginatorState
 {
     initialPageInRange  : number
     currentPage         : number
+}
+
+//---------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------
+
+//---------------------------------------------------------------------------------
+// Component Interfaces
+//---------------------------------------------------------------------------------
+interface IPaginatorFunctionalProps
+{
+    maxRangeSize            : string  // 3
+    pageSize                : string  // 3              
+    totalRecords            : string  // 19
+    onPageChange            : (newOffset: number, newPage: number, initialPage?: 
+                                number | undefined) => void    
+}
+
+//---------------------------------------------------------------------------------
+// Component for First Name:
+//---------------------------------------------------------------------------------
+export const PaginatorFunctional: React.SFC<IPaginatorFunctionalProps> =
+(props) =>
+{
+    //-----------------------------------------------------------------------------
+    // State Section
+    //-----------------------------------------------------------------------------
+    const [currentState, setCurrentState] = useState({
+        currentPage : 1,
+        initialPageInRange: 1
+    })
+    
+    //-----------------------------------------------------------------------------
+    // Methods Section
+    //-----------------------------------------------------------------------------
+    function renderPageItems(): JSX.Element[]
+    {
+        // Return Value
+        const items: JSX.Element[] = []
+
+        for (let iCounter: number = 0; iCounter < getMaxPossibleRange(); iCounter++)
+        {
+            items.push(
+                <li key={iCounter} className={(currentState.currentPage === (currentState.initialPageInRange + iCounter)) ?
+                    'page-item active' : 'page-item'}>
+
+                    <a className="page-link"
+                        href="#"
+                        onClick={(e: SyntheticEvent) => goToPage(currentState.initialPageInRange + iCounter, e)}
+                    >
+                        {currentState.initialPageInRange + iCounter}
+                    </a>
+                </li>
+            )
+        }
+        
+        return items
+    }
+    
+    //-----------------------------------------------------------------------------
+    function getMaxPossibleRange()
+    {
+        return 3
+    }
+    //-----------------------------------------------------------------------------
+    function goToPage(page: number, e: SyntheticEvent)
+    {
+        e.preventDefault()
+
+        setCurrentState({
+            currentPage : page,
+            initialPageInRange: 1
+        })
+        
+        props.onPageChange((page * Number(props.pageSize), page)
+    }
+    
+    //-----------------------------------------------------------------------------
+    // Render Section
+    //-----------------------------------------------------------------------------
+    return (
+            <div className="row justify-content-center mt-3">
+                <nav>
+                    <ul className="pagination">
+                        
+                        { renderPageItems() }
+
+                    </ul>
+                </nav>
+            </div>           
+    )
 }

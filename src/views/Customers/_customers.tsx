@@ -11,6 +11,9 @@ import { Link }                                 from 'react-router-dom'
 import { Loading }                              from '../../components/Shared/loading'
 import Swal                                     from 'sweetalert2'
 
+
+import { PaginatorFunctional }                  from '../../components/Shared/paginator'
+
 //---------------------------------------------------------------------------------
 // Component Class
 //---------------------------------------------------------------------------------
@@ -145,6 +148,23 @@ export class Customers extends React.Component<ICustomersProps, ICustomersState>
                                             }
                                         }
                                     />
+                                    
+                                    
+                                    
+                                    <PaginatorFunctional 
+                                        maxRangeSize="3"
+                                        pageSize="3"
+                                        totalRecords="19"
+                                        onPageChange={
+                                            (newOffset: number, newPage: number, initialRange?: number | undefined) => {
+                                                (initialRange) ? 
+                                                    this.setPageFor(newOffset, newPage, initialRange ) 
+                                                    : this.setPageFor(newOffset, newPage)
+                                            }
+                                        }                                        
+                                    />
+                                    
+                                    
                                 </React.Fragment>
                             )
                         }
