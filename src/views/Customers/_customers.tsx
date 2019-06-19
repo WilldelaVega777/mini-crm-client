@@ -12,7 +12,7 @@ import { Loading }                              from '../../components/Shared/lo
 import Swal                                     from 'sweetalert2'
 
 
-import { PaginatorFunctional }                  from '../../components/Shared/paginator'
+import { PaginatorFunctional }                  from '../../components/Shared/paginator-functional'
 
 //---------------------------------------------------------------------------------
 // Component Class
