@@ -41,7 +41,9 @@ export class Customers extends React.Component<ICustomersProps, ICustomersState>
         this.state = {
             offset              : 0,
             initialPageInRange  : 1,
-            currentPage         : 1
+            currentPage         : 1,
+            customers           : [],
+            totalRecords        : 0
         }
     }
     
@@ -55,7 +57,10 @@ export class Customers extends React.Component<ICustomersProps, ICustomersState>
 
                 {/* Apply CSS  */}
                 {this.getCSS()}
-                
+
+                {/* Loads State with Query Data  */}
+                {this.executeQuery(this.props, this.state)}
+
                 {/* Create Layout  */}
                 {this.renderLayout(this.props, this.state)}
                 
@@ -82,95 +87,109 @@ export class Customers extends React.Component<ICustomersProps, ICustomersState>
         )
     }
     //-------------------------------------------------------------------------
-    private renderLayout(props: ICustomersProps, state: ICustomersState)
+    private executeQuery(props: ICustomersProps, state: ICustomersState)
     : JSX.Element 
     {
         return (
             <React.Fragment>
                 <div className="animated fadeIn">
-                <QueryGetCustomersPaginated
-                    query={Q_GET_CUSTOMERS}
-                    variables={{ limit: props.limit, offset: this.state.offset }}
-                    pollInterval={1000}
-                >
-                    {({ loading, error, data, startPolling, stopPolling, refetch }) =>
-                    {
-                        if (loading)
-                        {
-                            return (
-                                <Loading/>
-                            )
+                    <QueryGetCustomersPaginated
+                        query={Q_GET_CUSTOMERS}
+                        variables={{ limit: props.limit, offset: this.state.offset }}
+                        pollInterval={1000}
+                        onCompleted={() => 
+                            {
+                                setTimeout(() => {                               
+                                    this.setState({
+                                        customers: this.customers,
+                                        totalRecords : this.totalRecords
+                                    })
+                                }, 0)
+                            }
                         }
-                        if (error)
+                    >
+                        {({ loading, error, data, startPolling, stopPolling, refetch }) =>
                         {
-                            //${error.message}`
-                            Swal.fire(
-                                'Error', 
-                                `Cargando Datos: Parameters empepitation aborting..`,
-                                'error'
-                            )
-                            return ''
-                        }
-                        if (data)
-                        {
-                            // Pass Data to Private Properties
-                            this.customers    = data.getCustomers.customers
-                            this.totalRecords = data.getCustomers.metadata.totalRecords
-                            
-                            // Build UI
-                            return (
-                                <React.Fragment>
-                                    
-                                    {/* PAGE TITLE */}
-                                    {this.getPageTitle()}
-                                    
-                                    {/* Customer List */}
-                                    <ul className="list-group subtle-shadow">
-                                        {
-                                            this.customers.map(customer => (
-                                                <CustomerItem customer={(customer as Customer)} key={customer.id} />
-                                            ))
-                                        }
-                                    </ul>
-                                    
-                                    {/* Pagination */}
-                                    <Paginator
-                                        maxRangeSize={3}
-                                        pageSize={this.props.limit}
-                                        totalRecords={this.totalRecords}
-                                        currentPage={this.state.currentPage}
-                                        initialPageInRange={this.state.initialPageInRange}
-                                        onPageChange={
-                                            (newOffset: number, newPage: number, initialRange?: number | undefined) => {
-                                                (initialRange) ? 
-                                                    this.setPageFor(newOffset, newPage, initialRange ) 
-                                                    : this.setPageFor(newOffset, newPage)
-                                            }
-                                        }
-                                    />
-                                    
-                                    
-                                    
-                                    <PaginatorFunctional 
-                                        maxRangeSize={3}
-                                        pageSize={3}
-                                        totalRecords={19}
-                                        onPageChange={
-                                            (newOffset: number, newPage: number, initialRange?: number | undefined) => {
-                                                (initialRange) ? 
-                                                    this.setPageFor(newOffset, newPage, initialRange ) 
-                                                    : this.setPageFor(newOffset, newPage)
-                                            }
-                                        }                                        
-                                    />
-                                    
-                                    
-                                </React.Fragment>
-                            )
-                        }
-                    }}
-                </QueryGetCustomersPaginated>
+                            if (loading)
+                            {
+                                return (
+                                    <Loading/>
+                                )
+                            }
+                            if (error)
+                            {
+                                Swal.fire(
+                                    'Error', 
+                                    `Cargando Datos: Parameters empepitation aborting..`,
+                                    'error'
+                                )
+                                return ''
+                            }
+                            if (data)
+                            {
+                                // Pass Data to Private Properties
+                                this.totalRecords = data.getCustomers.metadata.totalRecords
+                                this.customers    = data.getCustomers.customers
+                                
+                                // Don't Build UI Here, stateful components will break when 
+                                // Query returns load or error UI.
+                                return ''
+                            }
+                        }}
+                    </QueryGetCustomersPaginated>
                 </div>
+                
+            </React.Fragment>
+        )
+    }
+    //-------------------------------------------------------------------------
+    private renderLayout(props: ICustomersProps, state: ICustomersState)
+    : JSX.Element 
+    {
+        return (
+            <React.Fragment>
+                
+                {/* PAGE TITLE */}
+                {this.getPageTitle()}
+                
+                {/* Customer List */}
+                <ul className="list-group subtle-shadow">
+                    {
+                        this.customers.map(customer => (
+                            <CustomerItem customer={(customer as Customer)} key={customer.id} />
+                        ))
+                    }
+                </ul>
+                
+                {/* Pagination */}
+                <Paginator
+                    maxRangeSize={3}
+                    pageSize={this.props.limit}
+                    totalRecords={this.totalRecords}
+                    currentPage={this.state.currentPage}
+                    initialPageInRange={this.state.initialPageInRange}
+                    onPageChange={
+                        (newOffset: number, newPage: number, initialRange?: number | undefined) => {
+                            (initialRange) ? 
+                                this.setPageFor(newOffset, newPage, initialRange ) 
+                                : this.setPageFor(newOffset, newPage)
+                        }
+                    }
+                />
+                
+                
+                <PaginatorFunctional 
+                    maxRangeSize={3}
+                    pageSize={3}
+                    totalRecords={this.state.totalRecords}
+                    onPageChange={
+                        (newOffset: number, newPage: number, initialRange?: number | undefined) => {
+                            (initialRange) ? 
+                                this.setPageFor(newOffset, newPage, initialRange )
+                                : this.setPageFor(newOffset, newPage)
+                        }
+                    }                                        
+                />
                 
             </React.Fragment>
         )
@@ -202,18 +221,19 @@ export class Customers extends React.Component<ICustomersProps, ICustomersState>
             this.setState({
                 offset              : offset,
                 currentPage         : page,
-                initialPageInRange  : initialRange
+                initialPageInRange  : initialRange,
+                totalRecords        : this.totalRecords
             })  
         }
         else
         {
             this.setState({
                 offset              : offset,
-                currentPage         : page
-            })            
+                currentPage         : page,
+                totalRecords        : this.totalRecords
+            })
         }
     }
- 
 }
 
 //---------------------------------------------------------------------------------
@@ -230,4 +250,6 @@ export interface ICustomersState
     offset              : number
     currentPage         : number
     initialPageInRange  : number
+    customers           : Customer[]
+    totalRecords        : number
 }
