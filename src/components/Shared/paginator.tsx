@@ -47,35 +47,37 @@ export class Paginator extends
     private renderLayout(): JSX.Element
     {
         return (
-            <div className="row justify-content-center mt-3">
-                <nav>
-                    <ul className="pagination">
-                        {/* << PREV */}
-                        <li className={this.props.currentPage === 1 ? 'page-item disabled' : 'page-item'}>
-                            <a className="page-link"
-                                href="#"
-                                onClick={(e: SyntheticEvent) => this.goToPrev(e)}
-                            >
-                                <span aria-hidden="true">&laquo;</span>
-                                <span className="sr-only">Previous</span>
-                            </a>
-                        </li>                 
+            <div className="row justify-content-center mt-3 animated fadeIn" style={{ visibility: ((this.props.totalRecords === 0) ? 'hidden' : 'visible') }}>
+                <div className="row justify-content-center mt-3">
+                    <nav>
+                        <ul className="pagination">
+                            {/* << PREV */}
+                            <li className={this.props.currentPage === 1 ? 'page-item disabled' : 'page-item'}>
+                                <a className="page-link"
+                                    href="#"
+                                    onClick={(e: SyntheticEvent) => this.goToPrev(e)}
+                                >
+                                    <span aria-hidden="true">&laquo;</span>
+                                    <span className="sr-only">Previous</span>
+                                </a>
+                            </li>                 
 
-                        {this.renderPageItems()}
+                            {this.renderPageItems()}
 
-                        {/* NEXT >> */}
-                        <li className={this.props.currentPage === this.getTotalPages() ? 'page-item disabled' : 'page-item'}>
-                            <a className="page-link"
-                                href="#"
-                                onClick={(e: SyntheticEvent) => { this.goToNext(e) }}
-                            >
-                                <span aria-hidden="true">&raquo;</span>
-                                <span className="sr-only">Next</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>   
+                            {/* NEXT >> */}
+                            <li className={this.props.currentPage === this.getTotalPages() ? 'page-item disabled' : 'page-item'}>
+                                <a className="page-link"
+                                    href="#"
+                                    onClick={(e: SyntheticEvent) => { this.goToNext(e) }}
+                                >
+                                    <span aria-hidden="true">&raquo;</span>
+                                    <span className="sr-only">Next</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
         )
     }
     //-------------------------------------------------------------------------

@@ -28,23 +28,28 @@ export class Loading extends React.Component<ILoadingProps, ILoadingState>
     public render(): JSX.Element
     {
         return (
-            <React.Fragment>
+            <div className="loading">
                 
                 {/* Apply CSS  */}
                 {this.getCSS()}
                 
-                <div className="container justify-content-center align-items-center loading-container">
-                    <div className="sk-folding-cube">
-                        <div className="sk-cube1 sk-cube"></div>
-                        <div className="sk-cube2 sk-cube"></div>
-                        <div className="sk-cube4 sk-cube"></div>
-                        <div className="sk-cube3 sk-cube"></div>
+                <div className="row">
+                    <div className="col col-md-12 justify-content-center align-items-center loading-container">
+                        <div className="sk-folding-cube">
+                            <div className="sk-cube1 sk-cube"></div>
+                            <div className="sk-cube2 sk-cube"></div>
+                            <div className="sk-cube4 sk-cube"></div>
+                            <div className="sk-cube3 sk-cube"></div>
+                        </div>
+                        <div style={{ textAlign: 'center' }}>
+                            Cargando...
+                        </div>
                     </div>
                 </div>
-            </React.Fragment>
+            </div>
         );
     }
-    
+
     //-------------------------------------------------------------------------
     // Private Methods Section
     //-------------------------------------------------------------------------
@@ -53,9 +58,8 @@ export class Loading extends React.Component<ILoadingProps, ILoadingState>
         const css = `
             .loading-container
             {
-                position: absolute;
                 min-width: 100%;
-                top: 40%;
+                margin-top: 25%;
             }
             
             .sk-folding-cube 

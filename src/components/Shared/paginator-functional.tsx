@@ -1,3 +1,19 @@
+/* Use:
+<PaginatorFunctional
+    maxRangeSize={3}
+    pageSize={3}
+    totalRecords={this.state.totalRecords}
+    onPageChange={
+        (newOffset: number, newPage: number, initialRange?: number | undefined) =>
+        {
+            (initialRange) ?
+                this.setPageFor(newOffset, newPage, initialRange)
+                : this.setPageFor(newOffset, newPage)
+        }
+    }
+/>
+*/
+
 //---------------------------------------------------------------------------------
 // Component Interfaces
 //---------------------------------------------------------------------------------

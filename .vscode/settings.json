@@ -2,6 +2,7 @@
     "git.ignoreLimitWarning": true,
     "workbench.colorTheme": "Brave Contrast (rainglow)",
     "files.exclude": {
+        "**/.idea"              : true,
         "**/.gitignore"         : true,
         "**/*.md"               : true,
         "**/*.js"               : true,

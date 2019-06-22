@@ -11,8 +11,7 @@ import { Link }                                 from 'react-router-dom'
 import { Loading }                              from '../../components/Shared/loading'
 import Swal                                     from 'sweetalert2'
 
-
-import { PaginatorFunctional }                  from '../../components/Shared/paginator-functional'
+import { gql, ApolloClient } from "apollo-boost";
 
 //---------------------------------------------------------------------------------
 // Component Class
@@ -46,25 +45,51 @@ export class Customers extends React.Component<ICustomersProps, ICustomersState>
             totalRecords        : 0
         }
     }
-    
+
+    //-------------------------------------------------------------------------
+    // Component Lifecycle Eventhandlers
+    //-------------------------------------------------------------------------
+    async componentDidMount()
+    {
+        try
+        {
+            const result = await this.props.client
+                .query({
+                    query: gql`
+                        {
+                            getCustomers(limit: 10, offset: 0) {
+                                customers {
+                                    first_name
+                                    last_name
+                                }
+                            }
+                        }
+                    `
+                }
+            )
+            console.log(result.data.getCustomers.customers)
+        }
+        catch (error)
+        {
+            console.error(error)
+        }
+    }
+
     //-------------------------------------------------------------------------
     // Render Method Section
     //-------------------------------------------------------------------------
     public render(): JSX.Element
     {   
         return (
-            <React.Fragment>
+            <div className="customers_container">
 
                 {/* Apply CSS  */}
                 {this.getCSS()}
 
                 {/* Loads State with Query Data  */}
-                {this.executeQuery(this.props, this.state)}
-
-                {/* Create Layout  */}
                 {this.renderLayout(this.props, this.state)}
-                
-            </React.Fragment>
+ 
+            </div>
         );
     }
     
@@ -87,7 +112,7 @@ export class Customers extends React.Component<ICustomersProps, ICustomersState>
         )
     }
     //-------------------------------------------------------------------------
-    private executeQuery(props: ICustomersProps, state: ICustomersState)
+    private renderLayout(props: ICustomersProps, state: ICustomersState)
     : JSX.Element 
     {
         return (
@@ -97,16 +122,6 @@ export class Customers extends React.Component<ICustomersProps, ICustomersState>
                         query={Q_GET_CUSTOMERS}
                         variables={{ limit: props.limit, offset: this.state.offset }}
                         pollInterval={1000}
-                        onCompleted={() => 
-                            {
-                                setTimeout(() => {                               
-                                    this.setState({
-                                        customers: this.customers,
-                                        totalRecords : this.totalRecords
-                                    })
-                                }, 0)
-                            }
-                        }
                     >
                         {({ loading, error, data, startPolling, stopPolling, refetch }) =>
                         {
@@ -133,7 +148,41 @@ export class Customers extends React.Component<ICustomersProps, ICustomersState>
                                 
                                 // Don't Build UI Here, stateful components will break when 
                                 // Query returns load or error UI.
-                                return ''
+                                return (
+                                    <React.Fragment>
+
+                                        {/* PAGE TITLE */ }
+                                        { this.getPageTitle() }
+
+                                        {/* Customer List */ }
+                                        <ul className="list-group subtle-shadow">
+                                            {
+                                                this.customers.map(customer => (
+                                                    <CustomerItem customer={(customer as Customer)} key={customer.id} />
+                                                ))
+                                            }
+                                        </ul>
+
+
+                                        {/* Pagination */}
+                                        <Paginator
+                                            maxRangeSize={3}
+                                            pageSize={this.props.limit}
+                                            totalRecords={this.totalRecords}
+                                            currentPage={this.state.currentPage}
+                                            initialPageInRange={this.state.initialPageInRange}
+                                            onPageChange={
+                                                (newOffset: number, newPage: number, initialRange?: number | undefined) =>
+                                                {
+                                                    (initialRange) ?
+                                                        this.setPageFor(newOffset, newPage, initialRange)
+                                                        : this.setPageFor(newOffset, newPage)
+                                                }
+                                            }
+                                        />
+
+                                    </React.Fragment>
+                                )
                             }
                         }}
                     </QueryGetCustomersPaginated>
@@ -142,58 +191,6 @@ export class Customers extends React.Component<ICustomersProps, ICustomersState>
             </React.Fragment>
         )
     }
-    //-------------------------------------------------------------------------
-    private renderLayout(props: ICustomersProps, state: ICustomersState)
-    : JSX.Element 
-    {
-        return (
-            <React.Fragment>
-                
-                {/* PAGE TITLE */}
-                {this.getPageTitle()}
-                
-                {/* Customer List */}
-                <ul className="list-group subtle-shadow">
-                    {
-                        this.customers.map(customer => (
-                            <CustomerItem customer={(customer as Customer)} key={customer.id} />
-                        ))
-                    }
-                </ul>
-                
-                {/* Pagination */}
-                <Paginator
-                    maxRangeSize={3}
-                    pageSize={this.props.limit}
-                    totalRecords={this.totalRecords}
-                    currentPage={this.state.currentPage}
-                    initialPageInRange={this.state.initialPageInRange}
-                    onPageChange={
-                        (newOffset: number, newPage: number, initialRange?: number | undefined) => {
-                            (initialRange) ? 
-                                this.setPageFor(newOffset, newPage, initialRange ) 
-                                : this.setPageFor(newOffset, newPage)
-                        }
-                    }
-                />
-                
-                
-                <PaginatorFunctional 
-                    maxRangeSize={3}
-                    pageSize={3}
-                    totalRecords={this.state.totalRecords}
-                    onPageChange={
-                        (newOffset: number, newPage: number, initialRange?: number | undefined) => {
-                            (initialRange) ? 
-                                this.setPageFor(newOffset, newPage, initialRange )
-                                : this.setPageFor(newOffset, newPage)
-                        }
-                    }                                        
-                />
-                
-            </React.Fragment>
-        )
-    }    
     //-------------------------------------------------------------------------
     private getPageTitle(): JSX.Element
     {
@@ -243,6 +240,7 @@ export interface ICustomersProps
 {
     limit               : number
     initialOffset       : number
+    client              : ApolloClient<{}>
 }
 //---------------------------------------------------------------------------------
 export interface ICustomersState

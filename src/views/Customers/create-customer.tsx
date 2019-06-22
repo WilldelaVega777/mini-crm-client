@@ -133,7 +133,7 @@ export class CreateCustomer extends
                     {/* DEFINE DATA MUTATION / MUTATION UI  */}
                     <MutationCreateCustomer
                         mutation={M_CREATE_CUSTOMER}
-                        onCompleted={() => this.props.history.push('/')}
+                        onCompleted={() => this.props.history.push('/customers')}
                     >
                         {(createCustomer: any) =>
                         {

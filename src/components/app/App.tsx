@@ -98,7 +98,7 @@ export class App extends React.Component<IAppProps, IAppState>
                                     <Route exact
                                         path="/customers"
                                         render={(props) =>
-                                            <Customers {...props} limit={3} initialOffset={0} />
+                                            <Customers {...props} limit={3} initialOffset={0} client={this.apolloClient} />
                                         }
                                     />                                    
                                     <Route  exact 
