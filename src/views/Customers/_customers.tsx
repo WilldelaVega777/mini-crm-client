@@ -2,16 +2,31 @@
 // Imports Section (React Libs)
 //---------------------------------------------------------------------------------
 import React                                    from 'react'
-import { getCustomers_customers as Customer }   from '../../services/typeDefs/operations/getCustomers'
+import { Link }                                 from 'react-router-dom'
+
+//---------------------------------------------------------------------------------
+// Imports Section (Apollo Types)
+//---------------------------------------------------------------------------------
+import { getCustomersPaginated_getCustomers_customers as Customer } 
+from '../../services/typeDefs/operations/getCustomersPaginated'
+
+import { getCustomersPaginatedVariables }
+from '../../services/typeDefs/operations/getCustomersPaginated'
+
 import { QueryGetCustomersPaginated }           from '../../services/operations/queries/customers/getCustomersPaginated.query'
 import { Q_GET_CUSTOMERS }                      from '../../services/operations/queries/customers/getCustomersPaginated.query'
 import { CustomerItem }                         from '../../components/customers/customer-item'
+
+import { gql }                                  from "apollo-boost";
+import { ApolloClient }                         from "apollo-boost"
+
+//---------------------------------------------------------------------------------
+// Imports Section (Components)
+//---------------------------------------------------------------------------------
 import { Paginator }                            from '../../components/Shared/paginator'
-import { Link }                                 from 'react-router-dom'
 import { Loading }                              from '../../components/Shared/loading'
 import Swal                                     from 'sweetalert2'
 
-import { gql, ApolloClient } from "apollo-boost";
 
 //---------------------------------------------------------------------------------
 // Component Class
@@ -53,7 +68,7 @@ export class Customers extends React.Component<ICustomersProps, ICustomersState>
     {
         try
         {
-            const result = await this.props.client
+            const result = await this.props.gqlClient
                 .query({
                     query: gql`
                         {
@@ -115,12 +130,21 @@ export class Customers extends React.Component<ICustomersProps, ICustomersState>
     private renderLayout(props: ICustomersProps, state: ICustomersState)
     : JSX.Element 
     {
+        let queryVars: getCustomersPaginatedVariables = {
+            limit: props.limit,
+            offset: this.state.offset,
+        }
+
+        if (this.props.session.role === "SALESMAN")
+        {
+            queryVars.salesman = this.props.session.id
+        }
         return (
             <React.Fragment>
                 <div className="animated fadeIn">
                     <QueryGetCustomersPaginated
                         query={Q_GET_CUSTOMERS}
-                        variables={{ limit: props.limit, offset: this.state.offset }}
+                        variables={queryVars}
                         pollInterval={1000}
                     >
                         {({ loading, error, data, startPolling, stopPolling, refetch }) =>
@@ -240,7 +264,8 @@ export interface ICustomersProps
 {
     limit               : number
     initialOffset       : number
-    client              : ApolloClient<{}>
+    session             : any
+    gqlClient           : ApolloClient<{}>
 }
 //---------------------------------------------------------------------------------
 export interface ICustomersState

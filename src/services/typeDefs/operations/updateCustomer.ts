@@ -22,6 +22,7 @@ export interface updateCustomer_updateCustomer {
   emails: updateCustomer_updateCustomer_emails[];
   age: number;
   type: CustomerType;
+  salesman: string | null;
 }
 
 export interface updateCustomer {

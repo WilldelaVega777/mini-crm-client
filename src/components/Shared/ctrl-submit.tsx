@@ -8,6 +8,7 @@ import React                from 'react'
 //---------------------------------------------------------------------------------
 interface ICtrlSubmitProps
 {
+    caption?        : string  | undefined
     disabled?       : boolean | undefined
 }
 
@@ -24,7 +25,7 @@ export const CtrlSubmit: React.SFC<ICtrlSubmitProps> =
                 className="btn btn-success float-right"
                 disabled={props.disabled}
             >
-                Guardar Cambios
+                {props.caption ? props.caption : 'Guardar Cambios'}
             </button>
         </React.Fragment>
     )

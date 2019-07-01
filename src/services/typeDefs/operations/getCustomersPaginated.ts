@@ -22,6 +22,7 @@ export interface getCustomersPaginated_getCustomers_customers {
   emails: getCustomersPaginated_getCustomers_customers_emails[];
   age: number;
   type: CustomerType;
+  salesman: string | null;
 }
 
 export interface getCustomersPaginated_getCustomers_metadata {
@@ -42,4 +43,5 @@ export interface getCustomersPaginated {
 export interface getCustomersPaginatedVariables {
   limit: number;
   offset: number;
+  salesman?: string | null;
 }

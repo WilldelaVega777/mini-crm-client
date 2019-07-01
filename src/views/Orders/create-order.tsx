@@ -302,6 +302,11 @@ export class CreateOrder extends
                 }
             })
         }
+
+        if (this.props.session.role === "SALESMAN")
+        {
+            input.salesman = this.props.session.id
+        }
         
         try
         {
@@ -331,15 +336,16 @@ export class CreateOrder extends
 //---------------------------------------------------------------------------------
 export interface ICreateOrderProps
 {
-    shouldNavigateBack: boolean,
-    history: any,
-    match: any
+    shouldNavigateBack  : boolean
+    history             : any
+    match               : any
+    session             : any
 }
 //---------------------------------------------------------------------------------
 export interface ICreateOrderState
 {
-    viewCustomer    : CustomerInput
-    validators      : ValidationDescriptor[]
-    order           : OrderInput
-    orderItems      : OrderItemInput[]
+    viewCustomer        : CustomerInput
+    validators          : ValidationDescriptor[]
+    order               : OrderInput
+    orderItems          : OrderItemInput[]
 }

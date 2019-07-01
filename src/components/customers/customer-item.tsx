@@ -3,14 +3,16 @@
 //---------------------------------------------------------------------------------
 import React                                    from 'react'
 import { Link }                                 from 'react-router-dom';
-import { getCustomers_customers as Customer }   from '../../services/typeDefs/operations/getCustomers'
+
+import { getCustomersPaginated_getCustomers_customers as CustomerPaginated }   
+    from '../../services/typeDefs/operations/getCustomersPaginated'
 
 //---------------------------------------------------------------------------------
 // Component Interface
 //---------------------------------------------------------------------------------
 interface ICustomerItemProps
 {
-    customer        : Customer
+    customer        : CustomerPaginated
 }
 
 //---------------------------------------------------------------------------------

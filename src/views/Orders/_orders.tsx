@@ -137,8 +137,7 @@ export class Orders extends React.Component<IOrdersProps, IOrdersState>
                                     <div className="row">
                                     {
                                         this.orders.map(order => (
-                                            <OrderCard order={(order as Order)} key={order.id} />
-
+                                            <OrderCard order={(order as Order)} key={order.id} session={this.props.session}/>
                                         ))
                                     }
                                     </div>
@@ -228,9 +227,10 @@ export interface IOrdersProps
 {
     limit               : number
     initialOffset       : number
-    shouldNavigateBack: boolean,
-    history: any,
-    match: any
+    shouldNavigateBack  : boolean
+    history             : any
+    match               : any
+    session             : any
 }
 //---------------------------------------------------------------------------------
 export interface IOrdersState

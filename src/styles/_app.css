@@ -1,7 +1,8 @@
 body {
     background-color:  #dfe6e9;
-    background-image: url(../assets/backgrounds/interlaced.png);
+    background-image: url('../assets/backgrounds/interlaced.png');
     background-repeat: repeat;
+    margin-bottom: 70px;
 }
 
 .bg-sour-lemon
@@ -49,6 +50,11 @@ body {
     background-color: #b71540;
 }
 
+.bg-meant-leaf
+{
+    background-color: #00b894;
+}
+
 .bg-mandarin-red
 {
     background-color: #e55039;
@@ -57,6 +63,11 @@ body {
 .bg-pink-glamour
 {
     background-color: #ff7675
+}
+
+.bg-electron-blue
+{
+    background-color: #0984e3
 }
 
 .page-item.active .page-link {
@@ -76,3 +87,72 @@ body {
 {
     background-color: #fff;
 }
+
+.velcro-bg
+{
+    background-image: url(../assets/backgrounds/velcro.png);
+    background-repeat: repeat;
+}
+
+.bg-salesman-foot
+{
+    background-color: #b71540;
+}
+
+.fg-salesman-foot
+{
+    color: #ffffff;
+}
+
+.bg-salesman-head
+{
+    background-color: #b71540;
+}
+
+.fg-salesman-head
+{
+    color: #ffffff;
+}
+
+
+.bg-admin-head
+{
+    background-color: #273c75;
+}
+
+.fg-admin-head
+{
+    color: #ffffff;
+}
+
+.bg-admin-foot
+{
+    background-color: #273c75;
+}
+
+.fg-admin-foot
+{
+    color: #cccccc
+}
+
+.bg-anon-head
+{
+    background-color: #7f8fa6;
+}
+
+.fg-anon-head
+{
+    color: #ffffff;
+}
+
+.bg-anon-foot
+{
+    background-color: #7f8fa6;
+}
+
+.fg-anon-foot
+{
+    color: #cccccc
+}
+
+

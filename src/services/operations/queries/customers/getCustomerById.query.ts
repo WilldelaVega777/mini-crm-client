@@ -22,6 +22,7 @@ export const Q_GET_CUSTOMER_BY_ID = gql`
             }
             age
             type
+            salesman
         }
     }
 `;

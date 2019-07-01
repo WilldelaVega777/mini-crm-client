@@ -11,8 +11,8 @@ import { getCustomersPaginatedVariables }   from '../../../typeDefs/operations/g
 // GQL Query: Customers
 //---------------------------------------------------------------------------------
 export const Q_GET_CUSTOMERS = gql`
-    query getCustomersPaginated($limit: Int!, $offset: Int!) {
-        getCustomers(limit: $limit, offset: $offset) {
+    query getCustomersPaginated($limit: Int!, $offset: Int!, $salesman: ID) {
+        getCustomers(limit: $limit, offset: $offset, salesman: $salesman) {
             customers {
                 id,
                 first_name
@@ -23,6 +23,7 @@ export const Q_GET_CUSTOMERS = gql`
                 }
                 age
                 type
+                salesman
             }
 
             metadata {

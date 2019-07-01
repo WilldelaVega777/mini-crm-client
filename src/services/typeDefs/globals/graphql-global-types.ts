@@ -18,6 +18,11 @@ export enum OrderStatus {
   REQUESTED = "REQUESTED",
 }
 
+export enum UserRole {
+  ADMINISTRATOR = "ADMINISTRATOR",
+  SALESMAN = "SALESMAN",
+}
+
 export interface CustomerInput {
   id?: string | null;
   first_name: string;
@@ -27,6 +32,7 @@ export interface CustomerInput {
   type: CustomerType;
   emails: EmailInput[];
   orders?: (OrderInput | null)[] | null;
+  salesman: string;
 }
 
 export interface EmailInput {
@@ -37,6 +43,7 @@ export interface OrderInput {
   id?: string | null;
   date: any;
   customer: string;
+  salesman?: string | null;
   status: OrderStatus;
   items: OrderItemInput[];
   total: number;
@@ -55,6 +62,15 @@ export interface ProductInput {
   projected_stock?: number | null;
   stock: number;
   reorder: number;
+}
+
+export interface UserInput {
+  id?: string | null;
+  username: string;
+  first_name: string;
+  last_name: string;
+  password: string;
+  role: UserRole;
 }
 
 //==============================================================

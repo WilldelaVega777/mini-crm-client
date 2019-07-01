@@ -3,6 +3,7 @@
 //---------------------------------------------------------------------------------
 import { gql } from 'apollo-boost';
 import { Mutation }                 from 'react-apollo'
+
 import { createOrder }              from '../../../typeDefs/operations/createOrder'
 import { createOrderVariables }     from '../../../typeDefs/operations/createOrder'
 
@@ -17,6 +18,7 @@ export const M_CREATE_ORDER = gql`
             id
             date
             customer
+            salesman
             status
             total
             items {

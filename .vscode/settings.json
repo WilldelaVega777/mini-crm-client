@@ -1,6 +1,6 @@
 {
     "git.ignoreLimitWarning": true,
-    "workbench.colorTheme": "Brave Contrast (rainglow)",
+    "workbench.colorTheme": "Chronotype: Midnight",
     "files.exclude": {
         "**/.idea"              : true,
         "**/.gitignore"         : true,

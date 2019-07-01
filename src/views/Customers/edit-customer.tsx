@@ -172,7 +172,7 @@ export class EditCustomer extends
                                     {/* DEFINE DATA MUTATION / MUTATION UI  */}
                                     <MutationUpdateCustomer 
                                         mutation={M_UPDATE_CUSTOMER}
-                                        onCompleted={() => this.props.history.push('/')}
+                                        onCompleted={() => this.props.history.push('/customers')}
                                     >
                                     {
                                         (updateCustomer) => {
@@ -311,9 +311,21 @@ export class EditCustomer extends
             }
 
             // Specific Form (Entity) Preparation
-             const input = {
-                ...this.state.editCustomer,
-                emails: this.state.emails
+            let input = {}
+            if (this.props.session.role === "SALESMAN")
+            {
+                input = {
+                   ...this.state.editCustomer,
+                   salesman: this.props.session.id,
+                   emails: this.state.emails
+               }
+            }
+            else
+            {
+                input = {
+                    ...this.state.editCustomer,
+                    emails: this.state.emails
+                }
             }
             
             try
@@ -368,14 +380,15 @@ export class EditCustomer extends
 //---------------------------------------------------------------------------------
 export interface IEditCustomerProps
 {
-    shouldNavigateBack: boolean,
-    history: any,
-    match: any
+    shouldNavigateBack  : boolean
+    history             : any
+    match               : any
+    session             : any
 }
 //---------------------------------------------------------------------------------
 export interface IEditCustomerState
 {
-    editCustomer: CustomerInput,
-    validators: ValidationDescriptor[],
-    emails: EmailInput[]
+    editCustomer        : CustomerInput
+    validators          : ValidationDescriptor[]
+    emails              : EmailInput[]
 }

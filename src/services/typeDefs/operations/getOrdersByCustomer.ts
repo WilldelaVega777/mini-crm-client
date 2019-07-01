@@ -29,6 +29,7 @@ export interface getOrdersByCustomer_getOrdersByCustomer_orders {
   id: string;
   date: any;
   customer: string;
+  salesman: string | null;
   status: OrderStatus;
   total: number;
   items: getOrdersByCustomer_getOrdersByCustomer_orders_items[];

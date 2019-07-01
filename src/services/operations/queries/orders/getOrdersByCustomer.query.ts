@@ -17,6 +17,7 @@ export const Q_GET_ORDERS_BY_CUSTOMER = gql`
                 id
                 date
                 customer
+                salesman
                 status
                 total
                 items {

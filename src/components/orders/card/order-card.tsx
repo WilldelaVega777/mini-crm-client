@@ -36,7 +36,8 @@ import Swal                     from 'sweetalert2'
 //---------------------------------------------------------------------------------
 interface IOrderCardProps
 {
-    order: Order
+    order   : Order
+    session : any
 }
 
 //---------------------------------------------------------------------------------
@@ -207,6 +208,10 @@ export const OrderCard: React.SFC<IOrderCardProps> =
                     }
                 }
             })
+        }
+        if (props.session.role === "SALESMAN")
+        {
+            input.salesman = props.session.id
         }
         
         try

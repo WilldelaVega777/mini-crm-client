@@ -28,6 +28,7 @@ export interface createOrder_createOrder {
   id: string;
   date: any;
   customer: string;
+  salesman: string | null;
   status: OrderStatus;
   total: number;
   items: createOrder_createOrder_items[];

@@ -22,16 +22,3 @@ export const M_REMOVE_CUSTOMER = gql`
  export class MutationRemoveCustomer extends
      Mutation<removeCustomer, removeCustomerVariables> { }
 
-
-
-
-
-
-
-
-
-
-
-
-
-

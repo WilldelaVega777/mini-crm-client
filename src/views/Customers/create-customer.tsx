@@ -251,9 +251,21 @@ export class CreateCustomer extends
             }
             
             // Specific Form (Entity) Preparation
-            const input = {
-                ...this.state.newCustomer,
-                emails: this.state.emails
+            let input = {}
+            if (this.props.session.role === "SALESMAN")
+            {
+                input = {
+                    ...this.state.newCustomer,
+                    salesman: this.props.session.id,
+                    emails: this.state.emails
+                }
+            }
+            else
+            {
+                input = {
+                    ...this.state.newCustomer,
+                    emails: this.state.emails
+                }
             }
 
             try
@@ -309,6 +321,7 @@ interface ICreateCustomersProps
 {
     shouldNavigateBack: boolean
     history: any
+    session: any
 }
 //---------------------------------------------------------------------------------
 interface ICreateCustomersState

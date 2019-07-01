@@ -21,6 +21,7 @@ export interface getCustomerById_getCustomer {
   emails: getCustomerById_getCustomer_emails[];
   age: number;
   type: CustomerType;
+  salesman: string | null;
 }
 
 export interface getCustomerById {
