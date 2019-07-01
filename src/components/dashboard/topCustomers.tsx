@@ -92,7 +92,6 @@ export class TopCustomers extends React.Component<ITopCustomersProps, ITopCustom
                                             }
                                             if (error)
                                             {
-                                                //${error.message}`
                                                 Swal.fire(
                                                     'Error', 
                                                     `Cargando Datos: Parameters empepitation aborting..`,
@@ -134,19 +133,13 @@ export class TopCustomers extends React.Component<ITopCustomersProps, ITopCustom
         return (
             <React.Fragment>
                 <div className="row">
-                    <div className="col col-md-12 d-flex justify-content-center border border-primary bg-primary pt-3">
-                        <h6 className="text-center text-light mb-3">Mejores Clientes</h6>
+                    <div className={`col col-md-12 d-flex justify-content-center border border-primary ${this.props.background} pt-3`}>
+                        <h6 className={`text-center ${this.props.foreground} mb-3`}>Mejores Clientes</h6>
                     </div>
                 </div>             
             </React.Fragment>
         )
     }
-    
-    //-------------------------------------------------------------------------
-    // Private Methods Section (Utility)
-    //-------------------------------------------------------------------------
-
- 
 }
 
 //---------------------------------------------------------------------------------
@@ -155,6 +148,8 @@ export class TopCustomers extends React.Component<ITopCustomersProps, ITopCustom
 export interface ITopCustomersProps
 {
     className? : string | undefined
+    background : string
+    foreground : string
 }
 //---------------------------------------------------------------------------------
 export interface ITopCustomersState

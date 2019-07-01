@@ -7,6 +7,8 @@ import React                       from 'react'
 // Imports Section (Internal Components)
 //---------------------------------------------------------------------------------
 import { TopCustomers }            from '../../components/dashboard/topCustomers'
+import { TopSellers }              from '../../components/dashboard/topSellers'
+import { UserRole }                from '../../services/typeDefs/globals/graphql-global-types';
 
 //---------------------------------------------------------------------------------
 // Component Class
@@ -50,6 +52,9 @@ export class Dashboard extends React.Component<IDashboardProps, IDashboardState>
     private renderLayout(props: IDashboardProps, state: IDashboardState)
     : JSX.Element 
     {
+        const { role } = this.props.session
+        const bgRole: string = (role === UserRole.SALESMAN) ? 'bg-salesman-head' : (role === UserRole.ADMINISTRATOR) ? 'bg-admin-head' : 'bg-anon-head'
+        const fgRole: string = (role === UserRole.SALESMAN) ? 'fg-salesman-head' : (role === UserRole.ADMINISTRATOR) ? 'fg-admin-head' : 'bg-anon-head'
         return (
             <React.Fragment>
                 
@@ -59,10 +64,10 @@ export class Dashboard extends React.Component<IDashboardProps, IDashboardState>
                 
                 <div className="row justify-content-center">
                     <div className="col col-md-5 mr-5">
-                        <TopCustomers className="animated fadeInLeft"/>
+                        <TopCustomers className="animated fadeInLeft"  background={bgRole} foreground={fgRole}/>
                     </div>
                     <div className="col col-md-5">
-                        <TopCustomers className="animated fadeInRight"/>
+                        <TopSellers   className="animated fadeInRight" background={bgRole} foreground={fgRole}/>
                     </div>                    
                 </div>
                 
@@ -90,6 +95,7 @@ export interface IDashboardProps
     shouldNavigateBack  : boolean
     history             : any
     match               : any
+    session             : any
 }
 //---------------------------------------------------------------------------------
 export interface IDashboardState

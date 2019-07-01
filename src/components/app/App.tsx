@@ -11,7 +11,6 @@ import { ApolloClient }                     from 'apollo-boost'
 // Imports Section (App Components)
 //---------------------------------------------------------------------------------
 import { PrivateRoute }                     from '../security/HOC/private-route'
-
 import { Header }                           from '../Shared/header'
 import { Footer }                           from '../Shared/footer'
 
@@ -92,13 +91,15 @@ const App = (props: IAppProps) => {
                                     <Dashboard
                                         {...props}
                                         shouldNavigateBack={true}
+                                        session={session}
                                     />
                                 }
                             />
                           
                             
                             {/* Users */}
-                            <PrivateRoute exact
+                            <PrivateRoute
+                                exact
                                 path="/users"
                                 authenticatedUser={session}
                                 render={(props) =>
@@ -110,7 +111,8 @@ const App = (props: IAppProps) => {
                                     />
                                 }
                             />  
-                            <PrivateRoute exact
+                            <PrivateRoute
+                                exact
                                 path="/user/create"
                                 authenticatedUser={session}
                                 render={(props) =>
@@ -121,7 +123,8 @@ const App = (props: IAppProps) => {
                                     />
                                 }
                             />
-                            <PrivateRoute exact
+                            <PrivateRoute
+                                exact
                                 path="/user/edit/:id"
                                 authenticatedUser={session}
                                 render={(props) =>
@@ -132,7 +135,8 @@ const App = (props: IAppProps) => {
                                     />
                                 }
                             />
-                            <PrivateRoute exact
+                            <PrivateRoute
+                                exact
                                 path="/user/remove/:id"
                                 authenticatedUser={session}
                                 render={(props) =>
@@ -146,7 +150,8 @@ const App = (props: IAppProps) => {
 
 
                             {/* Customers */}
-                            <PrivateRoute exact
+                            <PrivateRoute
+                                exact
                                 path="/customers"
                                 authenticatedUser={session}
                                 render={(props) =>
@@ -159,7 +164,8 @@ const App = (props: IAppProps) => {
                                     />
                                 }
                             />   
-                            <PrivateRoute  exact 
+                            <PrivateRoute
+                                exact 
                                 path="/customer/create"
                                 authenticatedUser={session}
                                 render={(props) =>
@@ -170,7 +176,8 @@ const App = (props: IAppProps) => {
                                     />
                                 }
                             />
-                            <PrivateRoute  exact
+                            <PrivateRoute
+                                exact
                                 path="/customer/edit/:id"
                                 authenticatedUser={session}
                                 render={(props) =>
@@ -181,7 +188,8 @@ const App = (props: IAppProps) => {
                                     />
                                 }
                             /> 
-                            <PrivateRoute exact
+                            <PrivateRoute
+                                exact
                                 path="/customer/remove/:id"
                                 authenticatedUser={session}
                                 render={(props) =>
@@ -193,7 +201,8 @@ const App = (props: IAppProps) => {
                             />     
                             
                             {/* Products */}
-                            <PrivateRoute exact
+                            <PrivateRoute
+                                exact
                                 path="/products"
                                 authenticatedUser={session}
                                 render={(props) =>
@@ -204,7 +213,8 @@ const App = (props: IAppProps) => {
                                     />
                                 }
                             />
-                            <PrivateRoute exact
+                            <PrivateRoute
+                                exact
                                 path="/product/create"
                                 authenticatedUser={session}
                                 render={(props) =>
@@ -214,7 +224,8 @@ const App = (props: IAppProps) => {
                                     />
                                 }
                             />
-                            <PrivateRoute exact
+                            <PrivateRoute
+                                exact
                                 path="/product/edit/:id"
                                 authenticatedUser={session}
                                 render={(props) =>
@@ -224,7 +235,8 @@ const App = (props: IAppProps) => {
                                     />
                                 }
                             />    
-                            <PrivateRoute exact
+                            <PrivateRoute
+                                exact
                                 path="/product/remove/:id"
                                 authenticatedUser={session}
                                 render={(props) =>
@@ -235,7 +247,8 @@ const App = (props: IAppProps) => {
                                 }
                             />
                             
-                            <PrivateRoute exact
+                            <PrivateRoute
+                                exact
                                 path="/product/entry/:id"
                                 authenticatedUser={session}
                                 render={(props) =>
@@ -247,7 +260,8 @@ const App = (props: IAppProps) => {
                             />                                    
                             
                             {/* Orders */}
-                            <PrivateRoute exact
+                            <PrivateRoute
+                                exact
                                 path="/orders/:id"
                                 authenticatedUser={session}
                                 render={(props) =>
@@ -261,7 +275,8 @@ const App = (props: IAppProps) => {
                                 }
                             />                                    
                             
-                            <PrivateRoute exact
+                            <PrivateRoute
+                                exact
                                 path="/order/create/:id"
                                 authenticatedUser={session}
                                 render={(props) =>

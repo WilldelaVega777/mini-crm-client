@@ -56,7 +56,7 @@ export const PaginatorFunctional: React.SFC<IPaginatorFunctionalProps> =
     useEffect(() => {
         if (currentState.currentPage !== currentState.oldCurrentPage)
         {
-            console.log('lanzará onPageChange por cambio de Página')
+            //console.log('lanzará onPageChange por cambio de Página')
             onPageChange(((currentState.currentPage -1) * pageSize), currentState.currentPage)
             
             setCurrentState({
@@ -67,7 +67,7 @@ export const PaginatorFunctional: React.SFC<IPaginatorFunctionalProps> =
         
         if (currentState.initialPageInRange !== currentState.oldInitialPageInRange)
         {
-            console.log('lanzará onPageChange por cambio de initialPageInRange')
+            //console.log('lanzará onPageChange por cambio de initialPageInRange')
             onPageChange(((currentState.currentPage -1) * pageSize), currentState.currentPage, currentState.initialPageInRange)
             
             setCurrentState({

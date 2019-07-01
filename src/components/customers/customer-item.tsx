@@ -7,12 +7,18 @@ import { Link }                                 from 'react-router-dom';
 import { getCustomersPaginated_getCustomers_customers as CustomerPaginated }   
     from '../../services/typeDefs/operations/getCustomersPaginated'
 
+    import { UserRole } 
+    from '../../services/typeDefs/globals/graphql-global-types';
+
+
+
 //---------------------------------------------------------------------------------
 // Component Interface
 //---------------------------------------------------------------------------------
 interface ICustomerItemProps
 {
     customer        : CustomerPaginated
+    session         : any
 }
 
 //---------------------------------------------------------------------------------
@@ -21,6 +27,8 @@ interface ICustomerItemProps
 export const CustomerItem: React.SFC<ICustomerItemProps> =
 (props) =>
 {
+    const { role } = props.session
+
     return (
 
         <li key={props.customer.id} className="list-group-item">
@@ -35,16 +43,20 @@ export const CustomerItem: React.SFC<ICustomerItemProps> =
                     </span>
                 </div>
                 <div className="col-md-8 d-flex justify-content-end">
-                    <Link to={'/orders/:id'.replace(':id', props.customer.id)}
-                        className="btn btn-warning d-md-inline-block mr-3"
-                    >
-                        <i className="fas fa-eye"></i>
-                    </Link>
-                    <Link to={'/order/create/:id'.replace(':id', props.customer.id)}
-                        className="btn btn-primary d-md-inline-block mr-3"
-                    >
-                        <i className="far fa-clipboard"></i>
-                    </Link>
+                    { (role === UserRole.SALESMAN) &&
+                        <React.Fragment>
+                            <Link to={'/orders/:id'.replace(':id', props.customer.id)}
+                                className="btn btn-warning d-md-inline-block mr-3"
+                            >
+                                <i className="fas fa-eye"></i>
+                            </Link>
+                            <Link to={'/order/create/:id'.replace(':id', props.customer.id)}
+                                className="btn btn-primary d-md-inline-block mr-3"
+                            >
+                                <i className="far fa-clipboard"></i>
+                            </Link>
+                        </React.Fragment>
+                    }
                     <Link to={'/customer/edit/:id'.replace(':id', props.customer.id)}
                         className="btn btn-info d-md-inline-block mr-3"
                     >

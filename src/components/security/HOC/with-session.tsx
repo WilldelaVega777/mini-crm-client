@@ -11,9 +11,9 @@ import Swal                     from 'sweetalert2'
 // Component HOC for handling User Session:
 //---------------------------------------------------------------------------------
 export const withSession = Component => props => (
-    <QueryGetCurrentLogin query={Q_GET_CURRENT_LOGIN}>
+    <QueryGetCurrentLogin query={Q_GET_CURRENT_LOGIN} pollInterval={1000}>
         {
-            ({ loading, error, data, refetch}) =>
+            ({ loading, error, data, startPolling, stopPolling, refetch}) =>
             {
                 let thisError: string = ''
                 if (error)
@@ -41,6 +41,7 @@ export const withSession = Component => props => (
                 }
                 if (data)
                 {
+                    // Debug:
                     // console.log(`Session Data Received: ${data.getCurrentLogin? data.getCurrentLogin.username : 'null'}`)
                 }
                 // Component will always be App

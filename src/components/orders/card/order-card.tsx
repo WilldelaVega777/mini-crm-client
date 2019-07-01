@@ -195,7 +195,7 @@ export const OrderCard: React.SFC<IOrderCardProps> =
     //-------------------------------------------------------------------------
     async function updateOrderStatus(updateOrder: any)
     {
-        console.log('before save: ' + componentState.newStatus)
+        //console.log('before save: ' + componentState.newStatus)
         
         const input: Order = {
             ...props.order,

@@ -17,7 +17,7 @@ import { QueryGetCustomersPaginated }           from '../../services/operations/
 import { Q_GET_CUSTOMERS }                      from '../../services/operations/queries/customers/getCustomersPaginated.query'
 import { CustomerItem }                         from '../../components/customers/customer-item'
 
-import { gql }                                  from "apollo-boost";
+//import { gql }                                  from "apollo-boost";
 import { ApolloClient }                         from "apollo-boost"
 
 //---------------------------------------------------------------------------------
@@ -66,28 +66,28 @@ export class Customers extends React.Component<ICustomersProps, ICustomersState>
     //-------------------------------------------------------------------------
     async componentDidMount()
     {
-        try
-        {
-            const result = await this.props.gqlClient
-                .query({
-                    query: gql`
-                        {
-                            getCustomers(limit: 10, offset: 0) {
-                                customers {
-                                    first_name
-                                    last_name
-                                }
-                            }
-                        }
-                    `
-                }
-            )
-            console.log(result.data.getCustomers.customers)
-        }
-        catch (error)
-        {
-            console.error(error)
-        }
+        // try
+        // {
+        //     const result = await this.props.gqlClient
+        //         .query({
+        //             query: gql`
+        //                 {
+        //                     getCustomers(limit: 10, offset: 0) {
+        //                         customers {
+        //                             first_name
+        //                             last_name
+        //                         }
+        //                     }
+        //                 }
+        //             `
+        //         }
+        //     )
+        //     //console.log(result.data.getCustomers.customers)
+        // }
+        // catch (error)
+        // {
+        //     console.error(error)
+        // }
     }
 
     //-------------------------------------------------------------------------
@@ -182,7 +182,11 @@ export class Customers extends React.Component<ICustomersProps, ICustomersState>
                                         <ul className="list-group subtle-shadow">
                                             {
                                                 this.customers.map(customer => (
-                                                    <CustomerItem customer={(customer as Customer)} key={customer.id} />
+                                                    <CustomerItem 
+                                                        customer={(customer as Customer)} 
+                                                        key={customer.id} 
+                                                        session={this.props.session}
+                                                    />
                                                 ))
                                             }
                                         </ul>
